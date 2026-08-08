@@ -1,0 +1,16 @@
+{
+  "total_samples": 2000,
+  "schema_errors": 0,
+  "drug_grounding_errors": 0,
+  "regimen_grounding_errors": 0,
+  "template_placeholder_errors": 0,
+  "duplicate_texts": 0,
+  "total_errors": 0,
+  "passed": true,
+  "difficulty_distribution": {
+    "Easy": 350,
+    "Medium": 840,
+    "Hard": 580,
+    "Very Hard": 230
+  }
+}
