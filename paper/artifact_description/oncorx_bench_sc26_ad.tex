@@ -5,11 +5,11 @@
 
 \usepackage{cite}
 \usepackage{amsmath,amssymb,amsfonts}
-\usepackage{algorithmic}
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
 \usepackage{booktabs}
+\usepackage{url}
 \usepackage{tagging}
 \usepackage{sc26repro}
 
@@ -17,11 +17,9 @@
 %\usetag{explanation}
 %\usetag{example}
 
-% Replace these paper-facing placeholders with immutable public revisions when
-% the submission policy and final release revisions are fixed.
-\newcommand{\CodeRevision}{\texttt{[FINAL CODE URL / REVISION]}}
-\newcommand{\DatasetRevision}{\texttt{[FINAL DATASET URL / REVISION]}}
-\newcommand{\DatasetDOI}{\texttt{[FINAL ARCHIVAL DOI, IF ASSIGNED]}}
+\newcommand{\CodeRevision}{\url{https://github.com/shivanna-ornl/oncorx-bench/tree/reproducible-v1}}
+\newcommand{\DatasetRevision}{\url{https://huggingface.co/datasets/AbhishekShivanna/oncorx-bench/tree/842efd033f21d78b11ee05e6031215e46a440947}}
+\newcommand{\DatasetDOI}{\emph{not assigned}}
 \newcommand{\UOTDCommitA}{\texttt{e4ba3722b5505cfa587b}}
 \newcommand{\UOTDCommitB}{\texttt{30032b8896d86baf8092}}
 \newcommand{\ReleaseHashA}{\texttt{97a6c2a22eacf0d68e1762051fbe57b9}}
@@ -78,10 +76,11 @@ release/split manifests. Dataset revision: \DatasetRevision. Archival DOI:
 \DatasetDOI.
 \end{description}
 
-For dual-anonymous paper review, identity-bearing repository locations are
-represented by revision placeholders. The final AD should replace each
-placeholder with an immutable revision. The upstream UOTD input is pinned at
-commit \UOTDCommitA\allowbreak\UOTDCommitB.
+The artifact locations above identify immutable public revisions. The main
+paper keeps identity-bearing artifact citations anonymous during review; this
+separately submitted AD records the exact revisions needed for reproduction.
+The upstream UOTD input is pinned at commit
+\UOTDCommitA\allowbreak\UOTDCommitB.
 
 \begin{center}
 \footnotesize
