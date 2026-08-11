@@ -1,0 +1,493 @@
+regimen_name,components_json,regimen_id,projection_method,canonical_regimen_name
+abemaciclib and anastrozole,"[""Abemaciclib"",""Anastrozole""]",33,lexical_name_projection,abemaciclib and anastrozole
+abemaciclib and fulvestrant,"[""Abemaciclib"",""Fulvestrant""]",35,lexical_name_projection,abemaciclib and fulvestrant
+abemaciclib and letrozole,"[""Abemaciclib"",""Letrozole""]",36,lexical_name_projection,abemaciclib and letrozole
+abiraterone and apalutamide,"[""Abiraterone"",""Apalutamide""]",38,lexical_name_projection,abiraterone and apalutamide
+abiraterone and olaparib,"[""Abiraterone"",""Olaparib""]",40,lexical_name_projection,abiraterone and olaparib
+acalabrutinib and obinutuzumab,"[""Acalabrutinib"",""Obinutuzumab""]",58,lexical_name_projection,acalabrutinib and obinutuzumab
+adagrasib and cetuximab,"[""adagrasib"",""Cetuximab""]",69,lexical_name_projection,adagrasib and cetuximab
+"adt, darolutamide, docetaxel","[""Darolutamide"",""Docetaxel""]",87,lexical_name_projection,"adt, darolutamide, docetaxel"
+"adt, enzalutamide, talazoparib","[""Enzalutamide"",""Talazoparib""]",88,lexical_name_projection,"adt, enzalutamide, talazoparib"
+afatinib and bevacizumab,"[""Afatinib"",""Bevacizumab""]",89,lexical_name_projection,afatinib and bevacizumab
+afatinib and cetuximab,"[""Afatinib"",""Cetuximab""]",90,lexical_name_projection,afatinib and cetuximab
+afatinib and paclitaxel,"[""Afatinib"",""Paclitaxel""]",91,lexical_name_projection,afatinib and paclitaxel
+alemtuzumab and rituximab,"[""alemtuzumab"",""Rituximab""]",96,lexical_name_projection,alemtuzumab and rituximab
+alpelisib and fulvestrant,"[""alpelisib"",""Fulvestrant""]",100,lexical_name_projection,alpelisib and fulvestrant
+altretamine and cisplatin (hd),"[""altretamine"",""Cisplatin""]",101,lexical_name_projection,altretamine and cisplatin (hd)
+"amoxicillin, clarithromycin, ppi, bismuth","[""amoxicillin"",""clarithromycin""]",106,lexical_name_projection,"amoxicillin, clarithromycin, ppi, bismuth"
+anastrozole and fulvestrant,"[""Anastrozole"",""Fulvestrant""]",111,lexical_name_projection,anastrozole and fulvestrant
+anastrozole and goserelin,"[""Anastrozole"",""Goserelin""]",112,lexical_name_projection,anastrozole and goserelin
+anastrozole and palbociclib,"[""Anastrozole"",""Palbociclib""]",113,lexical_name_projection,anastrozole and palbociclib
+anastrozole and ribociclib,"[""Anastrozole"",""Ribociclib""]",114,lexical_name_projection,anastrozole and ribociclib
+anastrozole and trastuzumab,"[""Anastrozole"",""Trastuzumab""]",115,lexical_name_projection,anastrozole and trastuzumab
+"anastrozole, goserelin, palbociclib","[""Anastrozole"",""Goserelin"",""Palbociclib""]",117,lexical_name_projection,"anastrozole, goserelin, palbociclib"
+"anastrozole, lapatinib, trastuzumab","[""Anastrozole"",""lapatinib"",""Trastuzumab""]",118,lexical_name_projection,"anastrozole, lapatinib, trastuzumab"
+arsenic trioxide and chlorambucil,"[""Arsenic Trioxide"",""Chlorambucil""]",132,lexical_name_projection,arsenic trioxide and chlorambucil
+arsenic trioxide and idarubicin,"[""Arsenic Trioxide"",""Idarubicin""]",133,lexical_name_projection,arsenic trioxide and idarubicin
+"arsenic trioxide, atra, gemtuzumab ozogamicin","[""Arsenic Trioxide"",""gemtuzumab ozogamicin""]",135,lexical_name_projection,"arsenic trioxide, atra, gemtuzumab ozogamicin"
+"arsenic trioxide, atra, idarubicin","[""Arsenic Trioxide"",""Idarubicin""]",136,lexical_name_projection,"arsenic trioxide, atra, idarubicin"
+atezolizumab and bevacizumab,"[""Atezolizumab"",""Bevacizumab""]",147,lexical_name_projection,atezolizumab and bevacizumab
+"atg (horse), cyclosporine, eltrombopag","[""cyclosporine"",""eltrombopag""]",151,lexical_name_projection,"atg (horse), cyclosporine, eltrombopag"
+"atg (horse), cyclosporine, sirolimus","[""cyclosporine"",""sirolimus""]",153,lexical_name_projection,"atg (horse), cyclosporine, sirolimus"
+"atra, mercaptopurine, methotrexate","[""Mercaptopurine"",""Methotrexate""]",162,lexical_name_projection,"atra, mercaptopurine, methotrexate"
+axitinib and avelumab,"[""Avelumab"",""Axitinib""]",172,lexical_name_projection,axitinib and avelumab
+axitinib and pembrolizumab,"[""Axitinib"",""Pembrolizumab""]",173,lexical_name_projection,axitinib and pembrolizumab
+axitinib and toripalimab,"[""Axitinib"",""toripalimab""]",175,lexical_name_projection,axitinib and toripalimab
+azacitidine and gemtuzumab ozogamicin,"[""Azacitidine"",""gemtuzumab ozogamicin""]",177,lexical_name_projection,azacitidine and gemtuzumab ozogamicin
+azacitidine and ivosidenib,"[""Azacitidine"",""ivosidenib""]",178,lexical_name_projection,azacitidine and ivosidenib
+azacitidine and lenalidomide,"[""Azacitidine"",""Lenalidomide""]",179,lexical_name_projection,azacitidine and lenalidomide
+azacitidine and sorafenib,"[""Azacitidine"",""Sorafenib""]",180,lexical_name_projection,azacitidine and sorafenib
+azacitidine and venetoclax,"[""Azacitidine"",""Venetoclax""]",181,lexical_name_projection,azacitidine and venetoclax
+azacitidine and vorinostat,"[""Azacitidine"",""vorinostat""]",182,lexical_name_projection,azacitidine and vorinostat
+"azacitidine, vorinostat, gemtuzumab ozogamicin","[""Azacitidine"",""gemtuzumab ozogamicin"",""vorinostat""]",185,lexical_name_projection,"azacitidine, vorinostat, gemtuzumab ozogamicin"
+bendamustine and brentuximab vedotin,"[""Bendamustine"",""Brentuximab Vedotin""]",222,lexical_name_projection,bendamustine and brentuximab vedotin
+bendamustine and obinutuzumab,"[""Bendamustine"",""Obinutuzumab""]",224,lexical_name_projection,bendamustine and obinutuzumab
+bendamustine and ofatumumab,"[""Bendamustine"",""ofatumumab""]",225,lexical_name_projection,bendamustine and ofatumumab
+bendamustine and rituximab (br),"[""Bendamustine"",""Rituximab""]",226,lexical_name_projection,bendamustine and rituximab (br)
+bendamustine and rituximab (br) and ibrutinib,"[""Bendamustine"",""Ibrutinib"",""Rituximab""]",227,lexical_name_projection,bendamustine and rituximab (br) and ibrutinib
+bendamustine and rituximab (br) and idelalisib,"[""Bendamustine"",""Idelalisib"",""Rituximab""]",228,lexical_name_projection,bendamustine and rituximab (br) and idelalisib
+bendamustine and rituximab (br) and polatuzumab vedotin,"[""Bendamustine"",""Polatuzumab Vedotin"",""Rituximab""]",229,lexical_name_projection,bendamustine and rituximab (br) and polatuzumab vedotin
+bevacizumab and interferon alfa-2a,"[""Bevacizumab"",""interferon alfa-2a""]",236,lexical_name_projection,bevacizumab and interferon alfa-2a
+bevacizumab and rituximab,"[""Bevacizumab"",""Rituximab""]",237,lexical_name_projection,bevacizumab and rituximab
+bexarotene and pralatrexate,"[""bexarotene"",""pralatrexate""]",240,lexical_name_projection,bexarotene and pralatrexate
+bicalutamide and goserelin,"[""bicalutamide"",""Goserelin""]",244,lexical_name_projection,bicalutamide and goserelin
+bicalutamide and leuprolide,"[""bicalutamide"",""Leuprolide""]",245,lexical_name_projection,bicalutamide and leuprolide
+binimetinib and encorafenib,"[""binimetinib"",""encorafenib""]",249,lexical_name_projection,binimetinib and encorafenib
+"binimetinib, encorafenib, cetuximab","[""binimetinib"",""Cetuximab"",""encorafenib""]",251,lexical_name_projection,"binimetinib, encorafenib, cetuximab"
+bleomycin and cisplatin,"[""Bleomycin"",""Cisplatin""]",255,lexical_name_projection,bleomycin and cisplatin
+bleomycin and vincristine (bo),"[""Bleomycin"",""Vincristine""]",257,lexical_name_projection,bleomycin and vincristine (bo)
+bortezomib and cyclophosphamide,"[""Bortezomib"",""Cyclophosphamide""]",266,lexical_name_projection,bortezomib and cyclophosphamide
+bortezomib and melphalan,"[""Bortezomib"",""Melphalan""]",269,lexical_name_projection,bortezomib and melphalan
+bortezomib and panobinostat,"[""Bortezomib"",""panobinostat""]",270,lexical_name_projection,bortezomib and panobinostat
+bortezomib and rituximab (vr),"[""Bortezomib"",""Rituximab""]",273,lexical_name_projection,bortezomib and rituximab (vr)
+bortezomib and vorinostat,"[""Bortezomib"",""vorinostat""]",274,lexical_name_projection,bortezomib and vorinostat
+brentuximab vedotin and dacarbazine,"[""Brentuximab Vedotin"",""Dacarbazine""]",279,lexical_name_projection,brentuximab vedotin and dacarbazine
+brentuximab vedotin and nivolumab,"[""Brentuximab Vedotin"",""Nivolumab""]",280,lexical_name_projection,brentuximab vedotin and nivolumab
+busulfan and cyclophosphamide,"[""Busulfan"",""Cyclophosphamide""]",289,lexical_name_projection,busulfan and cyclophosphamide
+busulfan and fludarabine,"[""Busulfan"",""fludarabine""]",290,lexical_name_projection,busulfan and fludarabine
+busulfan and melphalan,"[""Busulfan"",""Melphalan""]",291,lexical_name_projection,busulfan and melphalan
+"busulfan, cyclophosphamide, decitabine, g-csf","[""Busulfan"",""Cyclophosphamide"",""Decitabine""]",293,lexical_name_projection,"busulfan, cyclophosphamide, decitabine, g-csf"
+"busulfan, fludarabine, ibritumomab tiuxetan","[""Busulfan"",""fludarabine"",""ibritumomab tiuxetan""]",294,lexical_name_projection,"busulfan, fludarabine, ibritumomab tiuxetan"
+"busulfan, fludarabine, ibritumomab tiuxetan, then allo hsct","[""Busulfan"",""fludarabine"",""ibritumomab tiuxetan""]",295,lexical_name_projection,"busulfan, fludarabine, ibritumomab tiuxetan, then allo hsct"
+"busulfan, fludarabine, thiotepa","[""Busulfan"",""fludarabine"",""thiotepa""]",296,lexical_name_projection,"busulfan, fludarabine, thiotepa"
+"busulfan, fludarabine, thiotepa, then allo hsct","[""Busulfan"",""fludarabine"",""thiotepa""]",297,lexical_name_projection,"busulfan, fludarabine, thiotepa, then allo hsct"
+cabozantinib and erlotinib,"[""Cabozantinib"",""Erlotinib""]",312,lexical_name_projection,cabozantinib and erlotinib
+cabozantinib and nivolumab,"[""Cabozantinib"",""Nivolumab""]",313,lexical_name_projection,cabozantinib and nivolumab
+"cabozantinib, ipilimumab, nivolumab","[""Cabozantinib"",""Ipilimumab"",""Nivolumab""]",315,lexical_name_projection,"cabozantinib, ipilimumab, nivolumab"
+capecitabine and bevacizumab,"[""Bevacizumab"",""Capecitabine""]",331,lexical_name_projection,capecitabine and bevacizumab
+capecitabine and cisplatin (cx),"[""Capecitabine"",""Cisplatin""]",332,lexical_name_projection,capecitabine and cisplatin (cx)
+capecitabine and cisplatin (cx) and cetuximab,"[""Capecitabine"",""Cetuximab"",""Cisplatin""]",333,lexical_name_projection,capecitabine and cisplatin (cx) and cetuximab
+capecitabine and cisplatin (cx) and pembrolizumab,"[""Capecitabine"",""Cisplatin"",""Pembrolizumab""]",334,lexical_name_projection,capecitabine and cisplatin (cx) and pembrolizumab
+capecitabine and cisplatin (cx) and tislelizumab,"[""Capecitabine"",""Cisplatin"",""tislelizumab""]",335,lexical_name_projection,capecitabine and cisplatin (cx) and tislelizumab
+capecitabine and cisplatin (cx) and trastuzumab,"[""Capecitabine"",""Cisplatin"",""Trastuzumab""]",336,lexical_name_projection,capecitabine and cisplatin (cx) and trastuzumab
+"capecitabine and cisplatin (cx), pertuzumab, trastuzumab","[""Capecitabine"",""Cisplatin"",""Pertuzumab"",""Trastuzumab""]",337,lexical_name_projection,"capecitabine and cisplatin (cx), pertuzumab, trastuzumab"
+capecitabine and docetaxel (tx),"[""Capecitabine"",""Docetaxel""]",338,lexical_name_projection,capecitabine and docetaxel (tx)
+capecitabine and erlotinib,"[""Capecitabine"",""Erlotinib""]",339,lexical_name_projection,capecitabine and erlotinib
+capecitabine and fulvestrant,"[""Capecitabine"",""Fulvestrant""]",340,lexical_name_projection,capecitabine and fulvestrant
+capecitabine and gemcitabine,"[""Capecitabine"",""Gemcitabine""]",341,lexical_name_projection,capecitabine and gemcitabine
+capecitabine and ixabepilone,"[""Capecitabine"",""ixabepilone""]",342,lexical_name_projection,capecitabine and ixabepilone
+capecitabine and lapatinib,"[""Capecitabine"",""lapatinib""]",343,lexical_name_projection,capecitabine and lapatinib
+capecitabine and margetuximab,"[""Capecitabine"",""margetuximab""]",344,lexical_name_projection,capecitabine and margetuximab
+capecitabine and mitomycin,"[""Capecitabine"",""Mitomycin""]",345,lexical_name_projection,capecitabine and mitomycin
+capecitabine and neratinib,"[""Capecitabine"",""neratinib""]",346,lexical_name_projection,capecitabine and neratinib
+capecitabine and oxaliplatin (capeox) and tislelizumab,"[""Capecitabine"",""Oxaliplatin"",""tislelizumab""]",347,lexical_name_projection,capecitabine and oxaliplatin (capeox) and tislelizumab
+"capecitabine and paclitaxel, nanoparticle albumin-bound","[""Capecitabine"",""Paclitaxel""]",348,lexical_name_projection,"capecitabine and paclitaxel, nanoparticle albumin-bound"
+capecitabine and temozolomide,"[""Capecitabine"",""Temozolomide""]",351,lexical_name_projection,capecitabine and temozolomide
+capecitabine and trastuzumab (xh),"[""Capecitabine"",""Trastuzumab""]",352,lexical_name_projection,capecitabine and trastuzumab (xh)
+capecitabine and trastuzumab (xh) and tucatinib,"[""Capecitabine"",""Trastuzumab"",""tucatinib""]",353,lexical_name_projection,capecitabine and trastuzumab (xh) and tucatinib
+"capecitabine, bevacizumab, trastuzumab","[""Bevacizumab"",""Capecitabine"",""Trastuzumab""]",356,lexical_name_projection,"capecitabine, bevacizumab, trastuzumab"
+"capecitabine, carboplatin, paclitaxel, rt","[""Capecitabine"",""Carboplatin"",""Paclitaxel""]",357,lexical_name_projection,"capecitabine, carboplatin, paclitaxel, rt"
+"capecitabine, cisplatin, rt","[""Capecitabine"",""Cisplatin""]",358,lexical_name_projection,"capecitabine, cisplatin, rt"
+"capecitabine, docetaxel, oxaliplatin, rt","[""Capecitabine"",""Docetaxel"",""Oxaliplatin""]",359,lexical_name_projection,"capecitabine, docetaxel, oxaliplatin, rt"
+"capecitabine, docetaxel, rt","[""Capecitabine"",""Docetaxel""]",360,lexical_name_projection,"capecitabine, docetaxel, rt"
+"capecitabine, mitomycin, rt","[""Capecitabine"",""Mitomycin""]",361,lexical_name_projection,"capecitabine, mitomycin, rt"
+"capecitabine, oxaliplatin, rt","[""Capecitabine"",""Oxaliplatin""]",362,lexical_name_projection,"capecitabine, oxaliplatin, rt"
+"capecitabine, paclitaxel, rt","[""Capecitabine"",""Paclitaxel""]",363,lexical_name_projection,"capecitabine, paclitaxel, rt"
+"capecitabine, sorafenib, rt","[""Capecitabine"",""Sorafenib""]",364,lexical_name_projection,"capecitabine, sorafenib, rt"
+"capeox, pembrolizumab, trastuzumab","[""Pembrolizumab"",""Trastuzumab""]",373,lexical_name_projection,"capeox, pembrolizumab, trastuzumab"
+capivasertib and fulvestrant,"[""capivasertib"",""Fulvestrant""]",376,lexical_name_projection,capivasertib and fulvestrant
+carboplatin and bevacizumab,"[""Bevacizumab"",""Carboplatin""]",379,lexical_name_projection,carboplatin and bevacizumab
+carboplatin and cisplatin,"[""Carboplatin"",""Cisplatin""]",380,lexical_name_projection,carboplatin and cisplatin
+carboplatin and cyclophosphamide,"[""Carboplatin"",""Cyclophosphamide""]",381,lexical_name_projection,carboplatin and cyclophosphamide
+carboplatin and dacarbazine,"[""Carboplatin"",""Dacarbazine""]",382,lexical_name_projection,carboplatin and dacarbazine
+carboplatin and docetaxel,"[""Carboplatin"",""Docetaxel""]",383,lexical_name_projection,carboplatin and docetaxel
+carboplatin and etoposide (ce),"[""Carboplatin"",""Etoposide""]",384,lexical_name_projection,carboplatin and etoposide (ce)
+carboplatin and etoposide (ce) and atezolizumab,"[""Atezolizumab"",""Carboplatin"",""Etoposide""]",385,lexical_name_projection,carboplatin and etoposide (ce) and atezolizumab
+carboplatin and etoposide (ce) and bevacizumab,"[""Bevacizumab"",""Carboplatin"",""Etoposide""]",386,lexical_name_projection,carboplatin and etoposide (ce) and bevacizumab
+carboplatin and etoposide (ce) and durvalumab,"[""Carboplatin"",""Durvalumab"",""Etoposide""]",387,lexical_name_projection,carboplatin and etoposide (ce) and durvalumab
+carboplatin and etoposide (ce) and pembrolizumab,"[""Carboplatin"",""Etoposide"",""Pembrolizumab""]",388,lexical_name_projection,carboplatin and etoposide (ce) and pembrolizumab
+carboplatin and etoposide (ce) and serplulimab,"[""Carboplatin"",""Etoposide""]",389,lexical_name_projection,carboplatin and etoposide (ce) and serplulimab
+carboplatin and fluorouracil,"[""Carboplatin"",""Fluorouracil""]",390,lexical_name_projection,carboplatin and fluorouracil
+carboplatin and gemcitabine (gcb),"[""Carboplatin"",""Gemcitabine""]",391,lexical_name_projection,carboplatin and gemcitabine (gcb)
+carboplatin and gemcitabine (gcb) and atezolizumab,"[""Atezolizumab"",""Carboplatin"",""Gemcitabine""]",392,lexical_name_projection,carboplatin and gemcitabine (gcb) and atezolizumab
+carboplatin and gemcitabine (gcb) and bevacizumab,"[""Bevacizumab"",""Carboplatin"",""Gemcitabine""]",393,lexical_name_projection,carboplatin and gemcitabine (gcb) and bevacizumab
+carboplatin and gemcitabine (gcb) and durvalumab,"[""Carboplatin"",""Durvalumab"",""Gemcitabine""]",394,lexical_name_projection,carboplatin and gemcitabine (gcb) and durvalumab
+carboplatin and gemcitabine (gcb) and paclitaxel,"[""Carboplatin"",""Gemcitabine"",""Paclitaxel""]",395,lexical_name_projection,carboplatin and gemcitabine (gcb) and paclitaxel
+carboplatin and gemcitabine (gcb) and pembrolizumab,"[""Carboplatin"",""Gemcitabine"",""Pembrolizumab""]",396,lexical_name_projection,carboplatin and gemcitabine (gcb) and pembrolizumab
+carboplatin and gemcitabine/erlotinib,"[""Carboplatin"",""Erlotinib"",""Gemcitabine""]",397,lexical_name_projection,carboplatin and gemcitabine/erlotinib
+carboplatin and ifosfamide,"[""Carboplatin"",""Ifosfamide""]",398,lexical_name_projection,carboplatin and ifosfamide
+carboplatin and irinotecan,"[""Carboplatin"",""Irinotecan""]",399,lexical_name_projection,carboplatin and irinotecan
+carboplatin and paclitaxel (cp) and bevacizumab,"[""Bevacizumab"",""Carboplatin"",""Paclitaxel""]",403,lexical_name_projection,carboplatin and paclitaxel (cp) and bevacizumab
+carboplatin and paclitaxel (cp) and camrelizumab,"[""Carboplatin"",""Paclitaxel""]",404,lexical_name_projection,carboplatin and paclitaxel (cp) and camrelizumab
+carboplatin and paclitaxel (cp) and cemiplimab,"[""Carboplatin"",""Cemiplimab"",""Paclitaxel""]",405,lexical_name_projection,carboplatin and paclitaxel (cp) and cemiplimab
+carboplatin and paclitaxel (cp) and dostarlimab,"[""Carboplatin"",""dostarlimab"",""Paclitaxel""]",406,lexical_name_projection,carboplatin and paclitaxel (cp) and dostarlimab
+carboplatin and paclitaxel (cp) and durvalumab,"[""Carboplatin"",""Durvalumab"",""Paclitaxel""]",407,lexical_name_projection,carboplatin and paclitaxel (cp) and durvalumab
+carboplatin and paclitaxel (cp) and ipilimumab,"[""Carboplatin"",""Ipilimumab"",""Paclitaxel""]",408,lexical_name_projection,carboplatin and paclitaxel (cp) and ipilimumab
+"carboplatin and paclitaxel (cp) and ipilimumab, nivolumab","[""Carboplatin"",""Ipilimumab"",""Nivolumab"",""Paclitaxel""]",409,lexical_name_projection,"carboplatin and paclitaxel (cp) and ipilimumab, nivolumab"
+carboplatin and paclitaxel (cp) and nintedanib,"[""Carboplatin"",""nintedanib"",""Paclitaxel""]",410,lexical_name_projection,carboplatin and paclitaxel (cp) and nintedanib
+carboplatin and paclitaxel (cp) and nivolumab,"[""Carboplatin"",""Nivolumab"",""Paclitaxel""]",411,lexical_name_projection,carboplatin and paclitaxel (cp) and nivolumab
+carboplatin and paclitaxel (cp) and olaparib,"[""Carboplatin"",""Olaparib"",""Paclitaxel""]",412,lexical_name_projection,carboplatin and paclitaxel (cp) and olaparib
+carboplatin and paclitaxel (cp) and pembrolizumab,"[""Carboplatin"",""Paclitaxel"",""Pembrolizumab""]",413,lexical_name_projection,carboplatin and paclitaxel (cp) and pembrolizumab
+carboplatin and paclitaxel (cp) and penpulimab,"[""Carboplatin"",""Paclitaxel"",""penpulimab""]",414,lexical_name_projection,carboplatin and paclitaxel (cp) and penpulimab
+carboplatin and paclitaxel (cp) and rt,"[""Carboplatin"",""Paclitaxel""]",415,lexical_name_projection,carboplatin and paclitaxel (cp) and rt
+carboplatin and paclitaxel (cp) and sugemalimab,"[""Carboplatin"",""Paclitaxel""]",416,lexical_name_projection,carboplatin and paclitaxel (cp) and sugemalimab
+carboplatin and paclitaxel (cp) and trastuzumab,"[""Carboplatin"",""Paclitaxel"",""Trastuzumab""]",417,lexical_name_projection,carboplatin and paclitaxel (cp) and trastuzumab
+"carboplatin and paclitaxel (cp), bevacizumab, nivolumab","[""Bevacizumab"",""Carboplatin"",""Nivolumab"",""Paclitaxel""]",418,lexical_name_projection,"carboplatin and paclitaxel (cp), bevacizumab, nivolumab"
+"carboplatin and paclitaxel (cp), bevacizumab, pembrolizumab","[""Bevacizumab"",""Carboplatin"",""Paclitaxel"",""Pembrolizumab""]",419,lexical_name_projection,"carboplatin and paclitaxel (cp), bevacizumab, pembrolizumab"
+"carboplatin and paclitaxel (cp), olaparib, durvalumab","[""Carboplatin"",""Durvalumab"",""Olaparib"",""Paclitaxel""]",420,lexical_name_projection,"carboplatin and paclitaxel (cp), olaparib, durvalumab"
+carboplatin and teniposide,"[""Carboplatin"",""teniposide""]",423,lexical_name_projection,carboplatin and teniposide
+"carboplatin, etoposide, rt","[""Carboplatin"",""Etoposide""]",426,lexical_name_projection,"carboplatin, etoposide, rt"
+"carboplatin, fluorouracil, cetuximab","[""Carboplatin"",""Cetuximab"",""Fluorouracil""]",427,lexical_name_projection,"carboplatin, fluorouracil, cetuximab"
+"carboplatin, fluorouracil, cetuximab, rt","[""Carboplatin"",""Cetuximab"",""Fluorouracil""]",428,lexical_name_projection,"carboplatin, fluorouracil, cetuximab, rt"
+"carboplatin, fluorouracil, pembrolizumab","[""Carboplatin"",""Fluorouracil"",""Pembrolizumab""]",429,lexical_name_projection,"carboplatin, fluorouracil, pembrolizumab"
+"carboplatin, fluorouracil, rt","[""Carboplatin"",""Fluorouracil""]",430,lexical_name_projection,"carboplatin, fluorouracil, rt"
+"carboplatin, lazertinib, pemetrexed, amivantamab","[""amivantamab"",""Carboplatin"",""lazertinib"",""Pemetrexed""]",431,lexical_name_projection,"carboplatin, lazertinib, pemetrexed, amivantamab"
+"carboplatin, osimertinib, pemetrexed","[""Carboplatin"",""Osimertinib"",""Pemetrexed""]",436,lexical_name_projection,"carboplatin, osimertinib, pemetrexed"
+"carboplatin, pemetrexed, amivantamab","[""amivantamab"",""Carboplatin"",""Pemetrexed""]",438,lexical_name_projection,"carboplatin, pemetrexed, amivantamab"
+"carboplatin, pemetrexed, atezolizumab","[""Atezolizumab"",""Carboplatin"",""Pemetrexed""]",439,lexical_name_projection,"carboplatin, pemetrexed, atezolizumab"
+"carboplatin, pemetrexed, bevacizumab","[""Bevacizumab"",""Carboplatin"",""Pemetrexed""]",440,lexical_name_projection,"carboplatin, pemetrexed, bevacizumab"
+"carboplatin, pemetrexed, camrelizumab","[""Carboplatin"",""Pemetrexed""]",441,lexical_name_projection,"carboplatin, pemetrexed, camrelizumab"
+"carboplatin, pemetrexed, cemiplimab","[""Carboplatin"",""Cemiplimab"",""Pemetrexed""]",442,lexical_name_projection,"carboplatin, pemetrexed, cemiplimab"
+"carboplatin, pemetrexed, durvalumab","[""Carboplatin"",""Durvalumab"",""Pemetrexed""]",443,lexical_name_projection,"carboplatin, pemetrexed, durvalumab"
+"carboplatin, pemetrexed, ipilimumab, nivolumab","[""Carboplatin"",""Ipilimumab"",""Nivolumab"",""Pemetrexed""]",444,lexical_name_projection,"carboplatin, pemetrexed, ipilimumab, nivolumab"
+"carboplatin, pemetrexed, pembrolizumab","[""Carboplatin"",""Pembrolizumab"",""Pemetrexed""]",445,lexical_name_projection,"carboplatin, pemetrexed, pembrolizumab"
+"carboplatin, pemetrexed, sintilimab","[""Carboplatin"",""Pemetrexed""]",446,lexical_name_projection,"carboplatin, pemetrexed, sintilimab"
+"carboplatin, pemetrexed, sugemalimab","[""Carboplatin"",""Pemetrexed""]",447,lexical_name_projection,"carboplatin, pemetrexed, sugemalimab"
+"carboplatin, pemetrexed, tislelizumab","[""Carboplatin"",""Pemetrexed"",""tislelizumab""]",448,lexical_name_projection,"carboplatin, pemetrexed, tislelizumab"
+"carboplatin, vinorelbine, rt","[""Carboplatin"",""Vinorelbine""]",449,lexical_name_projection,"carboplatin, vinorelbine, rt"
+carfilzomib and lenalidomide (kr),"[""Carfilzomib"",""Lenalidomide""]",452,lexical_name_projection,carfilzomib and lenalidomide (kr)
+carfilzomib and panobinostat,"[""Carfilzomib"",""panobinostat""]",453,lexical_name_projection,carfilzomib and panobinostat
+celecoxib and methotrexate,"[""celecoxib"",""Methotrexate""]",475,lexical_name_projection,celecoxib and methotrexate
+"celecoxib, erlotinib, methotrexate","[""celecoxib"",""Erlotinib"",""Methotrexate""]",476,lexical_name_projection,"celecoxib, erlotinib, methotrexate"
+"celecoxib, erlotinib, methotrexate, nivolumab","[""celecoxib"",""Erlotinib"",""Methotrexate"",""Nivolumab""]",477,lexical_name_projection,"celecoxib, erlotinib, methotrexate, nivolumab"
+cev (carboplatin/etoposide),"[""Carboplatin"",""Etoposide""]",487,lexical_name_projection,cev (carboplatin/etoposide)
+chlorambucil and cisplatin,"[""Chlorambucil"",""Cisplatin""]",503,lexical_name_projection,chlorambucil and cisplatin
+chlorambucil and obinutuzumab (gclb),"[""Chlorambucil"",""Obinutuzumab""]",504,lexical_name_projection,chlorambucil and obinutuzumab (gclb)
+chlorambucil and ofatumumab,"[""Chlorambucil"",""ofatumumab""]",505,lexical_name_projection,chlorambucil and ofatumumab
+chlorambucil and rituximab (rclb),"[""Chlorambucil"",""Rituximab""]",508,lexical_name_projection,chlorambucil and rituximab (rclb)
+"chlorambucil, dactinomycin, methotrexate","[""Chlorambucil"",""dactinomycin"",""Methotrexate""]",510,lexical_name_projection,"chlorambucil, dactinomycin, methotrexate"
+cisplatin and bevacizumab,"[""Bevacizumab"",""Cisplatin""]",534,lexical_name_projection,cisplatin and bevacizumab
+cisplatin and cetuximab,"[""Cetuximab"",""Cisplatin""]",535,lexical_name_projection,cisplatin and cetuximab
+cisplatin and dacarbazine,"[""Cisplatin"",""Dacarbazine""]",536,lexical_name_projection,cisplatin and dacarbazine
+cisplatin and docetaxel (dc) and durvalumab,"[""Cisplatin"",""Docetaxel"",""Durvalumab""]",537,lexical_name_projection,cisplatin and docetaxel (dc) and durvalumab
+cisplatin and docetaxel (dc) and nivolumab,"[""Cisplatin"",""Docetaxel"",""Nivolumab""]",538,lexical_name_projection,cisplatin and docetaxel (dc) and nivolumab
+cisplatin and epirubicin,"[""Cisplatin"",""Epirubicin""]",539,lexical_name_projection,cisplatin and epirubicin
+cisplatin and etoposide (ep) and bevacizumab,"[""Bevacizumab"",""Cisplatin"",""Etoposide""]",540,lexical_name_projection,cisplatin and etoposide (ep) and bevacizumab
+cisplatin and etoposide (ep) and durvalumab,"[""Cisplatin"",""Durvalumab"",""Etoposide""]",541,lexical_name_projection,cisplatin and etoposide (ep) and durvalumab
+cisplatin and etoposide (ep) and pembrolizumab,"[""Cisplatin"",""Etoposide"",""Pembrolizumab""]",542,lexical_name_projection,cisplatin and etoposide (ep) and pembrolizumab
+cisplatin and fluorouracil (cf),"[""Cisplatin"",""Fluorouracil""]",543,lexical_name_projection,cisplatin and fluorouracil (cf)
+cisplatin and fluorouracil (cf) and cetuximab,"[""Cetuximab"",""Cisplatin"",""Fluorouracil""]",544,lexical_name_projection,cisplatin and fluorouracil (cf) and cetuximab
+"cisplatin and fluorouracil (cf) and hydroxyurea, rt","[""Cisplatin"",""Fluorouracil"",""Hydroxyurea""]",545,lexical_name_projection,"cisplatin and fluorouracil (cf) and hydroxyurea, rt"
+cisplatin and fluorouracil (cf) and nivolumab,"[""Cisplatin"",""Fluorouracil"",""Nivolumab""]",546,lexical_name_projection,cisplatin and fluorouracil (cf) and nivolumab
+cisplatin and fluorouracil (cf) and panitumumab,"[""Cisplatin"",""Fluorouracil"",""Panitumumab""]",547,lexical_name_projection,cisplatin and fluorouracil (cf) and panitumumab
+cisplatin and fluorouracil (cf) and pembrolizumab,"[""Cisplatin"",""Fluorouracil"",""Pembrolizumab""]",548,lexical_name_projection,cisplatin and fluorouracil (cf) and pembrolizumab
+cisplatin and fluorouracil (cf) and rt,"[""Cisplatin"",""Fluorouracil""]",549,lexical_name_projection,cisplatin and fluorouracil (cf) and rt
+cisplatin and fluorouracil (cf) and sugemalimab,"[""Cisplatin"",""Fluorouracil""]",551,lexical_name_projection,cisplatin and fluorouracil (cf) and sugemalimab
+cisplatin and fluorouracil (cf) and tislelizumab,"[""Cisplatin"",""Fluorouracil"",""tislelizumab""]",552,lexical_name_projection,cisplatin and fluorouracil (cf) and tislelizumab
+cisplatin and fluorouracil (cf) and trastuzumab,"[""Cisplatin"",""Fluorouracil"",""Trastuzumab""]",553,lexical_name_projection,cisplatin and fluorouracil (cf) and trastuzumab
+cisplatin and fluorouracil (cf) and vincristine,"[""Cisplatin"",""Fluorouracil"",""Vincristine""]",554,lexical_name_projection,cisplatin and fluorouracil (cf) and vincristine
+"cisplatin and fluorouracil (cf), pembrolizumab, trastuzumab","[""Cisplatin"",""Fluorouracil"",""Pembrolizumab"",""Trastuzumab""]",555,lexical_name_projection,"cisplatin and fluorouracil (cf), pembrolizumab, trastuzumab"
+cisplatin and gemcitabine (gc) and atezolizumab,"[""Atezolizumab"",""Cisplatin"",""Gemcitabine""]",556,lexical_name_projection,cisplatin and gemcitabine (gc) and atezolizumab
+cisplatin and gemcitabine (gc) and camrelizumab,"[""Cisplatin"",""Gemcitabine""]",557,lexical_name_projection,cisplatin and gemcitabine (gc) and camrelizumab
+cisplatin and gemcitabine (gc) and cetuximab,"[""Cetuximab"",""Cisplatin"",""Gemcitabine""]",558,lexical_name_projection,cisplatin and gemcitabine (gc) and cetuximab
+cisplatin and gemcitabine (gc) and durvalumab,"[""Cisplatin"",""Durvalumab"",""Gemcitabine""]",559,lexical_name_projection,cisplatin and gemcitabine (gc) and durvalumab
+cisplatin and gemcitabine (gc) and necitumumab,"[""Cisplatin"",""Gemcitabine"",""necitumumab""]",561,lexical_name_projection,cisplatin and gemcitabine (gc) and necitumumab
+cisplatin and gemcitabine (gc) and nivolumab,"[""Cisplatin"",""Gemcitabine"",""Nivolumab""]",562,lexical_name_projection,cisplatin and gemcitabine (gc) and nivolumab
+cisplatin and gemcitabine (gc) and pembrolizumab,"[""Cisplatin"",""Gemcitabine"",""Pembrolizumab""]",563,lexical_name_projection,cisplatin and gemcitabine (gc) and pembrolizumab
+cisplatin and gemcitabine (gc) and rt,"[""Cisplatin"",""Gemcitabine""]",564,lexical_name_projection,cisplatin and gemcitabine (gc) and rt
+cisplatin and gemcitabine (gc) and toripalimab,"[""Cisplatin"",""Gemcitabine"",""toripalimab""]",565,lexical_name_projection,cisplatin and gemcitabine (gc) and toripalimab
+cisplatin and gemcitabine/erlotinib,"[""Cisplatin"",""Erlotinib"",""Gemcitabine""]",566,lexical_name_projection,cisplatin and gemcitabine/erlotinib
+cisplatin and ifosfamide,"[""Cisplatin"",""Ifosfamide""]",567,lexical_name_projection,cisplatin and ifosfamide
+cisplatin and methotrexate,"[""Cisplatin"",""Methotrexate""]",568,lexical_name_projection,cisplatin and methotrexate
+cisplatin and mitomycin,"[""Cisplatin"",""Mitomycin""]",569,lexical_name_projection,cisplatin and mitomycin
+cisplatin and mitotane,"[""Cisplatin"",""mitotane""]",570,lexical_name_projection,cisplatin and mitotane
+cisplatin and pemetrexed,"[""Cisplatin"",""Pemetrexed""]",571,lexical_name_projection,cisplatin and pemetrexed
+cisplatin and raltitrexed,"[""Cisplatin"",""raltitrexed""]",572,lexical_name_projection,cisplatin and raltitrexed
+cisplatin and temozolomide,"[""Cisplatin"",""Temozolomide""]",575,lexical_name_projection,cisplatin and temozolomide
+cisplatin and vinorelbine (cvb) and nivolumab,"[""Cisplatin"",""Nivolumab"",""Vinorelbine""]",576,lexical_name_projection,cisplatin and vinorelbine (cvb) and nivolumab
+"cisplatin, cetuximab, rt","[""Cetuximab"",""Cisplatin""]",578,lexical_name_projection,"cisplatin, cetuximab, rt"
+"cisplatin, cyclophosphamide, interferon gamma-1b","[""Cisplatin"",""Cyclophosphamide"",""interferon gamma-1b""]",579,lexical_name_projection,"cisplatin, cyclophosphamide, interferon gamma-1b"
+"cisplatin, dacarbazine, il-2, ifn alfa-2b plus /- carmustine","[""Carmustine"",""Cisplatin"",""Dacarbazine""]",580,lexical_name_projection,"cisplatin, dacarbazine, il-2, ifn alfa-2b plus /- carmustine"
+"cisplatin, dacarbazine, interferon alfa-2b","[""Cisplatin"",""Dacarbazine""]",581,lexical_name_projection,"cisplatin, dacarbazine, interferon alfa-2b"
+"cisplatin, dacarbazine, paclitaxel","[""Cisplatin"",""Dacarbazine"",""Paclitaxel""]",582,lexical_name_projection,"cisplatin, dacarbazine, paclitaxel"
+"cisplatin, dacarbazine, tamoxifen","[""Cisplatin"",""Dacarbazine"",""Tamoxifen""]",583,lexical_name_projection,"cisplatin, dacarbazine, tamoxifen"
+"cisplatin, docetaxel, rt","[""Cisplatin"",""Docetaxel""]",584,lexical_name_projection,"cisplatin, docetaxel, rt"
+"cisplatin, epirubicin, ifosfamide","[""Cisplatin"",""Epirubicin"",""Ifosfamide""]",586,lexical_name_projection,"cisplatin, epirubicin, ifosfamide"
+"cisplatin, etoposide, irinotecan","[""Cisplatin"",""Etoposide"",""Irinotecan""]",587,lexical_name_projection,"cisplatin, etoposide, irinotecan"
+"cisplatin, gefitinib, pemetrexed","[""Cisplatin"",""Gefitinib"",""Pemetrexed""]",588,lexical_name_projection,"cisplatin, gefitinib, pemetrexed"
+"cisplatin, interferon alfa-2a, isotretinoin","[""Cisplatin"",""interferon alfa-2a"",""isotretinoin""]",589,lexical_name_projection,"cisplatin, interferon alfa-2a, isotretinoin"
+"cisplatin, irinotecan, rt","[""Cisplatin"",""Irinotecan""]",590,lexical_name_projection,"cisplatin, irinotecan, rt"
+"cisplatin, osimertinib, pemetrexed","[""Cisplatin"",""Osimertinib"",""Pemetrexed""]",591,lexical_name_projection,"cisplatin, osimertinib, pemetrexed"
+"cisplatin, paclitaxel, atezolizumab, bevacizumab","[""Atezolizumab"",""Bevacizumab"",""Cisplatin"",""Paclitaxel""]",592,lexical_name_projection,"cisplatin, paclitaxel, atezolizumab, bevacizumab"
+"cisplatin, paclitaxel, bevacizumab","[""Bevacizumab"",""Cisplatin"",""Paclitaxel""]",593,lexical_name_projection,"cisplatin, paclitaxel, bevacizumab"
+"cisplatin, paclitaxel, bevacizumab, pembrolizumab","[""Bevacizumab"",""Cisplatin"",""Paclitaxel"",""Pembrolizumab""]",594,lexical_name_projection,"cisplatin, paclitaxel, bevacizumab, pembrolizumab"
+"cisplatin, paclitaxel, camrelizumab","[""Cisplatin"",""Paclitaxel""]",595,lexical_name_projection,"cisplatin, paclitaxel, camrelizumab"
+"cisplatin, paclitaxel, cemiplimab","[""Cemiplimab"",""Cisplatin"",""Paclitaxel""]",596,lexical_name_projection,"cisplatin, paclitaxel, cemiplimab"
+"cisplatin, paclitaxel, pembrolizumab","[""Cisplatin"",""Paclitaxel"",""Pembrolizumab""]",597,lexical_name_projection,"cisplatin, paclitaxel, pembrolizumab"
+"cisplatin, paclitaxel, sintilimab","[""Cisplatin"",""Paclitaxel""]",598,lexical_name_projection,"cisplatin, paclitaxel, sintilimab"
+"cisplatin, paclitaxel, tislelizumab","[""Cisplatin"",""Paclitaxel"",""tislelizumab""]",599,lexical_name_projection,"cisplatin, paclitaxel, tislelizumab"
+"cisplatin, paclitaxel, toripalimab","[""Cisplatin"",""Paclitaxel"",""toripalimab""]",600,lexical_name_projection,"cisplatin, paclitaxel, toripalimab"
+"cisplatin, pemetrexed, cemiplimab","[""Cemiplimab"",""Cisplatin"",""Pemetrexed""]",601,lexical_name_projection,"cisplatin, pemetrexed, cemiplimab"
+"cisplatin, pemetrexed, durvalumab","[""Cisplatin"",""Durvalumab"",""Pemetrexed""]",602,lexical_name_projection,"cisplatin, pemetrexed, durvalumab"
+"cisplatin, pemetrexed, ipilimumab, nivolumab","[""Cisplatin"",""Ipilimumab"",""Nivolumab"",""Pemetrexed""]",603,lexical_name_projection,"cisplatin, pemetrexed, ipilimumab, nivolumab"
+"cisplatin, pemetrexed, nivolumab","[""Cisplatin"",""Nivolumab"",""Pemetrexed""]",604,lexical_name_projection,"cisplatin, pemetrexed, nivolumab"
+"cisplatin, pemetrexed, pembrolizumab","[""Cisplatin"",""Pembrolizumab"",""Pemetrexed""]",605,lexical_name_projection,"cisplatin, pemetrexed, pembrolizumab"
+"cisplatin, pemetrexed, rt","[""Cisplatin"",""Pemetrexed""]",606,lexical_name_projection,"cisplatin, pemetrexed, rt"
+"cisplatin, pemetrexed, sintilimab","[""Cisplatin"",""Pemetrexed""]",607,lexical_name_projection,"cisplatin, pemetrexed, sintilimab"
+"cisplatin, pemetrexed, tislelizumab","[""Cisplatin"",""Pemetrexed"",""tislelizumab""]",608,lexical_name_projection,"cisplatin, pemetrexed, tislelizumab"
+"cisplatin, pemetrexed, ttfields","[""Cisplatin"",""Pemetrexed""]",609,lexical_name_projection,"cisplatin, pemetrexed, ttfields"
+"cisplatin, vinorelbine, cetuximab","[""Cetuximab"",""Cisplatin"",""Vinorelbine""]",611,lexical_name_projection,"cisplatin, vinorelbine, cetuximab"
+"cisplatin, vinorelbine, rt","[""Cisplatin"",""Vinorelbine""]",612,lexical_name_projection,"cisplatin, vinorelbine, rt"
+cladribine and rituximab,"[""cladribine"",""Rituximab""]",615,lexical_name_projection,cladribine and rituximab
+"clarithromycin, tetracycline, ppi, bismuth","[""clarithromycin"",""tetracycline""]",622,lexical_name_projection,"clarithromycin, tetracycline, ppi, bismuth"
+clofarabine and lodac/decitabine,"[""clofarabine"",""Decitabine""]",626,lexical_name_projection,clofarabine and lodac/decitabine
+clofarabine and melphalan,"[""clofarabine"",""Melphalan""]",627,lexical_name_projection,clofarabine and melphalan
+"clofarabine and melphalan, then allo hsct","[""clofarabine"",""Melphalan""]",628,lexical_name_projection,"clofarabine and melphalan, then allo hsct"
+cobimetinib and vemurafenib,"[""Cobimetinib"",""Vemurafenib""]",650,lexical_name_projection,cobimetinib and vemurafenib
+"cobimetinib, vemurafenib, atezolizumab","[""Atezolizumab"",""Cobimetinib"",""Vemurafenib""]",652,lexical_name_projection,"cobimetinib, vemurafenib, atezolizumab"
+copanlisib and rituximab,"[""copanlisib"",""Rituximab""]",717,lexical_name_projection,copanlisib and rituximab
+cyclophosphamide and epirubicin (ec) and bevacizumab,"[""Bevacizumab"",""Cyclophosphamide"",""Epirubicin""]",754,lexical_name_projection,cyclophosphamide and epirubicin (ec) and bevacizumab
+cyclophosphamide and etoposide,"[""Cyclophosphamide"",""Etoposide""]",755,lexical_name_projection,cyclophosphamide and etoposide
+cyclophosphamide and lomustine,"[""Cyclophosphamide"",""Lomustine""]",757,lexical_name_projection,cyclophosphamide and lomustine
+cyclophosphamide and methotrexate (cm),"[""Cyclophosphamide"",""Methotrexate""]",758,lexical_name_projection,cyclophosphamide and methotrexate (cm)
+cyclophosphamide and topotecan,"[""Cyclophosphamide"",""Topotecan""]",762,lexical_name_projection,cyclophosphamide and topotecan
+cyclophosphamide and vincristine,"[""Cyclophosphamide"",""Vincristine""]",763,lexical_name_projection,cyclophosphamide and vincristine
+"cyclophosphamide, etoposide, fludarabine","[""Cyclophosphamide"",""Etoposide"",""fludarabine""]",773,lexical_name_projection,"cyclophosphamide, etoposide, fludarabine"
+"cyclophosphamide, etoposide, methotrexate","[""Cyclophosphamide"",""Etoposide"",""Methotrexate""]",774,lexical_name_projection,"cyclophosphamide, etoposide, methotrexate"
+"cyclophosphamide, etoposide, tbi","[""Cyclophosphamide"",""Etoposide""]",775,lexical_name_projection,"cyclophosphamide, etoposide, tbi"
+"cyclophosphamide, fludarabine, thiotepa","[""Cyclophosphamide"",""fludarabine"",""thiotepa""]",776,lexical_name_projection,"cyclophosphamide, fludarabine, thiotepa"
+"cyclophosphamide, lomustine, methotrexate","[""Cyclophosphamide"",""Lomustine"",""Methotrexate""]",778,lexical_name_projection,"cyclophosphamide, lomustine, methotrexate"
+"cyclophosphamide, lomustine, procarbazine","[""Cyclophosphamide"",""Lomustine"",""Procarbazine""]",779,lexical_name_projection,"cyclophosphamide, lomustine, procarbazine"
+"cyclophosphamide, methotrexate, rt","[""Cyclophosphamide"",""Methotrexate""]",780,lexical_name_projection,"cyclophosphamide, methotrexate, rt"
+cyclosporine and mycophenolate mofetil,"[""cyclosporine"",""mycophenolate mofetil""]",782,lexical_name_projection,cyclosporine and mycophenolate mofetil
+"cyclosporine, corticosteroids, rituximab","[""cyclosporine"",""Rituximab""]",784,lexical_name_projection,"cyclosporine, corticosteroids, rituximab"
+"cyclosporine, mycophenolate mofetil, sirolimus","[""cyclosporine"",""mycophenolate mofetil"",""sirolimus""]",785,lexical_name_projection,"cyclosporine, mycophenolate mofetil, sirolimus"
+dabrafenib and trametinib,"[""Dabrafenib"",""Trametinib""]",828,lexical_name_projection,dabrafenib and trametinib
+"dabrafenib, trametinib, panitumumab","[""Dabrafenib"",""Panitumumab"",""Trametinib""]",830,lexical_name_projection,"dabrafenib, trametinib, panitumumab"
+dacarbazine and gemcitabine,"[""Dacarbazine"",""Gemcitabine""]",832,lexical_name_projection,dacarbazine and gemcitabine
+dacarbazine and interferon alfa-2a,"[""Dacarbazine"",""interferon alfa-2a""]",833,lexical_name_projection,dacarbazine and interferon alfa-2a
+dacarbazine and ipilimumab,"[""Dacarbazine"",""Ipilimumab""]",834,lexical_name_projection,dacarbazine and ipilimumab
+dacarbazine and tamoxifen,"[""Dacarbazine"",""Tamoxifen""]",835,lexical_name_projection,dacarbazine and tamoxifen
+dactinomycin and vincristine,"[""dactinomycin"",""Vincristine""]",839,lexical_name_projection,dactinomycin and vincristine
+dasatinib and blinatumomab,"[""blinatumomab"",""Dasatinib""]",860,lexical_name_projection,dasatinib and blinatumomab
+decitabine and valproate,"[""Decitabine"",""valproate""]",910,lexical_name_projection,decitabine and valproate
+decitabine and venetoclax,"[""Decitabine"",""Venetoclax""]",911,lexical_name_projection,decitabine and venetoclax
+docetaxel and bevacizumab,"[""Bevacizumab"",""Docetaxel""]",935,lexical_name_projection,docetaxel and bevacizumab
+docetaxel and estramustine,"[""Docetaxel"",""estramustine""]",936,lexical_name_projection,docetaxel and estramustine
+docetaxel and gemcitabine,"[""Docetaxel"",""Gemcitabine""]",937,lexical_name_projection,docetaxel and gemcitabine
+docetaxel and irinotecan,"[""Docetaxel"",""Irinotecan""]",938,lexical_name_projection,docetaxel and irinotecan
+docetaxel and nintedanib,"[""Docetaxel"",""nintedanib""]",940,lexical_name_projection,docetaxel and nintedanib
+docetaxel and nivolumab,"[""Docetaxel"",""Nivolumab""]",941,lexical_name_projection,docetaxel and nivolumab
+docetaxel and ramucirumab,"[""Docetaxel"",""Ramucirumab""]",944,lexical_name_projection,docetaxel and ramucirumab
+docetaxel and trastuzumab (th) and pyrotinib,"[""Docetaxel"",""Trastuzumab""]",947,lexical_name_projection,docetaxel and trastuzumab (th) and pyrotinib
+docetaxel and vandetanib,"[""Docetaxel"",""vandetanib""]",948,lexical_name_projection,docetaxel and vandetanib
+docetaxel and vinorelbine,"[""Docetaxel"",""Vinorelbine""]",949,lexical_name_projection,docetaxel and vinorelbine
+"docetaxel, cetuximab, rt","[""Cetuximab"",""Docetaxel""]",950,lexical_name_projection,"docetaxel, cetuximab, rt"
+"docetaxel, enzalutamide, prednisolone","[""Docetaxel"",""Enzalutamide""]",951,lexical_name_projection,"docetaxel, enzalutamide, prednisolone"
+"docetaxel, estramustine, goserelin","[""Docetaxel"",""estramustine"",""Goserelin""]",952,lexical_name_projection,"docetaxel, estramustine, goserelin"
+"docetaxel, fluorouracil, hydroxyurea, rt","[""Docetaxel"",""Fluorouracil"",""Hydroxyurea""]",953,lexical_name_projection,"docetaxel, fluorouracil, hydroxyurea, rt"
+"docetaxel, fluorouracil, rt","[""Docetaxel"",""Fluorouracil""]",954,lexical_name_projection,"docetaxel, fluorouracil, rt"
+"docetaxel, gemcitabine, rt","[""Docetaxel"",""Gemcitabine""]",955,lexical_name_projection,"docetaxel, gemcitabine, rt"
+durvalumab and tremelimumab,"[""Durvalumab"",""tremelimumab""]",988,lexical_name_projection,durvalumab and tremelimumab
+encorafenib and cetuximab,"[""Cetuximab"",""encorafenib""]",1038,lexical_name_projection,encorafenib and cetuximab
+enfortumab vedotin and pembrolizumab,"[""enfortumab"",""Pembrolizumab""]",1039,lexical_name_projection,enfortumab vedotin and pembrolizumab
+enzalutamide and leuprolide,"[""Enzalutamide"",""Leuprolide""]",1045,lexical_name_projection,enzalutamide and leuprolide
+epirubicin and ifosfamide,"[""Epirubicin"",""Ifosfamide""]",1052,lexical_name_projection,epirubicin and ifosfamide
+epirubicin and vinorelbine (ve),"[""Epirubicin"",""Vinorelbine""]",1053,lexical_name_projection,epirubicin and vinorelbine (ve)
+eribulin and margetuximab,"[""eribulin"",""margetuximab""]",1057,lexical_name_projection,eribulin and margetuximab
+eribulin and trastuzumab,"[""eribulin"",""Trastuzumab""]",1058,lexical_name_projection,eribulin and trastuzumab
+erlotinib and bevacizumab,"[""Bevacizumab"",""Erlotinib""]",1060,lexical_name_projection,erlotinib and bevacizumab
+erlotinib and gemcitabine,"[""Erlotinib"",""Gemcitabine""]",1061,lexical_name_projection,erlotinib and gemcitabine
+erlotinib and ramucirumab,"[""Erlotinib"",""Ramucirumab""]",1062,lexical_name_projection,erlotinib and ramucirumab
+etoposide and mitoxantrone,"[""Etoposide"",""mitoxantrone""]",1069,lexical_name_projection,etoposide and mitoxantrone
+"etoposide, ifosfamide, imatinib","[""Etoposide"",""Ifosfamide"",""Imatinib""]",1074,lexical_name_projection,"etoposide, ifosfamide, imatinib"
+"etoposide, ifosfamide, methotrexate","[""Etoposide"",""Ifosfamide"",""Methotrexate""]",1075,lexical_name_projection,"etoposide, ifosfamide, methotrexate"
+everolimus and exemestane,"[""Everolimus"",""Exemestane""]",1080,lexical_name_projection,everolimus and exemestane
+everolimus and lenvatinib,"[""Everolimus"",""Lenvatinib""]",1081,lexical_name_projection,everolimus and lenvatinib
+everolimus and rituximab,"[""Everolimus"",""Rituximab""]",1083,lexical_name_projection,everolimus and rituximab
+everolimus and tamoxifen,"[""Everolimus"",""Tamoxifen""]",1084,lexical_name_projection,everolimus and tamoxifen
+exemestane and palbociclib,"[""Exemestane"",""Palbociclib""]",1087,lexical_name_projection,exemestane and palbociclib
+exemestane and trastuzumab,"[""Exemestane"",""Trastuzumab""]",1088,lexical_name_projection,exemestane and trastuzumab
+"exemestane, lapatinib, trastuzumab","[""Exemestane"",""lapatinib"",""Trastuzumab""]",1091,lexical_name_projection,"exemestane, lapatinib, trastuzumab"
+fludarabine and alemtuzumab,"[""alemtuzumab"",""fludarabine""]",1140,lexical_name_projection,fludarabine and alemtuzumab
+fludarabine and ibrutinib,"[""fludarabine"",""Ibrutinib""]",1141,lexical_name_projection,fludarabine and ibrutinib
+fludarabine and melphalan,"[""fludarabine"",""Melphalan""]",1142,lexical_name_projection,fludarabine and melphalan
+"fludarabine and melphalan, then allo hsct","[""fludarabine"",""Melphalan""]",1143,lexical_name_projection,"fludarabine and melphalan, then allo hsct"
+fludarabine and rituximab (fr),"[""fludarabine"",""Rituximab""]",1145,lexical_name_projection,fludarabine and rituximab (fr)
+"fludarabine, busulfan, cyclophosphamide, then allo hsct","[""Busulfan"",""Cyclophosphamide"",""fludarabine""]",1150,lexical_name_projection,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+"fludarabine, cyclophosphamide, tbi for ducb or haploidentical transplant","[""Cyclophosphamide"",""fludarabine""]",1151,lexical_name_projection,"fludarabine, cyclophosphamide, tbi for ducb or haploidentical transplant"
+fluorouracil and bevacizumab,"[""Bevacizumab"",""Fluorouracil""]",1153,lexical_name_projection,fluorouracil and bevacizumab
+fluorouracil and methotrexate (mf),"[""Fluorouracil"",""Methotrexate""]",1156,lexical_name_projection,fluorouracil and methotrexate (mf)
+fluorouracil and mitomycin,"[""Fluorouracil"",""Mitomycin""]",1157,lexical_name_projection,fluorouracil and mitomycin
+fluorouracil and oxaliplatin (fuox) and tislelizumab,"[""Fluorouracil"",""Oxaliplatin"",""tislelizumab""]",1158,lexical_name_projection,fluorouracil and oxaliplatin (fuox) and tislelizumab
+fluorouracil and paclitaxel,"[""Fluorouracil"",""Paclitaxel""]",1159,lexical_name_projection,fluorouracil and paclitaxel
+fluorouracil and streptozocin,"[""Fluorouracil"",""streptozocin""]",1162,lexical_name_projection,fluorouracil and streptozocin
+"fluorouracil, folinic acid, mitomycin","[""Fluorouracil"",""Mitomycin""]",1164,lexical_name_projection,"fluorouracil, folinic acid, mitomycin"
+"fluorouracil, hydroxyurea, rt","[""Fluorouracil"",""Hydroxyurea""]",1165,lexical_name_projection,"fluorouracil, hydroxyurea, rt"
+"fluorouracil, mitomycin, rt","[""Fluorouracil"",""Mitomycin""]",1166,lexical_name_projection,"fluorouracil, mitomycin, rt"
+"fluorouracil, oxaliplatin, rt","[""Fluorouracil"",""Oxaliplatin""]",1167,lexical_name_projection,"fluorouracil, oxaliplatin, rt"
+"fluorouracil, paclitaxel, rt","[""Fluorouracil"",""Paclitaxel""]",1168,lexical_name_projection,"fluorouracil, paclitaxel, rt"
+flutamide and goserelin,"[""flutamide"",""Goserelin""]",1172,lexical_name_projection,flutamide and goserelin
+flutamide and leuprolide,"[""flutamide"",""Leuprolide""]",1173,lexical_name_projection,flutamide and leuprolide
+"flutamide, goserelin, rt","[""flutamide"",""Goserelin""]",1175,lexical_name_projection,"flutamide, goserelin, rt"
+"flutamide, leuprolide, rt","[""flutamide"",""Leuprolide""]",1176,lexical_name_projection,"flutamide, leuprolide, rt"
+fulvestrant and palbociclib,"[""Fulvestrant"",""Palbociclib""]",1216,lexical_name_projection,fulvestrant and palbociclib
+fulvestrant and ribociclib,"[""Fulvestrant"",""Ribociclib""]",1217,lexical_name_projection,fulvestrant and ribociclib
+gefitinib and pemetrexed,"[""Gefitinib"",""Pemetrexed""]",1232,lexical_name_projection,gefitinib and pemetrexed
+"gefitinib, nedaplatin, pemetrexed","[""Gefitinib"",""Pemetrexed""]",1234,lexical_name_projection,"gefitinib, nedaplatin, pemetrexed"
+gemcitabine and bevacizumab,"[""Bevacizumab"",""Gemcitabine""]",1237,lexical_name_projection,gemcitabine and bevacizumab
+gemcitabine and irinotecan,"[""Gemcitabine"",""Irinotecan""]",1238,lexical_name_projection,gemcitabine and irinotecan
+gemcitabine and margetuximab,"[""Gemcitabine"",""margetuximab""]",1239,lexical_name_projection,gemcitabine and margetuximab
+gemcitabine and mitomycin,"[""Gemcitabine"",""Mitomycin""]",1240,lexical_name_projection,gemcitabine and mitomycin
+gemcitabine and rituximab,"[""Gemcitabine"",""Rituximab""]",1243,lexical_name_projection,gemcitabine and rituximab
+gemcitabine and sunitinib,"[""Gemcitabine"",""Sunitinib""]",1246,lexical_name_projection,gemcitabine and sunitinib
+gemcitabine and trastuzumab,"[""Gemcitabine"",""Trastuzumab""]",1247,lexical_name_projection,gemcitabine and trastuzumab
+gemcitabine and vinorelbine,"[""Gemcitabine"",""Vinorelbine""]",1248,lexical_name_projection,gemcitabine and vinorelbine
+"gemcitabine, cetuximab, rt","[""Cetuximab"",""Gemcitabine""]",1250,lexical_name_projection,"gemcitabine, cetuximab, rt"
+"gemcitabine, cisplatin, s-1","[""Cisplatin"",""Gemcitabine""]",1251,lexical_name_projection,"gemcitabine, cisplatin, s-1"
+"gemcitabine, oxaliplatin, paclitaxel","[""Gemcitabine"",""Oxaliplatin"",""Paclitaxel""]",1252,lexical_name_projection,"gemcitabine, oxaliplatin, paclitaxel"
+gemcitabine/fluorouracil and rt,"[""Fluorouracil"",""Gemcitabine""]",1253,lexical_name_projection,gemcitabine/fluorouracil and rt
+"gm-csf, il-2, isotretinoin, dinutuximab","[""dinutuximab"",""isotretinoin""]",1264,lexical_name_projection,"gm-csf, il-2, isotretinoin, dinutuximab"
+goserelin and letrozole,"[""Goserelin"",""Letrozole""]",1266,lexical_name_projection,goserelin and letrozole
+goserelin and tamoxifen,"[""Goserelin"",""Tamoxifen""]",1268,lexical_name_projection,goserelin and tamoxifen
+"goserelin, letrozole, ribociclib","[""Goserelin"",""Letrozole"",""Ribociclib""]",1270,lexical_name_projection,"goserelin, letrozole, ribociclib"
+"goserelin, ribociclib, tamoxifen","[""Goserelin"",""Ribociclib"",""Tamoxifen""]",1271,lexical_name_projection,"goserelin, ribociclib, tamoxifen"
+hydroxyurea and imatinib,"[""Hydroxyurea"",""Imatinib""]",1298,lexical_name_projection,hydroxyurea and imatinib
+hydroxyurea and plicamycin,"[""Hydroxyurea"",""plicamycin""]",1299,lexical_name_projection,hydroxyurea and plicamycin
+ibrutinib and obinutuzumab,"[""Ibrutinib"",""Obinutuzumab""]",1312,lexical_name_projection,ibrutinib and obinutuzumab
+ibrutinib and ofatumumab,"[""Ibrutinib"",""ofatumumab""]",1313,lexical_name_projection,ibrutinib and ofatumumab
+ibrutinib and rituximab,"[""Ibrutinib"",""Rituximab""]",1314,lexical_name_projection,ibrutinib and rituximab
+ibrutinib and ublituximab,"[""Ibrutinib"",""ublituximab""]",1315,lexical_name_projection,ibrutinib and ublituximab
+ibrutinib and venetoclax,"[""Ibrutinib"",""Venetoclax""]",1316,lexical_name_projection,ibrutinib and venetoclax
+"ibrutinib, venetoclax, obinutuzumab","[""Ibrutinib"",""Obinutuzumab"",""Venetoclax""]",1318,lexical_name_projection,"ibrutinib, venetoclax, obinutuzumab"
+"idarubicin, then mitoxantrone, then idarubicin","[""Idarubicin"",""mitoxantrone""]",1326,lexical_name_projection,"idarubicin, then mitoxantrone, then idarubicin"
+"idarubicin, then mitoxantrone, then idarubicin, with atra","[""Idarubicin"",""mitoxantrone""]",1327,lexical_name_projection,"idarubicin, then mitoxantrone, then idarubicin, with atra"
+idelalisib and ofatumumab,"[""Idelalisib"",""ofatumumab""]",1331,lexical_name_projection,idelalisib and ofatumumab
+idelalisib and rituximab,"[""Idelalisib"",""Rituximab""]",1332,lexical_name_projection,idelalisib and rituximab
+ifosfamide and gemcitabine,"[""Gemcitabine"",""Ifosfamide""]",1341,lexical_name_projection,ifosfamide and gemcitabine
+ifosfamide and methotrexate,"[""Ifosfamide"",""Methotrexate""]",1342,lexical_name_projection,ifosfamide and methotrexate
+ifosfamide and paclitaxel,"[""Ifosfamide"",""Paclitaxel""]",1343,lexical_name_projection,ifosfamide and paclitaxel
+ifosfamide and vinorelbine,"[""Ifosfamide"",""Vinorelbine""]",1344,lexical_name_projection,ifosfamide and vinorelbine
+imatinib and peginterferon alfa-2a,"[""Imatinib"",""peginterferon alfa-2a""]",1352,lexical_name_projection,imatinib and peginterferon alfa-2a
+interferon alfa-2a and isotretinoin,"[""interferon alfa-2a"",""isotretinoin""]",1361,lexical_name_projection,interferon alfa-2a and isotretinoin
+ip carboplatin and paclitaxel,"[""Carboplatin"",""Paclitaxel""]",1379,lexical_name_projection,ip carboplatin and paclitaxel
+ip cisplatin and cyclophosphamide,"[""Cisplatin"",""Cyclophosphamide""]",1380,lexical_name_projection,ip cisplatin and cyclophosphamide
+ip cisplatin and paclitaxel,"[""Cisplatin"",""Paclitaxel""]",1381,lexical_name_projection,ip cisplatin and paclitaxel
+ipilimumab and nivolumab,"[""Ipilimumab"",""Nivolumab""]",1384,lexical_name_projection,ipilimumab and nivolumab
+ipilimumab-nivolumab,"[""Ipilimumab"",""Nivolumab""]",1387,lexical_name_projection,ipilimumab-nivolumab
+irinotecan and bevacizumab,"[""Bevacizumab"",""Irinotecan""]",1392,lexical_name_projection,irinotecan and bevacizumab
+irinotecan and cetuximab,"[""Cetuximab"",""Irinotecan""]",1393,lexical_name_projection,irinotecan and cetuximab
+irinotecan and mitomycin,"[""Irinotecan"",""Mitomycin""]",1394,lexical_name_projection,irinotecan and mitomycin
+irinotecan and temozolomide,"[""Irinotecan"",""Temozolomide""]",1395,lexical_name_projection,irinotecan and temozolomide
+"irinotecan, temozolomide, dinutuximab","[""dinutuximab"",""Irinotecan"",""Temozolomide""]",1398,lexical_name_projection,"irinotecan, temozolomide, dinutuximab"
+"irinotecan, vemurafenib, cetuximab","[""Cetuximab"",""Irinotecan"",""Vemurafenib""]",1399,lexical_name_projection,"irinotecan, vemurafenib, cetuximab"
+isotretinoin and dinutuximab beta,"[""dinutuximab"",""isotretinoin""]",1406,lexical_name_projection,isotretinoin and dinutuximab beta
+ketoconazole and hydrocortisone,"[""hydrocortisone"",""ketoconazole""]",1418,lexical_name_projection,ketoconazole and hydrocortisone
+"ketoconazole, hydrocortisone, dutasteride","[""dutasteride"",""hydrocortisone"",""ketoconazole""]",1419,lexical_name_projection,"ketoconazole, hydrocortisone, dutasteride"
+l-asparaginase and methotrexate,"[""Asparaginase"",""Methotrexate""]",1425,lexical_name_projection,l-asparaginase and methotrexate
+"l-asparaginase, vincristine, prednisolone","[""Asparaginase"",""Vincristine""]",1428,lexical_name_projection,"l-asparaginase, vincristine, prednisolone"
+lapatinib and letrozole,"[""lapatinib"",""Letrozole""]",1438,lexical_name_projection,lapatinib and letrozole
+lapatinib and paclitaxel (tl),"[""lapatinib"",""Paclitaxel""]",1439,lexical_name_projection,lapatinib and paclitaxel (tl)
+lapatinib and trastuzumab,"[""lapatinib"",""Trastuzumab""]",1440,lexical_name_projection,lapatinib and trastuzumab
+"lapatinib, letrozole, trastuzumab","[""lapatinib"",""Letrozole"",""Trastuzumab""]",1442,lexical_name_projection,"lapatinib, letrozole, trastuzumab"
+lenalidomide and ofatumumab,"[""Lenalidomide"",""ofatumumab""]",1450,lexical_name_projection,lenalidomide and ofatumumab
+lenalidomide and rituximab (r2),"[""Lenalidomide"",""Rituximab""]",1452,lexical_name_projection,lenalidomide and rituximab (r2)
+lenalidomide and tafasitamab,"[""Lenalidomide"",""tafasitamab""]",1453,lexical_name_projection,lenalidomide and tafasitamab
+lenvatinib and pembrolizumab,"[""Lenvatinib"",""Pembrolizumab""]",1456,lexical_name_projection,lenvatinib and pembrolizumab
+letrozole and bevacizumab,"[""Bevacizumab"",""Letrozole""]",1460,lexical_name_projection,letrozole and bevacizumab
+letrozole and palbociclib,"[""Letrozole"",""Palbociclib""]",1461,lexical_name_projection,letrozole and palbociclib
+letrozole and ribociclib,"[""Letrozole"",""Ribociclib""]",1462,lexical_name_projection,letrozole and ribociclib
+letrozole and trastuzumab,"[""Letrozole"",""Trastuzumab""]",1463,lexical_name_projection,letrozole and trastuzumab
+letrozole-tamoxifen,"[""Letrozole"",""Tamoxifen""]",1465,lexical_name_projection,letrozole-tamoxifen
+lomustine and bevacizumab,"[""Bevacizumab"",""Lomustine""]",1479,lexical_name_projection,lomustine and bevacizumab
+"lomustine, methotrexate, procarbazine","[""Lomustine"",""Methotrexate"",""Procarbazine""]",1481,lexical_name_projection,"lomustine, methotrexate, procarbazine"
+"lomustine, temozolomide, rt","[""Lomustine"",""Temozolomide""]",1483,lexical_name_projection,"lomustine, temozolomide, rt"
+medroxyprogesterone acetate and tamoxifen,"[""medroxyprogesterone"",""Tamoxifen""]",1531,lexical_name_projection,medroxyprogesterone acetate and tamoxifen
+megestrol and tamoxifen,"[""Megestrol"",""Tamoxifen""]",1534,lexical_name_projection,megestrol and tamoxifen
+"melphalan monotherapy, then busulfan and fludarabine, then allo hsct","[""Busulfan"",""fludarabine"",""Melphalan""]",1541,lexical_name_projection,"melphalan monotherapy, then busulfan and fludarabine, then allo hsct"
+"melphalan monotherapy, then melphalan and busulfan","[""Busulfan"",""Melphalan""]",1542,lexical_name_projection,"melphalan monotherapy, then melphalan and busulfan"
+mercaptopurine and methotrexate,"[""Mercaptopurine"",""Methotrexate""]",1546,lexical_name_projection,mercaptopurine and methotrexate
+mercaptopurine and vincristine,"[""Mercaptopurine"",""Vincristine""]",1548,lexical_name_projection,mercaptopurine and vincristine
+"mercaptopurine, methotrexate, vincristine","[""Mercaptopurine"",""Methotrexate"",""Vincristine""]",1552,lexical_name_projection,"mercaptopurine, methotrexate, vincristine"
+"mercaptopurine, methotrexate, wb-xrt","[""Mercaptopurine"",""Methotrexate""]",1554,lexical_name_projection,"mercaptopurine, methotrexate, wb-xrt"
+methotrexate and pegaspargase,"[""Methotrexate"",""pegaspargase""]",1556,lexical_name_projection,methotrexate and pegaspargase
+methotrexate and rituximab,"[""Methotrexate"",""Rituximab""]",1558,lexical_name_projection,methotrexate and rituximab
+methotrexate and tacrolimus,"[""Methotrexate"",""tacrolimus""]",1559,lexical_name_projection,methotrexate and tacrolimus
+methotrexate and vincristine,"[""Methotrexate"",""Vincristine""]",1561,lexical_name_projection,methotrexate and vincristine
+"methotrexate, tacrolimus, vorinostat","[""Methotrexate"",""tacrolimus"",""vorinostat""]",1563,lexical_name_projection,"methotrexate, tacrolimus, vorinostat"
+"metronidazole, tetracycline, ppi, bismuth","[""metronidazole"",""tetracycline""]",1567,lexical_name_projection,"metronidazole, tetracycline, ppi, bismuth"
+mitotane and streptozocin,"[""mitotane"",""streptozocin""]",1587,lexical_name_projection,mitotane and streptozocin
+mitoxantrone and hydrocortisone,"[""hydrocortisone"",""mitoxantrone""]",1589,lexical_name_projection,mitoxantrone and hydrocortisone
+mitoxantrone and vinorelbine (mv),"[""mitoxantrone"",""Vinorelbine""]",1591,lexical_name_projection,mitoxantrone and vinorelbine (mv)
+"neratinib and paclitaxel, then ac","[""neratinib"",""Paclitaxel""]",1648,lexical_name_projection,"neratinib and paclitaxel, then ac"
+"neratinib and paclitaxel, then ddac","[""neratinib"",""Paclitaxel""]",1649,lexical_name_projection,"neratinib and paclitaxel, then ddac"
+nintedanib and pemetrexed,"[""nintedanib"",""Pemetrexed""]",1656,lexical_name_projection,nintedanib and pemetrexed
+nivolumab-ipilimumab,"[""Ipilimumab"",""Nivolumab""]",1662,lexical_name_projection,nivolumab-ipilimumab
+olaparib and bevacizumab,"[""Bevacizumab"",""Olaparib""]",1689,lexical_name_projection,olaparib and bevacizumab
+opdivo + cisplatin + gemcitabine,"[""Cisplatin"",""Gemcitabine""]",1693,lexical_name_projection,opdivo + cisplatin + gemcitabine
+oxaliplatin and bevacizumab,"[""Bevacizumab"",""Oxaliplatin""]",1700,lexical_name_projection,oxaliplatin and bevacizumab
+oxaliplatin and paclitaxel,"[""Oxaliplatin"",""Paclitaxel""]",1701,lexical_name_projection,oxaliplatin and paclitaxel
+"oxaliplatin, paclitaxel, tislelizumab","[""Oxaliplatin"",""Paclitaxel"",""tislelizumab""]",1704,lexical_name_projection,"oxaliplatin, paclitaxel, tislelizumab"
+paclitaxel and bevacizumab,"[""Bevacizumab"",""Paclitaxel""]",1710,lexical_name_projection,paclitaxel and bevacizumab
+paclitaxel and pazopanib,"[""Paclitaxel"",""Pazopanib""]",1711,lexical_name_projection,paclitaxel and pazopanib
+paclitaxel and pembrolizumab,"[""Paclitaxel"",""Pembrolizumab""]",1712,lexical_name_projection,paclitaxel and pembrolizumab
+paclitaxel and ramucirumab,"[""Paclitaxel"",""Ramucirumab""]",1713,lexical_name_projection,paclitaxel and ramucirumab
+paclitaxel and vinorelbine,"[""Paclitaxel"",""Vinorelbine""]",1716,lexical_name_projection,paclitaxel and vinorelbine
+"paclitaxel, nanoparticle albumin-bound and bevacizumab","[""Bevacizumab"",""Paclitaxel""]",1717,lexical_name_projection,"paclitaxel, nanoparticle albumin-bound and bevacizumab"
+"paclitaxel, topotecan, bevacizumab","[""Bevacizumab"",""Paclitaxel"",""Topotecan""]",1719,lexical_name_projection,"paclitaxel, topotecan, bevacizumab"
+panobinostat and rituximab,"[""panobinostat"",""Rituximab""]",1725,lexical_name_projection,panobinostat and rituximab
+pemetrexed and bevacizumab,"[""Bevacizumab"",""Pemetrexed""]",1749,lexical_name_projection,pemetrexed and bevacizumab
+pentostatin and alemtuzumab,"[""alemtuzumab"",""pentostatin""]",1754,lexical_name_projection,pentostatin and alemtuzumab
+pertuzumab and trastuzumab,"[""Pertuzumab"",""Trastuzumab""]",1759,lexical_name_projection,pertuzumab and trastuzumab
+ponatinib and blinatumomab,"[""blinatumomab"",""Ponatinib""]",1790,lexical_name_projection,ponatinib and blinatumomab
+sirolimus and vorinostat,"[""sirolimus"",""vorinostat""]",1914,lexical_name_projection,sirolimus and vorinostat
+sotorasib and panitumumab,"[""Panitumumab"",""sotorasib""]",1924,lexical_name_projection,sotorasib and panitumumab
+suramin and hydrocortisone,"[""hydrocortisone"",""suramin""]",1933,lexical_name_projection,suramin and hydrocortisone
+tamoxifen and trastuzumab,"[""Tamoxifen"",""Trastuzumab""]",1961,lexical_name_projection,tamoxifen and trastuzumab
+tamoxifen-anastrozole,"[""Anastrozole"",""Tamoxifen""]",1963,lexical_name_projection,tamoxifen-anastrozole
+tamoxifen-exemestane,"[""Exemestane"",""Tamoxifen""]",1964,lexical_name_projection,tamoxifen-exemestane
+tamoxifen-letrozole,"[""Letrozole"",""Tamoxifen""]",1965,lexical_name_projection,tamoxifen-letrozole
+temozolomide and bevacizumab,"[""Bevacizumab"",""Temozolomide""]",1980,lexical_name_projection,temozolomide and bevacizumab
+temozolomide and thalidomide,"[""Temozolomide"",""Thalidomide""]",1985,lexical_name_projection,temozolomide and thalidomide
+temsirolimus and rituximab,"[""Rituximab"",""Temsirolimus""]",1989,lexical_name_projection,temsirolimus and rituximab
+thalidomide and rituximab,"[""Rituximab"",""Thalidomide""]",2000,lexical_name_projection,thalidomide and rituximab
+topotecan and bevacizumab,"[""Bevacizumab"",""Topotecan""]",2015,lexical_name_projection,topotecan and bevacizumab
+toremifene and trastuzumab,"[""toremifene"",""Trastuzumab""]",2017,lexical_name_projection,toremifene and trastuzumab
+tucatinib and trastuzumab,"[""Trastuzumab"",""tucatinib""]",2041,lexical_name_projection,tucatinib and trastuzumab
+venetoclax and rituximab,"[""Rituximab"",""Venetoclax""]",2095,lexical_name_projection,venetoclax and rituximab
+vinorelbine and bevacizumab,"[""Bevacizumab"",""Vinorelbine""]",2109,lexical_name_projection,vinorelbine and bevacizumab
+vinorelbine and margetuximab,"[""margetuximab"",""Vinorelbine""]",2110,lexical_name_projection,vinorelbine and margetuximab
+vinorelbine and trastuzumab (vh),"[""Trastuzumab"",""Vinorelbine""]",2111,lexical_name_projection,vinorelbine and trastuzumab (vh)
+vinorelbine and trastuzumab (vh) and everolimus,"[""Everolimus"",""Trastuzumab"",""Vinorelbine""]",2112,lexical_name_projection,vinorelbine and trastuzumab (vh) and everolimus
+vorinostat and rituximab,"[""Rituximab"",""vorinostat""]",2132,lexical_name_projection,vorinostat and rituximab
+zanubrutinib and obinutuzumab,"[""Obinutuzumab"",""Zanubrutinib""]",2148,lexical_name_projection,zanubrutinib and obinutuzumab
+BO,"[""Bleomycin"",""Vincristine""]",257,release_unique_terminal_acronym,bleomycin and vincristine (bo)
+BR,"[""Bendamustine"",""Rituximab""]",226,release_unique_terminal_acronym,bendamustine and rituximab (br)
+CE,"[""Carboplatin"",""Etoposide""]",384,release_unique_terminal_acronym,carboplatin and etoposide (ce)
+CF,"[""Cisplatin"",""Fluorouracil""]",543,release_unique_terminal_acronym,cisplatin and fluorouracil (cf)
+CM,"[""Cyclophosphamide"",""Methotrexate""]",758,release_unique_terminal_acronym,cyclophosphamide and methotrexate (cm)
+CX,"[""Capecitabine"",""Cisplatin""]",332,release_unique_terminal_acronym,capecitabine and cisplatin (cx)
+FR,"[""fludarabine"",""Rituximab""]",1145,release_unique_terminal_acronym,fludarabine and rituximab (fr)
+GCB,"[""Carboplatin"",""Gemcitabine""]",391,release_unique_terminal_acronym,carboplatin and gemcitabine (gcb)
+GCLB,"[""Chlorambucil"",""Obinutuzumab""]",504,release_unique_terminal_acronym,chlorambucil and obinutuzumab (gclb)
+KR,"[""Carfilzomib"",""Lenalidomide""]",452,release_unique_terminal_acronym,carfilzomib and lenalidomide (kr)
+MF,"[""Fluorouracil"",""Methotrexate""]",1156,release_unique_terminal_acronym,fluorouracil and methotrexate (mf)
+MV,"[""mitoxantrone"",""Vinorelbine""]",1591,release_unique_terminal_acronym,mitoxantrone and vinorelbine (mv)
+R2,"[""Lenalidomide"",""Rituximab""]",1452,release_unique_terminal_acronym,lenalidomide and rituximab (r2)
+RCLB,"[""Chlorambucil"",""Rituximab""]",508,release_unique_terminal_acronym,chlorambucil and rituximab (rclb)
+TL,"[""lapatinib"",""Paclitaxel""]",1439,release_unique_terminal_acronym,lapatinib and paclitaxel (tl)
+TX,"[""Capecitabine"",""Docetaxel""]",338,release_unique_terminal_acronym,capecitabine and docetaxel (tx)
+VE,"[""Epirubicin"",""Vinorelbine""]",1053,release_unique_terminal_acronym,epirubicin and vinorelbine (ve)
+VH,"[""Trastuzumab"",""Vinorelbine""]",2111,release_unique_terminal_acronym,vinorelbine and trastuzumab (vh)
+VR,"[""Bortezomib"",""Rituximab""]",273,release_unique_terminal_acronym,bortezomib and rituximab (vr)
+XH,"[""Capecitabine"",""Trastuzumab""]",352,release_unique_terminal_acronym,capecitabine and trastuzumab (xh)

@@ -1,0 +1,548 @@
+{
+  "schema_version": 1,
+  "strategy": "subcategory_stratified_template_grouped_80_20",
+  "random_seed": 42,
+  "template_disjoint": true,
+  "source_jsonl": "oncorx_bench.jsonl",
+  "source_jsonl_sha256": "97a6c2a22eacf0d68e1762051fbe57b943f24c032a014eadd64f7e36aecf952f",
+  "template_assignment_manifest": "template_assignments.json",
+  "template_assignment_manifest_sha256": "63bcfc745b231e40ccb0a3b83265ef9ad6dd7c1a05c30a72a4e46ccd437d83b4",
+  "template_catalog_sha256": "138c08a59b458e6c9d1545fdf1b88f260604152d6f76a6d9b487300b26d362c2",
+  "row_counts": {
+    "full": 2000,
+    "train": 1600,
+    "test": 400
+  },
+  "subcategories": {
+    "C1.1_single_drug_simple": {
+      "total_rows": 150,
+      "train_rows": 120,
+      "test_rows": 30,
+      "train_template_ids": [
+        "C1.1_single_drug_simple:001",
+        "C1.1_single_drug_simple:003",
+        "C1.1_single_drug_simple:004",
+        "C1.1_single_drug_simple:005",
+        "C1.1_single_drug_simple:007",
+        "C1.1_single_drug_simple:008",
+        "C1.1_single_drug_simple:009",
+        "C1.1_single_drug_simple:010",
+        "C1.1_single_drug_simple:011",
+        "C1.1_single_drug_simple:012",
+        "C1.1_single_drug_simple:013",
+        "C1.1_single_drug_simple:014",
+        "C1.1_single_drug_simple:015",
+        "C1.1_single_drug_simple:016",
+        "C1.1_single_drug_simple:018",
+        "C1.1_single_drug_simple:019",
+        "C1.1_single_drug_simple:020",
+        "C1.1_single_drug_simple:021",
+        "C1.1_single_drug_simple:022",
+        "C1.1_single_drug_simple:023",
+        "C1.1_single_drug_simple:024",
+        "C1.1_single_drug_simple:025",
+        "C1.1_single_drug_simple:027",
+        "C1.1_single_drug_simple:029"
+      ],
+      "test_template_ids": [
+        "C1.1_single_drug_simple:000",
+        "C1.1_single_drug_simple:002",
+        "C1.1_single_drug_simple:006",
+        "C1.1_single_drug_simple:017",
+        "C1.1_single_drug_simple:026",
+        "C1.1_single_drug_simple:028"
+      ]
+    },
+    "C1.2_single_drug_dose": {
+      "total_rows": 200,
+      "train_rows": 160,
+      "test_rows": 40,
+      "train_template_ids": [
+        "C1.2_single_drug_dose:000",
+        "C1.2_single_drug_dose:001",
+        "C1.2_single_drug_dose:002",
+        "C1.2_single_drug_dose:003",
+        "C1.2_single_drug_dose:004",
+        "C1.2_single_drug_dose:005",
+        "C1.2_single_drug_dose:007",
+        "C1.2_single_drug_dose:008",
+        "C1.2_single_drug_dose:009",
+        "C1.2_single_drug_dose:011",
+        "C1.2_single_drug_dose:012",
+        "C1.2_single_drug_dose:013",
+        "C1.2_single_drug_dose:015",
+        "C1.2_single_drug_dose:016",
+        "C1.2_single_drug_dose:018",
+        "C1.2_single_drug_dose:019",
+        "C1.2_single_drug_dose:020",
+        "C1.2_single_drug_dose:021",
+        "C1.2_single_drug_dose:023",
+        "C1.2_single_drug_dose:024"
+      ],
+      "test_template_ids": [
+        "C1.2_single_drug_dose:006",
+        "C1.2_single_drug_dose:010",
+        "C1.2_single_drug_dose:014",
+        "C1.2_single_drug_dose:017",
+        "C1.2_single_drug_dose:022"
+      ]
+    },
+    "C1.3_two_drugs": {
+      "total_rows": 150,
+      "train_rows": 120,
+      "test_rows": 30,
+      "train_template_ids": [
+        "C1.3_two_drugs:000",
+        "C1.3_two_drugs:001",
+        "C1.3_two_drugs:002",
+        "C1.3_two_drugs:004",
+        "C1.3_two_drugs:005",
+        "C1.3_two_drugs:006",
+        "C1.3_two_drugs:008",
+        "C1.3_two_drugs:009",
+        "C1.3_two_drugs:010",
+        "C1.3_two_drugs:011",
+        "C1.3_two_drugs:012",
+        "C1.3_two_drugs:013",
+        "C1.3_two_drugs:014",
+        "C1.3_two_drugs:015",
+        "C1.3_two_drugs:019",
+        "C1.3_two_drugs:020",
+        "C1.3_two_drugs:021",
+        "C1.3_two_drugs:022",
+        "C1.3_two_drugs:023",
+        "C1.3_two_drugs:024"
+      ],
+      "test_template_ids": [
+        "C1.3_two_drugs:003",
+        "C1.3_two_drugs:007",
+        "C1.3_two_drugs:016",
+        "C1.3_two_drugs:017",
+        "C1.3_two_drugs:018"
+      ]
+    },
+    "C1.4_supportive_care": {
+      "total_rows": 100,
+      "train_rows": 80,
+      "test_rows": 20,
+      "train_template_ids": [
+        "C1.4_supportive_care:000",
+        "C1.4_supportive_care:001",
+        "C1.4_supportive_care:002",
+        "C1.4_supportive_care:003",
+        "C1.4_supportive_care:004",
+        "C1.4_supportive_care:005",
+        "C1.4_supportive_care:006",
+        "C1.4_supportive_care:007",
+        "C1.4_supportive_care:010",
+        "C1.4_supportive_care:011",
+        "C1.4_supportive_care:012",
+        "C1.4_supportive_care:013",
+        "C1.4_supportive_care:014",
+        "C1.4_supportive_care:016",
+        "C1.4_supportive_care:017",
+        "C1.4_supportive_care:018"
+      ],
+      "test_template_ids": [
+        "C1.4_supportive_care:008",
+        "C1.4_supportive_care:009",
+        "C1.4_supportive_care:015",
+        "C1.4_supportive_care:019"
+      ]
+    },
+    "C2.1_dose_route_freq": {
+      "total_rows": 150,
+      "train_rows": 120,
+      "test_rows": 30,
+      "train_template_ids": [
+        "C2.1_dose_route_freq:000",
+        "C2.1_dose_route_freq:002",
+        "C2.1_dose_route_freq:003",
+        "C2.1_dose_route_freq:004",
+        "C2.1_dose_route_freq:005",
+        "C2.1_dose_route_freq:007",
+        "C2.1_dose_route_freq:008",
+        "C2.1_dose_route_freq:011",
+        "C2.1_dose_route_freq:012",
+        "C2.1_dose_route_freq:013",
+        "C2.1_dose_route_freq:014",
+        "C2.1_dose_route_freq:015",
+        "C2.1_dose_route_freq:016",
+        "C2.1_dose_route_freq:017",
+        "C2.1_dose_route_freq:018",
+        "C2.1_dose_route_freq:019"
+      ],
+      "test_template_ids": [
+        "C2.1_dose_route_freq:001",
+        "C2.1_dose_route_freq:006",
+        "C2.1_dose_route_freq:009",
+        "C2.1_dose_route_freq:010"
+      ]
+    },
+    "C2.2_titration_taper": {
+      "total_rows": 100,
+      "train_rows": 80,
+      "test_rows": 20,
+      "train_template_ids": [
+        "C2.2_titration_taper:000",
+        "C2.2_titration_taper:001",
+        "C2.2_titration_taper:002",
+        "C2.2_titration_taper:004",
+        "C2.2_titration_taper:005",
+        "C2.2_titration_taper:006",
+        "C2.2_titration_taper:008",
+        "C2.2_titration_taper:009",
+        "C2.2_titration_taper:010",
+        "C2.2_titration_taper:012",
+        "C2.2_titration_taper:013",
+        "C2.2_titration_taper:014"
+      ],
+      "test_template_ids": [
+        "C2.2_titration_taper:003",
+        "C2.2_titration_taper:007",
+        "C2.2_titration_taper:011"
+      ]
+    },
+    "C2.3_prn_conditional": {
+      "total_rows": 100,
+      "train_rows": 80,
+      "test_rows": 20,
+      "train_template_ids": [
+        "C2.3_prn_conditional:000",
+        "C2.3_prn_conditional:001",
+        "C2.3_prn_conditional:002",
+        "C2.3_prn_conditional:003",
+        "C2.3_prn_conditional:004",
+        "C2.3_prn_conditional:005",
+        "C2.3_prn_conditional:007",
+        "C2.3_prn_conditional:008",
+        "C2.3_prn_conditional:009",
+        "C2.3_prn_conditional:012",
+        "C2.3_prn_conditional:013",
+        "C2.3_prn_conditional:014"
+      ],
+      "test_template_ids": [
+        "C2.3_prn_conditional:006",
+        "C2.3_prn_conditional:010",
+        "C2.3_prn_conditional:011"
+      ]
+    },
+    "C2.4_duration_stop": {
+      "total_rows": 100,
+      "train_rows": 80,
+      "test_rows": 20,
+      "train_template_ids": [
+        "C2.4_duration_stop:001",
+        "C2.4_duration_stop:002",
+        "C2.4_duration_stop:004",
+        "C2.4_duration_stop:005",
+        "C2.4_duration_stop:006",
+        "C2.4_duration_stop:008",
+        "C2.4_duration_stop:009",
+        "C2.4_duration_stop:010",
+        "C2.4_duration_stop:011",
+        "C2.4_duration_stop:012",
+        "C2.4_duration_stop:013",
+        "C2.4_duration_stop:014"
+      ],
+      "test_template_ids": [
+        "C2.4_duration_stop:000",
+        "C2.4_duration_stop:003",
+        "C2.4_duration_stop:007"
+      ]
+    },
+    "C3.1_multi_drug_explicit": {
+      "total_rows": 150,
+      "train_rows": 120,
+      "test_rows": 30,
+      "train_template_ids": [
+        "C3.1_multi_drug_explicit:001",
+        "C3.1_multi_drug_explicit:002",
+        "C3.1_multi_drug_explicit:003",
+        "C3.1_multi_drug_explicit:005",
+        "C3.1_multi_drug_explicit:006",
+        "C3.1_multi_drug_explicit:007",
+        "C3.1_multi_drug_explicit:009",
+        "C3.1_multi_drug_explicit:010",
+        "C3.1_multi_drug_explicit:011",
+        "C3.1_multi_drug_explicit:012",
+        "C3.1_multi_drug_explicit:013",
+        "C3.1_multi_drug_explicit:014"
+      ],
+      "test_template_ids": [
+        "C3.1_multi_drug_explicit:000",
+        "C3.1_multi_drug_explicit:004",
+        "C3.1_multi_drug_explicit:008"
+      ]
+    },
+    "C3.2_regimen_acronym_only": {
+      "total_rows": 150,
+      "train_rows": 120,
+      "test_rows": 30,
+      "train_template_ids": [
+        "C3.2_regimen_acronym_only:000",
+        "C3.2_regimen_acronym_only:001",
+        "C3.2_regimen_acronym_only:002",
+        "C3.2_regimen_acronym_only:003",
+        "C3.2_regimen_acronym_only:004",
+        "C3.2_regimen_acronym_only:005",
+        "C3.2_regimen_acronym_only:006",
+        "C3.2_regimen_acronym_only:007",
+        "C3.2_regimen_acronym_only:009",
+        "C3.2_regimen_acronym_only:010",
+        "C3.2_regimen_acronym_only:014",
+        "C3.2_regimen_acronym_only:015",
+        "C3.2_regimen_acronym_only:016",
+        "C3.2_regimen_acronym_only:017",
+        "C3.2_regimen_acronym_only:018",
+        "C3.2_regimen_acronym_only:019"
+      ],
+      "test_template_ids": [
+        "C3.2_regimen_acronym_only:008",
+        "C3.2_regimen_acronym_only:011",
+        "C3.2_regimen_acronym_only:012",
+        "C3.2_regimen_acronym_only:013"
+      ]
+    },
+    "C3.3_regimen_partial": {
+      "total_rows": 100,
+      "train_rows": 80,
+      "test_rows": 20,
+      "train_template_ids": [
+        "C3.3_regimen_partial:002",
+        "C3.3_regimen_partial:003",
+        "C3.3_regimen_partial:004",
+        "C3.3_regimen_partial:005",
+        "C3.3_regimen_partial:006",
+        "C3.3_regimen_partial:007",
+        "C3.3_regimen_partial:008",
+        "C3.3_regimen_partial:009",
+        "C3.3_regimen_partial:011",
+        "C3.3_regimen_partial:012",
+        "C3.3_regimen_partial:013",
+        "C3.3_regimen_partial:014"
+      ],
+      "test_template_ids": [
+        "C3.3_regimen_partial:000",
+        "C3.3_regimen_partial:001",
+        "C3.3_regimen_partial:010"
+      ]
+    },
+    "C3.4_cycles_lines_intent": {
+      "total_rows": 50,
+      "train_rows": 40,
+      "test_rows": 10,
+      "train_template_ids": [
+        "C3.4_cycles_lines_intent:000",
+        "C3.4_cycles_lines_intent:001",
+        "C3.4_cycles_lines_intent:002",
+        "C3.4_cycles_lines_intent:004",
+        "C3.4_cycles_lines_intent:005",
+        "C3.4_cycles_lines_intent:007",
+        "C3.4_cycles_lines_intent:008",
+        "C3.4_cycles_lines_intent:009"
+      ],
+      "test_template_ids": [
+        "C3.4_cycles_lines_intent:003",
+        "C3.4_cycles_lines_intent:006"
+      ]
+    },
+    "C4.1_discontinued_hold": {
+      "total_rows": 100,
+      "train_rows": 80,
+      "test_rows": 20,
+      "train_template_ids": [
+        "C4.1_discontinued_hold:000",
+        "C4.1_discontinued_hold:001",
+        "C4.1_discontinued_hold:002",
+        "C4.1_discontinued_hold:003",
+        "C4.1_discontinued_hold:006",
+        "C4.1_discontinued_hold:007",
+        "C4.1_discontinued_hold:009",
+        "C4.1_discontinued_hold:010",
+        "C4.1_discontinued_hold:011",
+        "C4.1_discontinued_hold:012",
+        "C4.1_discontinued_hold:013",
+        "C4.1_discontinued_hold:014",
+        "C4.1_discontinued_hold:015",
+        "C4.1_discontinued_hold:016",
+        "C4.1_discontinued_hold:017",
+        "C4.1_discontinued_hold:018"
+      ],
+      "test_template_ids": [
+        "C4.1_discontinued_hold:004",
+        "C4.1_discontinued_hold:005",
+        "C4.1_discontinued_hold:008",
+        "C4.1_discontinued_hold:019"
+      ]
+    },
+    "C4.2_allergy_adr": {
+      "total_rows": 80,
+      "train_rows": 64,
+      "test_rows": 16,
+      "train_template_ids": [
+        "C4.2_allergy_adr:000",
+        "C4.2_allergy_adr:001",
+        "C4.2_allergy_adr:002",
+        "C4.2_allergy_adr:005",
+        "C4.2_allergy_adr:007",
+        "C4.2_allergy_adr:008",
+        "C4.2_allergy_adr:009",
+        "C4.2_allergy_adr:010",
+        "C4.2_allergy_adr:011",
+        "C4.2_allergy_adr:012",
+        "C4.2_allergy_adr:013",
+        "C4.2_allergy_adr:014"
+      ],
+      "test_template_ids": [
+        "C4.2_allergy_adr:003",
+        "C4.2_allergy_adr:004",
+        "C4.2_allergy_adr:006",
+        "C4.2_allergy_adr:015"
+      ]
+    },
+    "C4.3_negated": {
+      "total_rows": 70,
+      "train_rows": 56,
+      "test_rows": 14,
+      "train_template_ids": [
+        "C4.3_negated:000",
+        "C4.3_negated:001",
+        "C4.3_negated:002",
+        "C4.3_negated:004",
+        "C4.3_negated:007",
+        "C4.3_negated:008",
+        "C4.3_negated:009",
+        "C4.3_negated:011",
+        "C4.3_negated:013",
+        "C4.3_negated:014",
+        "C4.3_negated:015",
+        "C4.3_negated:016",
+        "C4.3_negated:017",
+        "C4.3_negated:018",
+        "C4.3_negated:019"
+      ],
+      "test_template_ids": [
+        "C4.3_negated:005",
+        "C4.3_negated:010",
+        "C4.3_negated:012"
+      ]
+    },
+    "C4.4_med_history_conflict": {
+      "total_rows": 50,
+      "train_rows": 40,
+      "test_rows": 10,
+      "train_template_ids": [
+        "C4.4_med_history_conflict:000",
+        "C4.4_med_history_conflict:001",
+        "C4.4_med_history_conflict:002",
+        "C4.4_med_history_conflict:003",
+        "C4.4_med_history_conflict:004",
+        "C4.4_med_history_conflict:005",
+        "C4.4_med_history_conflict:006",
+        "C4.4_med_history_conflict:007",
+        "C4.4_med_history_conflict:008",
+        "C4.4_med_history_conflict:009",
+        "C4.4_med_history_conflict:010"
+      ],
+      "test_template_ids": [
+        "C4.4_med_history_conflict:011",
+        "C4.4_med_history_conflict:012"
+      ]
+    },
+    "C5.1_abbreviations": {
+      "total_rows": 60,
+      "train_rows": 48,
+      "test_rows": 12,
+      "train_template_ids": [
+        "C5.1_abbreviations:001",
+        "C5.1_abbreviations:002",
+        "C5.1_abbreviations:004",
+        "C5.1_abbreviations:005",
+        "C5.1_abbreviations:006",
+        "C5.1_abbreviations:007",
+        "C5.1_abbreviations:008",
+        "C5.1_abbreviations:009",
+        "C5.1_abbreviations:010",
+        "C5.1_abbreviations:011",
+        "C5.1_abbreviations:012",
+        "C5.1_abbreviations:013",
+        "C5.1_abbreviations:014"
+      ],
+      "test_template_ids": [
+        "C5.1_abbreviations:000",
+        "C5.1_abbreviations:003"
+      ]
+    },
+    "C5.2_brand_names": {
+      "total_rows": 60,
+      "train_rows": 48,
+      "test_rows": 12,
+      "train_template_ids": [
+        "C5.2_brand_names:000",
+        "C5.2_brand_names:002",
+        "C5.2_brand_names:004",
+        "C5.2_brand_names:006",
+        "C5.2_brand_names:007",
+        "C5.2_brand_names:009",
+        "C5.2_brand_names:010",
+        "C5.2_brand_names:011",
+        "C5.2_brand_names:012",
+        "C5.2_brand_names:013",
+        "C5.2_brand_names:014"
+      ],
+      "test_template_ids": [
+        "C5.2_brand_names:003",
+        "C5.2_brand_names:005",
+        "C5.2_brand_names:008"
+      ]
+    },
+    "C5.3_misspellings": {
+      "total_rows": 50,
+      "train_rows": 40,
+      "test_rows": 10,
+      "train_template_ids": [
+        "C5.3_misspellings:000",
+        "C5.3_misspellings:001",
+        "C5.3_misspellings:002",
+        "C5.3_misspellings:004",
+        "C5.3_misspellings:006",
+        "C5.3_misspellings:007",
+        "C5.3_misspellings:008",
+        "C5.3_misspellings:009",
+        "C5.3_misspellings:010",
+        "C5.3_misspellings:011",
+        "C5.3_misspellings:013",
+        "C5.3_misspellings:014"
+      ],
+      "test_template_ids": [
+        "C5.3_misspellings:005",
+        "C5.3_misspellings:012"
+      ]
+    },
+    "C5.4_high_noise": {
+      "total_rows": 30,
+      "train_rows": 24,
+      "test_rows": 6,
+      "train_template_ids": [
+        "C5.4_high_noise:000",
+        "C5.4_high_noise:002",
+        "C5.4_high_noise:003",
+        "C5.4_high_noise:005",
+        "C5.4_high_noise:006",
+        "C5.4_high_noise:007"
+      ],
+      "test_template_ids": [
+        "C5.4_high_noise:001",
+        "C5.4_high_noise:004"
+      ]
+    }
+  },
+  "artifact_sha256": {
+    "oncorx_bench_full.csv": "34ec33fe79bd43033a8dd32301b44470eb3a716ab96ea329c365c211a0ded097",
+    "oncorx_bench_test.csv": "a936aa48f2d5db7222879f08169141aeb6266303026b7ee50d7dcb3007bf9b76",
+    "oncorx_bench_test.jsonl": "e33b5aeb194bc3fd0fcb5e6b0b3c82cd95cdf0c3218e4dc3e9f63bec3c0c7210",
+    "oncorx_bench_train.csv": "14240114246feb8b4588a50a2b3b698357860b94d23ddfff9e089276a4065182",
+    "oncorx_bench_train.jsonl": "63cb9426bae86c02f41a58953fbf0657eaab84d28929406bb2d96cb7443b645f"
+  }
+}

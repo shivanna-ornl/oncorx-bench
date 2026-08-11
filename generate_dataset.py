@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
 import json
 import random
 import re
@@ -24,6 +25,7 @@ from schema import (
     BenchmarkSample,
     DrugMention,
     DrugStatus,
+    Intent,
     RegimenMention,
     SigFields,
 )
@@ -35,6 +37,7 @@ from dataset_config import (
     OUTPUT_DIR,
     RANDOM_SEED,
     NOTE_TYPES,
+    NOTE_TYPES_BY_SUBCATEGORY,
     SUPPORTIVE_CARE_DRUGS,
     DRUG_ABBREVIATIONS,
     MISSPELLING_PATTERNS,
@@ -47,6 +50,9 @@ from dataset_config import (
     PREMEDICATION_APPROPRIATE,
     IV_ONLY_DRUGS,
     CUMULATIVE_DOSE_DRUGS,
+    CUMULATIVE_DOSE_LIMITS,
+    HIGH_NOISE_DRUGS,
+    HIGH_NOISE_ALIASES,
 )
 from templates import TEMPLATES_BY_SUBCATEGORY
 
@@ -54,6 +60,19 @@ from templates import TEMPLATES_BY_SUBCATEGORY
 # ══════════════════════════════════════════════════════════════════════
 # Knowledge-base loaders
 # ══════════════════════════════════════════════════════════════════════
+
+def _parse_list_cell(value: str) -> list[str]:
+    """Parse current JSON-array cells and legacy comma-separated cells."""
+    value = value.strip()
+    if not value:
+        return []
+    if value.startswith("["):
+        parsed = json.loads(value)
+        if not isinstance(parsed, list) or not all(isinstance(item, str) for item in parsed):
+            raise ValueError("Expected a JSON array of strings")
+        return [item.strip() for item in parsed if item.strip()]
+    return [item.strip() for item in value.split(",") if item.strip()]
+
 
 def load_drug_table(path: Path) -> dict[str, list[str]]:
     """Load drug_table.csv → {generic_name: [synonym1, synonym2, ...]}"""
@@ -65,7 +84,7 @@ def load_drug_table(path: Path) -> dict[str, list[str]]:
             if len(row) < 2:
                 continue
             name = row[0].strip()
-            synonyms = [s.strip() for s in row[1].split(",") if s.strip()] if row[1] else []
+            synonyms = _parse_list_cell(row[1])
             if name:
                 drugs[name] = synonyms
     return drugs
@@ -81,20 +100,54 @@ def load_regimen_table(path: Path) -> dict[str, list[str]]:
             if len(row) < 2:
                 continue
             name = row[0].strip()
-            components = [d.strip() for d in row[1].split(",") if d.strip()] if row[1] else []
+            components = _parse_list_cell(row[1])
             if name and components:
                 regimens[name] = components
     return regimens
+
+
+def load_regimen_ids(path: Path) -> dict[str, str]:
+    """Load the optional UOTD regimen identifier for each published name."""
+    result: dict[str, str] = {}
+    with open(path, "r", encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream)
+        if "regimen_name" not in (reader.fieldnames or []):
+            return result
+        for row in reader:
+            name = (row.get("regimen_name") or "").strip()
+            regimen_id = (row.get("regimen_id") or "").strip()
+            if name and regimen_id:
+                result[name] = regimen_id
+    return result
+
+
+def load_conditions_by_regimen(
+    condition_path: Path, regimen_path: Path
+) -> dict[str, list[str]]:
+    """Load UOTD-supported condition names for canonical names and aliases."""
+    names_by_id: dict[str, list[str]] = {}
+    for name, regimen_id in load_regimen_ids(regimen_path).items():
+        names_by_id.setdefault(regimen_id, []).append(name)
+    result: dict[str, set[str]] = {}
+    with open(condition_path, "r", encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream)
+        for row in reader:
+            condition = (row.get("condition_name") or "").strip()
+            regimen_id = (row.get("regimen_id") or "").strip()
+            for name in names_by_id.get(regimen_id, []):
+                if condition:
+                    result.setdefault(name, set()).add(condition)
+    return {
+        name: sorted(values, key=str.casefold)
+        for name, values in result.items()
+    }
 
 
 def load_conditions(path: Path) -> list[str]:
     """Load unique condition names from Conditions_And_Regimens.csv."""
     conditions = set()
     if not path.exists():
-        return ["non-small cell lung cancer", "breast cancer", "colorectal cancer",
-                "diffuse large B-cell lymphoma", "acute myeloid leukemia",
-                "multiple myeloma", "Hodgkin lymphoma", "ovarian cancer",
-                "pancreatic adenocarcinoma", "gastric cancer"]
+        raise FileNotFoundError(f"Required condition table is missing: {path}")
     with open(path, "r", encoding="utf-8") as f:
         reader = csv.reader(f)
         header = next(reader)
@@ -102,8 +155,9 @@ def load_conditions(path: Path) -> list[str]:
         for row in reader:
             if len(row) > name_idx and row[name_idx].strip():
                 conditions.add(row[name_idx].strip())
-    return sorted(conditions) if conditions else [
-        "non-small cell lung cancer", "breast cancer", "colorectal cancer"]
+    if not conditions:
+        raise ValueError(f"No condition names found in {path}")
+    return sorted(conditions, key=str.casefold)
 
 
 # ══════════════════════════════════════════════════════════════════════
@@ -116,13 +170,36 @@ class DrugSampler:
     def __init__(self, drug_table: dict[str, list[str]], rng: random.Random):
         self.drug_table = drug_table
         self.all_drugs = list(drug_table.keys())
+        self.by_casefold = {name.casefold(): name for name in self.all_drugs}
         self.rng = rng
 
+        def resolve(values):
+            return [self.by_casefold[value.casefold()] for value in values
+                    if value.casefold() in self.by_casefold]
+
         # Curated oncology drugs that exist in the knowledge base
-        self.oncology_drugs = [d for d in ONCOLOGY_DRUGS if d in drug_table]
+        self.oncology_drugs = resolve(ONCOLOGY_DRUGS)
         if not self.oncology_drugs:
             # Fallback to dosed drugs
-            self.oncology_drugs = [d for d in self.all_drugs if d in COMMON_DRUG_DOSES]
+            self.oncology_drugs = resolve(COMMON_DRUG_DOSES)
+
+        self.dose_profiles: dict[str, dict[str, list[str]]] = {}
+        for configured_name, profile in COMMON_DRUG_DOSES.items():
+            canonical = self.by_casefold.get(configured_name.casefold())
+            if canonical:
+                self.dose_profiles[canonical] = {
+                    "doses": list(profile["doses"]),
+                    "routes": list(profile["routes"]),
+                    "freq": list(profile["freq"]),
+                }
+        for configured_name, profile in PRN_DRUG_CONDITIONS.items():
+            canonical = self.by_casefold.get(configured_name.casefold())
+            if canonical and canonical not in self.dose_profiles:
+                self.dose_profiles[canonical] = {
+                    "doses": list(profile["doses"]),
+                    "routes": list(profile["routes"]),
+                    "freq": [profile["freq"]],
+                }
 
         # Build reverse map: synonym → generic
         self.synonym_to_generic: dict[str, str] = {}
@@ -139,9 +216,9 @@ class DrugSampler:
         self.generic_to_brands = _brand_reverse
 
         # Drugs that have dose info
-        self.dosed_drugs = [d for d in self.all_drugs if d in COMMON_DRUG_DOSES]
+        self.dosed_drugs = sorted(self.dose_profiles, key=str.casefold)
         # Drugs that have adverse reaction info
-        self.adr_drugs = [d for d in self.all_drugs if d in ADVERSE_REACTIONS]
+        self.adr_drugs = resolve(ADVERSE_REACTIONS)
 
     def random_drug(self) -> str:
         return self.rng.choice(self.all_drugs)
@@ -153,21 +230,19 @@ class DrugSampler:
     def random_dosed_drug(self) -> str:
         return self.rng.choice(self.dosed_drugs) if self.dosed_drugs else self.random_oncology_drug()
 
-    def random_dose(self, drug: str) -> dict:
+    def random_dose(self, drug: str, required_route: str | None = None) -> dict:
         """Return {dose, route, freq} for a drug."""
-        if drug in COMMON_DRUG_DOSES:
-            info = COMMON_DRUG_DOSES[drug]
-            return {
-                "dose": self.rng.choice(info["doses"]),
-                "route": self.rng.choice(info["routes"]),
-                "freq": self.rng.choice(info["freq"]),
-            }
-        # Fallback: generic dose, respecting parenteral-only drugs
-        route = "IV" if drug in IV_ONLY_DRUGS else self.rng.choice(["PO", "IV"])
+        if drug not in self.dose_profiles:
+            raise ValueError(f"No curated dose profile for {drug!r}")
+        info = self.dose_profiles[drug]
+        if required_route and required_route not in info["routes"]:
+            raise ValueError(
+                f"Dose profile for {drug!r} does not support {required_route}"
+            )
         return {
-            "dose": self.rng.choice(["500 mg", "250 mg", "100 mg", "75 mg/m2"]),
-            "route": route,
-            "freq": self.rng.choice(["daily", "BID", "q3w", "weekly"]),
+            "dose": self.rng.choice(info["doses"]),
+            "route": required_route or self.rng.choice(info["routes"]),
+            "freq": self.rng.choice(info["freq"]),
         }
 
     def random_brand(self, drug: str) -> Optional[str]:
@@ -175,7 +250,12 @@ class DrugSampler:
         return self.rng.choice(brands) if brands else None
 
     def random_supportive(self) -> str:
-        candidates = [d for d in SUPPORTIVE_CARE_DRUGS if d in self.all_drugs]
+        candidates = [
+            self.by_casefold[d.casefold()]
+            for d in SUPPORTIVE_CARE_DRUGS
+            if d.casefold() in self.by_casefold
+            and self.by_casefold[d.casefold()] in self.dose_profiles
+        ]
         if not candidates:
             candidates = SUPPORTIVE_CARE_DRUGS
         return self.rng.choice(candidates)
@@ -188,15 +268,23 @@ class RegimenSampler:
     """Pulls diverse regimens from the knowledge base."""
 
     def __init__(self, regimen_table: dict[str, list[str]], rng: random.Random,
-                 drug_names_set: set[str] | None = None):
+                 drug_names_set: set[str] | None = None,
+                 dose_profiles: dict[str, dict] | None = None,
+                 conditions_by_regimen: dict[str, list[str]] | None = None):
         self.regimen_table = regimen_table
         self.rng = rng
 
         # Filter out regimens with suspicious/non-drug components
+        blocked = {value.casefold() for value in SUSPICIOUS_DRUG_BLOCKLIST}
+        known = {value.casefold() for value in (drug_names_set or set())}
         self.clean_table = {
             name: drugs for name, drugs in regimen_table.items()
-            if not any(d in SUSPICIOUS_DRUG_BLOCKLIST for d in drugs)
+            if drugs
+            and not any(d.casefold() in blocked for d in drugs)
+            and (not known or all(d.casefold() in known for d in drugs))
         }
+        self.dose_profiles = dose_profiles or {}
+        self.conditions_by_regimen = conditions_by_regimen or {}
         self.all_regimens = list(self.clean_table.keys())
 
         # Filter regimens with ≥2 components (for multi-drug scenarios)
@@ -211,44 +299,116 @@ class RegimenSampler:
             if _is_acronym_name(r, check_names)
         ]
 
-    def random_regimen(self, min_drugs: int = 1) -> tuple[str, list[str]]:
-        if min_drugs >= 3 and self.large_regimens:
-            name = self.rng.choice(self.large_regimens)
-        elif min_drugs >= 2 and self.multi_drug_regimens:
-            name = self.rng.choice(self.multi_drug_regimens)
-        else:
-            name = self.rng.choice(self.all_regimens)
+    def random_regimen(
+        self,
+        min_drugs: int = 1,
+        max_drugs: int | None = None,
+        require_dose_profiles: bool = False,
+        require_iv: bool = False,
+        require_oral: bool = False,
+        require_condition: bool = False,
+    ) -> tuple[str, list[str]]:
+        candidates = [
+            name for name, drugs in self.clean_table.items()
+            if len(drugs) >= min_drugs
+            and (max_drugs is None or len(drugs) <= max_drugs)
+            and (not require_dose_profiles or all(d in self.dose_profiles for d in drugs))
+            and (not require_iv or all(
+                d in self.dose_profiles and "IV" in self.dose_profiles[d]["routes"]
+                for d in drugs
+            ))
+            and (not require_oral or any(
+                d in self.dose_profiles and "PO" in self.dose_profiles[d]["routes"]
+                for d in drugs
+            ))
+            and (not require_condition or bool(self.conditions_by_regimen.get(name)))
+        ]
+        if not candidates:
+            raise ValueError("No regimen satisfies the requested benchmark constraints")
+        name = self.rng.choice(candidates)
         return name, self.clean_table[name]
 
-    def random_acronym_regimen(self, min_drugs: int = 2) -> tuple[str, list[str]]:
+    def random_acronym_regimen(
+        self, min_drugs: int = 2, require_condition: bool = True
+    ) -> tuple[str, list[str]]:
         """Return a regimen identified purely by its acronym."""
-        if self.acronym_regimens:
-            name = self.rng.choice(self.acronym_regimens)
+        candidates = [
+            name for name in self.acronym_regimens
+            if len(self.clean_table[name]) >= min_drugs
+            and (not require_condition or bool(self.conditions_by_regimen.get(name)))
+        ]
+        if candidates:
+            name = self.rng.choice(candidates)
             return name, self.clean_table[name]
-        return self.random_regimen(min_drugs=min_drugs)
+        return self.random_regimen(
+            min_drugs=min_drugs, require_condition=require_condition
+        )
+
+    def condition_for(self, regimen_name: str) -> str:
+        conditions = self.conditions_by_regimen.get(regimen_name, [])
+        if not conditions:
+            raise ValueError(f"No UOTD condition association for {regimen_name!r}")
+        return self.rng.choice(conditions)
 
 
 # ══════════════════════════════════════════════════════════════════════
 # Per-subcategory generators
 # ══════════════════════════════════════════════════════════════════════
 
+_LAST_TEMPLATE_TEXT: Optional[str] = None
+
+
 def _pick_template(templates: list[str], rng: random.Random) -> str:
-    return rng.choice(templates)
+    """Select a template and retain its identity for the split manifest.
+
+    The template identifier is release metadata only; it is deliberately not
+    added to benchmark rows.  Recording it here lets the exporter construct a
+    genuinely template-disjoint test split without trying to reverse-engineer
+    a template from rendered clinical text.
+    """
+    global _LAST_TEMPLATE_TEXT
+    selected = rng.choice(templates)
+    _LAST_TEMPLATE_TEXT = selected
+    return selected
 
 
-def _note_type(rng: random.Random) -> str:
-    return rng.choice(NOTE_TYPES)
+def _note_type(
+    rng: random.Random, subcategory: str, clinical_text: str | None = None
+) -> str:
+    if clinical_text:
+        explicit_prefixes = {
+            "Telephone encounter:": "telephone_encounter",
+            "Discharge summary:": "discharge_summary",
+            "Oncology consult:": "oncology_consult",
+            "Infusion center note:": "nursing_note",
+            "Med reconciliation:": "medication_reconciliation",
+            "Progress note:": "progress_note",
+        }
+        for prefix, note_type in explicit_prefixes.items():
+            if clinical_text.startswith(prefix):
+                return note_type
+    return rng.choice(NOTE_TYPES_BY_SUBCATEGORY.get(subcategory, NOTE_TYPES))
 
 
 def _parse_dose_sig(dose_str: str) -> tuple[str, Optional[str]]:
     """Parse a dose string into (dose_value, dose_unit).
     Handles standard doses ('75 mg/m2') and AUC ('AUC 5').
     """
-    if not dose_str or " " not in dose_str:
+    if not dose_str:
         return (dose_str, None)
     if dose_str.upper().startswith("AUC"):
         parts = dose_str.split()
         return (parts[-1], "AUC") if len(parts) >= 2 else (dose_str, None)
+    compact = re.fullmatch(
+        r"(\d+(?:\.\d+)?)\s*"
+        r"(mg/m2/day|mg/m2|g/m2|mg/kg|mcg/kg|units/m2|mg|mcg|units)",
+        dose_str,
+        flags=re.IGNORECASE,
+    )
+    if compact:
+        return compact.group(1), compact.group(2)
+    if " " not in dose_str:
+        return (dose_str, None)
     parts = dose_str.split(maxsplit=1)
     return (parts[0], parts[1])
 
@@ -270,6 +430,262 @@ def _has_infusion_language(template: str) -> bool:
             or "administer over" in lower)
 
 
+def _sample_intent(template: str, rng: random.Random) -> tuple[str, str | None]:
+    """Return rendered intent text and a schema-valid, visible label."""
+    values = [
+        Intent.NEOADJUVANT.value,
+        Intent.ADJUVANT.value,
+        Intent.FIRST_LINE.value,
+        Intent.SECOND_LINE.value,
+        Intent.PALLIATIVE.value,
+        Intent.CURATIVE.value,
+        Intent.MAINTENANCE.value,
+        Intent.INDUCTION.value,
+        Intent.CONSOLIDATION.value,
+        Intent.SALVAGE.value,
+    ]
+    lower = template.casefold()
+    if "{intent}" in template:
+        normalized_intent = rng.choice(values)
+        return normalized_intent.replace("_", "-"), normalized_intent
+    literal_map = [
+        ("second-line", Intent.SECOND_LINE.value),
+        ("third-line", Intent.THIRD_LINE_PLUS.value),
+        ("maintenance", Intent.MAINTENANCE.value),
+        ("consolidation", Intent.CONSOLIDATION.value),
+        ("salvage", Intent.SALVAGE.value),
+    ]
+    for surface, normalized_intent in literal_map:
+        if surface in lower:
+            return surface, normalized_intent
+    return "", None
+
+
+def _visible_cycle_info(
+    template: str,
+    cycle_num: int,
+    num_cycles: int,
+    cycle_length: str,
+) -> str | None:
+    """Serialize only cycle values whose placeholders are visible in text."""
+    parts = []
+    if "{cycle_num}" in template and "{num_cycles}" in template:
+        parts.append(f"cycle {cycle_num}/{num_cycles}")
+    elif "{cycle_num}" in template:
+        parts.append(f"cycle {cycle_num}")
+    elif "{num_cycles}" in template:
+        parts.append(f"{num_cycles} cycles")
+    if "{cycle_length}" in template:
+        parts.append(f"q{cycle_length}w")
+    return ", ".join(parts) or None
+
+
+def _literal_spans(text: str, surface: str) -> list[tuple[int, int]]:
+    boundary_pattern = (
+        r"(?<![A-Za-z0-9])" + re.escape(surface) + r"(?![A-Za-z0-9])"
+    )
+    exact = [
+        (match.start(), match.end())
+        for match in re.finditer(boundary_pattern, text)
+    ]
+    if exact:
+        return exact
+    return [
+        (match.start(), match.end())
+        for match in re.finditer(boundary_pattern, text, flags=re.IGNORECASE)
+    ]
+
+
+def _ensure_explicit_coverage(sample: BenchmarkSample) -> None:
+    """Add high-confidence explicit drugs omitted by scenario construction."""
+    existing = {
+        (mention["drug_surface"].casefold(), mention["drug_normalized"].casefold())
+        for mention in sample.drug_mentions
+    }
+    candidates: dict[str, str] = {}
+    for regimen in sample.regimen_mentions:
+        for component in regimen.get("components_normalized", []):
+            candidates[component] = component
+    if sample.subcategory == "C5.4_high_noise":
+        for drug in HIGH_NOISE_DRUGS:
+            candidates[drug] = drug
+        candidates.update(HIGH_NOISE_ALIASES)
+
+    for surface, normalized_name in sorted(
+        candidates.items(), key=lambda item: (-len(item[0]), item[0].casefold())
+    ):
+        pattern = re.compile(
+            r"(?<![A-Za-z0-9])" + re.escape(surface) + r"(?![A-Za-z0-9])",
+            re.IGNORECASE,
+        )
+        match = pattern.search(sample.clinical_text)
+        key = (surface.casefold(), normalized_name.casefold())
+        if match and key not in existing:
+            actual_surface = sample.clinical_text[match.start():match.end()]
+            status = (
+                DrugStatus.HOLD.value
+                if re.search(r"\bheld\s+" + re.escape(actual_surface), sample.clinical_text, re.I)
+                else DrugStatus.CURRENT.value
+            )
+            sample.drug_mentions.append(
+                DrugMention(
+                    drug_surface=actual_surface,
+                    drug_normalized=normalized_name,
+                    status=status,
+                ).to_dict()
+            )
+            existing.add((actual_surface.casefold(), normalized_name.casefold()))
+
+    # When a regimen is the only textual evidence for a component, retain the
+    # component normalization as an explicit regimen inference.  The shared
+    # evidence span is distinguishable from a literal drug mention through
+    # evidence_type and is therefore safe for regimen-resolution evaluation.
+    existing_normalized = {
+        mention["drug_normalized"].casefold()
+        for mention in sample.drug_mentions
+    }
+    for regimen in sample.regimen_mentions:
+        regimen_surface = regimen.get("regimen_surface", "")
+        for component in regimen.get("components_normalized", []):
+            if component.casefold() not in existing_normalized:
+                sample.drug_mentions.append(
+                    DrugMention(
+                        drug_surface=regimen_surface,
+                        drug_normalized=component,
+                        evidence_type="regimen_inference",
+                    ).to_dict()
+                )
+                existing_normalized.add(component.casefold())
+
+
+def _assign_offsets(sample: BenchmarkSample) -> None:
+    """Attach deterministic [start_char,end_char) evidence spans."""
+    regimen_surfaces = {
+        regimen["regimen_surface"].casefold()
+        for regimen in sample.regimen_mentions
+    }
+    for objects, surface_key, normalized_key in (
+        (sample.drug_mentions, "drug_surface", "drug_normalized"),
+        (sample.regimen_mentions, "regimen_surface", "regimen_normalized"),
+    ):
+        occurrence_by_key: dict[tuple[str, str], int] = {}
+        span_cache: dict[str, list[tuple[int, int]]] = {}
+        for obj in objects:
+            surface = obj.get(surface_key, "")
+            spans = span_cache.setdefault(
+                surface.casefold(), _literal_spans(sample.clinical_text, surface)
+            )
+            if not spans:
+                raise ValueError(
+                    f"{sample.sample_id}: surface {surface!r} is absent from clinical_text"
+                )
+            normalized_name = str(obj.get(normalized_key, "")).casefold()
+            group = (surface.casefold(), normalized_name)
+            occurrence = occurrence_by_key.get(group, 0)
+            start, end = spans[min(occurrence, len(spans) - 1)]
+            occurrence_by_key[group] = occurrence + 1
+            obj["start_char"] = start
+            obj["end_char"] = end
+            # Preserve the exact evidence string, including source casing.
+            obj[surface_key] = sample.clinical_text[start:end]
+            if surface_key == "drug_surface":
+                obj["evidence_type"] = (
+                    "regimen_inference"
+                    if surface.casefold() in regimen_surfaces
+                    and surface.casefold() != normalized_name
+                    else "explicit_surface"
+                )
+
+
+def _enrich_visible_sigs(sample: BenchmarkSample) -> None:
+    """Backfill only dose/unit/route values visible next to a drug surface."""
+    drug_starts = sorted(
+        mention["start_char"] for mention in sample.drug_mentions
+        if "start_char" in mention
+    )
+    regimen_surfaces = {
+        regimen["regimen_surface"].casefold() for regimen in sample.regimen_mentions
+    }
+    dose_pattern = re.compile(
+        r"\b(?:AUC\s+\d+(?:\.\d+)?|\d+(?:\.\d+)?\s*"
+        r"(?:mg/m2/day|mg/m2|g/m2|mg/kg|mcg/kg|units/m2|mg|mcg|units))\b",
+        re.IGNORECASE,
+    )
+    # Generated route abbreviations are uppercase.  Case-sensitive matching is
+    # intentional: otherwise ordinary prose such as "patient opted against it"
+    # is mislabeled as the intrathecal route (IT).
+    route_pattern = re.compile(r"\b(PO|IV|SC|IM|IT|PR|SL)\b")
+    for mention in sample.drug_mentions:
+        # Component labels inferred from a regimen acronym share the regimen
+        # evidence span and should not receive a fabricated per-drug sig.
+        if mention.get("evidence_type") == "regimen_inference":
+            continue
+        start = mention["end_char"]
+        following = [value for value in drug_starts if value > start]
+        stop = min(following) if following else len(sample.clinical_text)
+        sentence_stop = sample.clinical_text.find(".", start, stop)
+        if sentence_stop >= 0:
+            stop = sentence_stop
+        window = sample.clinical_text[start:min(stop, start + 100)]
+        sig = dict(mention.get("sig") or {})
+        dose_match = dose_pattern.search(window)
+        if dose_match and "dose_value" not in sig:
+            dose_value, dose_unit = _parse_dose_sig(dose_match.group(0))
+            sig["dose_value"] = dose_value
+            if dose_unit:
+                sig["dose_unit"] = dose_unit
+        route_match = route_pattern.search(window)
+        if route_match and "route" not in sig:
+            sig["route"] = route_match.group(1).upper()
+        if sig:
+            mention["sig"] = sig
+
+
+def _deduplicate_drug_mentions(sample: BenchmarkSample) -> None:
+    """Merge exact duplicate annotations and fail on conflicting duplicates."""
+    unique: dict[tuple[int, int, str], dict] = {}
+    for mention in sample.drug_mentions:
+        key = (
+            mention["start_char"],
+            mention["end_char"],
+            mention["drug_normalized"].casefold(),
+        )
+        previous = unique.get(key)
+        if previous is None:
+            unique[key] = mention
+            continue
+        if previous["status"] != mention["status"]:
+            raise ValueError(
+                f"{sample.sample_id}: conflicting statuses for duplicate {key}"
+            )
+        for flag in ("negated", "allergy", "uncertain"):
+            previous[flag] = bool(previous.get(flag) or mention.get(flag))
+        for optional in ("reason", "adverse_event", "sig"):
+            incoming = mention.get(optional)
+            if not incoming:
+                continue
+            if previous.get(optional) not in (None, incoming):
+                raise ValueError(
+                    f"{sample.sample_id}: conflicting {optional} for duplicate {key}"
+                )
+            previous[optional] = incoming
+        if mention.get("evidence_type") == "explicit_surface":
+            previous["evidence_type"] = "explicit_surface"
+    sample.drug_mentions = list(unique.values())
+
+
+def _finalize_sample(sample: BenchmarkSample) -> BenchmarkSample:
+    _ensure_explicit_coverage(sample)
+    _assign_offsets(sample)
+    _enrich_visible_sigs(sample)
+    _deduplicate_drug_mentions(sample)
+    sample.num_drugs = len({
+        mention["drug_normalized"].casefold()
+        for mention in sample.drug_mentions
+    })
+    return sample
+
+
 def generate_c1_1(sampler: DrugSampler, rng: random.Random, idx: int) -> BenchmarkSample:
     """C1.1 — Single drug, simple mention."""
     templates = TEMPLATES_BY_SUBCATEGORY["C1.1_single_drug_simple"]
@@ -286,7 +702,7 @@ def generate_c1_1(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Easy",
         drug_mentions=[dm.to_dict()],
         num_drugs=1,
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C1.1_single_drug_simple"),
     )
 
 
@@ -321,7 +737,7 @@ def generate_c1_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Easy",
         drug_mentions=[dm.to_dict()],
         num_drugs=1,
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C1.2_single_drug_dose"),
     )
 
 
@@ -353,7 +769,7 @@ def generate_c1_3(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=[dm1.to_dict(), dm2.to_dict()],
         num_drugs=2,
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C1.3_two_drugs"),
     )
 
 
@@ -412,7 +828,7 @@ def generate_c1_4(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C1.4_supportive_care"),
     )
 
 
@@ -429,6 +845,10 @@ def generate_c2_1(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
     d1 = sampler.random_dose(drug1)
     d2 = sampler.random_dose(drug2)
     tpl = _pick_template(templates, rng)
+    if tpl.startswith("Dexamethasone taper") and "Dexamethasone" in taper_drugs:
+        drug1 = "Dexamethasone"
+        schedule = rng.choice(taper_schedules[drug1])
+        dose_high, dose_med, dose_low, increment = schedule
 
     # Avoid infusion templates for non-IV drugs
     if _has_infusion_language(tpl) and d1["route"] != "IV":
@@ -473,7 +893,7 @@ def generate_c2_1(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C2.1_dose_route_freq"),
     )
 
 
@@ -507,6 +927,8 @@ def generate_c2_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
 
     drug1 = rng.choice(taper_drugs)
     drug2 = sampler.random_dosed_drug()
+    while drug2.casefold() == drug1.casefold():
+        drug2 = sampler.random_dosed_drug()
 
     schedule = rng.choice(taper_schedules[drug1])
     dose_high, dose_med, dose_low, increment = schedule
@@ -523,23 +945,39 @@ def generate_c2_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
     )
 
     sig_kwargs = {}
-    if "{dose1_high}" in tpl or "{dose1_low}" in tpl:
-        # Detect ascending vs descending direction from template placeholder order
-        low_pos = tpl.find("{dose1_low}")
-        high_pos = tpl.find("{dose1_high}")
-        is_ascending = low_pos >= 0 and high_pos >= 0 and low_pos < high_pos
-        if is_ascending:
-            sig_kwargs["dose_value"] = dose_low
-            sig_kwargs["taper"] = f"{dose_low} → {dose_med} → {dose_high}"
-        else:
-            sig_kwargs["dose_value"] = dose_high
-            sig_kwargs["taper"] = f"{dose_high} → {dose_med} → {dose_low}"
+    visible_doses = sorted(
+        (
+            (tpl.find(placeholder), value)
+            for placeholder, value in (
+                ("{dose1_low}", dose_low),
+                ("{dose1_med}", dose_med),
+                ("{dose1_high}", dose_high),
+            )
+            if placeholder in tpl
+        ),
+        key=lambda item: item[0],
+    )
+    ordered_values = list(dict.fromkeys(value for _, value in visible_doses))
+    if ordered_values:
+        starting_dose = ordered_values[0]
+        if len(ordered_values) >= 2:
+            sig_kwargs["taper"] = " → ".join(ordered_values)
+        dose_value, dose_unit = _parse_dose_sig(starting_dose)
+        sig_kwargs["dose_value"] = dose_value
+        sig_kwargs["dose_unit"] = dose_unit
+    elif tpl.startswith("Dexamethasone taper"):
+        sig_kwargs.update({
+            "dose_value": "40",
+            "dose_unit": "mg",
+            "route": "PO",
+            "taper": "40 mg → 20 mg → 10 mg",
+        })
     if "{route1}" in tpl:
         sig_kwargs["route"] = "PO"
     sig = SigFields(**sig_kwargs)
     dm1 = DrugMention(drug_surface=drug1, drug_normalized=drug1, sig=sig.to_dict())
     mentions = [dm1.to_dict()]
-    if drug2 in text:
+    if "{drug2}" in tpl:
         dm2 = DrugMention(drug_surface=drug2, drug_normalized=drug2)
         mentions.append(dm2.to_dict())
 
@@ -551,7 +989,7 @@ def generate_c2_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Hard",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C2.2_titration_taper"),
     )
 
 
@@ -610,9 +1048,12 @@ def generate_c2_3(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         max_doses=rng.choice(["3", "4", "6"]),
     )
 
-    sig1_kwargs = {"prn": True}
+    drug1_is_standing = "standing:" in tpl_lower and "prn:" in tpl_lower
+    sig1_kwargs = {"prn": not drug1_is_standing}
     if "{dose1}" in tpl:
-        sig1_kwargs["dose_value"] = d1_dose.split()[0]
+        dose_value, dose_unit = _parse_dose_sig(d1_dose)
+        sig1_kwargs["dose_value"] = dose_value
+        sig1_kwargs["dose_unit"] = dose_unit
     if "{route1}" in tpl:
         sig1_kwargs["route"] = d1_route
     sig1 = SigFields(**sig1_kwargs)
@@ -621,7 +1062,9 @@ def generate_c2_3(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
     if drug2_name in text:
         sig2_kwargs = {"prn": True}
         if "{dose2}" in tpl:
-            sig2_kwargs["dose_value"] = d2_dose.split()[0]
+            dose_value, dose_unit = _parse_dose_sig(d2_dose)
+            sig2_kwargs["dose_value"] = dose_value
+            sig2_kwargs["dose_unit"] = dose_unit
         if "{route2}" in tpl:
             sig2_kwargs["route"] = d2_route
         sig2 = SigFields(**sig2_kwargs)
@@ -636,7 +1079,7 @@ def generate_c2_3(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C2.3_prn_conditional"),
     )
 
 
@@ -710,7 +1153,7 @@ def generate_c2_4(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C2.4_duration_stop"),
     )
 
 
@@ -720,17 +1163,22 @@ def generate_c3_1(sampler: DrugSampler, reg_sampler: RegimenSampler,
                    conditions: list[str], rng: random.Random, idx: int) -> BenchmarkSample:
     """C3.1 — Multi-drug regimen, explicit drugs."""
     templates = TEMPLATES_BY_SUBCATEGORY["C3.1_multi_drug_explicit"]
-    regimen_name, components = reg_sampler.random_regimen(min_drugs=2)
-
-    # Use actual regimen components (up to 4), no duplicates
-    drugs = list(dict.fromkeys(components[:4]))  # dedup preserving order
-    while len(drugs) < 2:
-        extra = sampler.random_dosed_drug()
-        if extra not in drugs:
-            drugs.append(extra)
-
-    dose_infos = [sampler.random_dose(d) for d in drugs]
     tpl = _pick_template(templates, rng)
+    required_slots = max(
+        [int(value) for value in re.findall(r"\{drug([1-4])\}", tpl)] or [2]
+    )
+    regimen_name, components = reg_sampler.random_regimen(
+        min_drugs=required_slots,
+        max_drugs=required_slots,
+        require_dose_profiles=True,
+        require_iv=_has_infusion_language(tpl) or " IV" in tpl,
+    )
+    drugs = list(components)
+    force_iv = _has_infusion_language(tpl) or " IV" in tpl
+    dose_infos = [
+        sampler.random_dose(drug, required_route="IV" if force_iv else None)
+        for drug in drugs
+    ]
 
     cycle_length = rng.choice(["2", "3", "4"])
     num_cycles = rng.randint(3, 8)
@@ -739,13 +1187,13 @@ def generate_c3_1(sampler: DrugSampler, reg_sampler: RegimenSampler,
     # Ensure fallback values are DIFFERENT drugs, not drug[0] duplicated
     fmt_kwargs = {
         "drug1": drugs[0], "dose1": dose_infos[0]["dose"], "route1": dose_infos[0]["route"],
-        "drug2": drugs[1] if len(drugs) > 1 else drugs[0],
-        "dose2": dose_infos[1]["dose"] if len(dose_infos) > 1 else dose_infos[0]["dose"],
-        "route2": dose_infos[1]["route"] if len(dose_infos) > 1 else dose_infos[0]["route"],
-        "drug3": drugs[2] if len(drugs) > 2 else drugs[min(1, len(drugs)-1)],
-        "dose3": dose_infos[2]["dose"] if len(dose_infos) > 2 else dose_infos[min(1, len(dose_infos)-1)]["dose"],
-        "route3": dose_infos[2]["route"] if len(dose_infos) > 2 else dose_infos[min(1, len(dose_infos)-1)]["route"],
-        "drug4": drugs[3] if len(drugs) > 3 else drugs[min(1, len(drugs)-1)],
+        "drug2": drugs[1],
+        "dose2": dose_infos[1]["dose"],
+        "route2": dose_infos[1]["route"],
+        "drug3": drugs[2] if len(drugs) > 2 else "",
+        "dose3": dose_infos[2]["dose"] if len(dose_infos) > 2 else "",
+        "route3": dose_infos[2]["route"] if len(dose_infos) > 2 else "",
+        "drug4": drugs[3] if len(drugs) > 3 else "",
         "regimen_name": regimen_name,
         "cycle_length": cycle_length,
         "num_cycles": num_cycles,
@@ -771,7 +1219,9 @@ def generate_c3_1(sampler: DrugSampler, reg_sampler: RegimenSampler,
             regimen_surface=regimen_name,
             regimen_normalized=regimen_name,
             components_normalized=visible_components,
-            cycle_info=f"q{cycle_length}w x {num_cycles} cycles",
+            cycle_info=_visible_cycle_info(
+                tpl, cycle_num, num_cycles, cycle_length
+            ),
         ).to_dict())
 
     return BenchmarkSample(
@@ -783,7 +1233,7 @@ def generate_c3_1(sampler: DrugSampler, reg_sampler: RegimenSampler,
         drug_mentions=drug_mentions,
         regimen_mentions=regimen_mentions,
         num_drugs=len(drug_mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C3.1_multi_drug_explicit"),
     )
 
 
@@ -796,20 +1246,18 @@ def generate_c3_2(reg_sampler: RegimenSampler, conditions: list[str],
     while regimen_name_prev == regimen_name:
         regimen_name_prev, _ = reg_sampler.random_acronym_regimen()
 
-    condition = rng.choice(conditions) if conditions else "cancer"
-    intents = ["neoadjuvant", "adjuvant", "first-line", "second-line",
-               "palliative", "curative", "maintenance", "induction"]
+    regimen_name_prev, components_prev = regimen_name_prev, reg_sampler.clean_table[regimen_name_prev]
+    condition = reg_sampler.condition_for(regimen_name)
 
     cycle_length = rng.choice(["2", "3", "4"])
     num_cycles = rng.randint(3, 8)
     cycle_num = rng.randint(1, num_cycles)
-    intent = rng.choice(intents)
-
     tpl = _pick_template(templates, rng)
+    intent_surface, intent_normalized = _sample_intent(tpl, rng)
     text = tpl.format(
         regimen_name=regimen_name,
         regimen_name_prev=regimen_name_prev,
-        condition=condition, intent=intent,
+        condition=condition, intent=intent_surface,
         cycle_length=cycle_length, num_cycles=num_cycles,
         cycle_num=cycle_num,
     )
@@ -819,14 +1267,30 @@ def generate_c3_2(reg_sampler: RegimenSampler, conditions: list[str],
         DrugMention(drug_surface=regimen_name, drug_normalized=c).to_dict()
         for c in components
     ]
+    if regimen_name_prev in text:
+        drug_mentions.extend(
+            DrugMention(
+                drug_surface=regimen_name_prev,
+                drug_normalized=component,
+                status=DrugStatus.HISTORICAL.value,
+            ).to_dict()
+            for component in components_prev
+        )
 
     regimen_mention = RegimenMention(
         regimen_surface=regimen_name,
         regimen_normalized=regimen_name,
         components_normalized=components,
-        cycle_info=f"q{cycle_length}w x {num_cycles} cycles",
-        intent=intent,
+        cycle_info=_visible_cycle_info(tpl, cycle_num, num_cycles, cycle_length),
+        intent=intent_normalized,
     ).to_dict()
+    regimen_mentions = [regimen_mention]
+    if regimen_name_prev in text:
+        regimen_mentions.append(RegimenMention(
+            regimen_surface=regimen_name_prev,
+            regimen_normalized=regimen_name_prev,
+            components_normalized=components_prev,
+        ).to_dict())
 
     return BenchmarkSample(
         sample_id=f"ONCORX-{idx:04d}",
@@ -835,9 +1299,9 @@ def generate_c3_2(reg_sampler: RegimenSampler, conditions: list[str],
         subcategory="C3.2_regimen_acronym_only",
         difficulty="Hard",
         drug_mentions=drug_mentions,
-        regimen_mentions=[regimen_mention],
-        num_drugs=len(components),
-        note_type=_note_type(rng),
+        regimen_mentions=regimen_mentions,
+        num_drugs=len({mention["drug_normalized"] for mention in drug_mentions}),
+        note_type=_note_type(rng, "C3.2_regimen_acronym_only"),
     )
 
 
@@ -845,17 +1309,24 @@ def generate_c3_3(sampler: DrugSampler, reg_sampler: RegimenSampler,
                    rng: random.Random, idx: int) -> BenchmarkSample:
     """C3.3 — Regimen with partial drug listing."""
     templates = TEMPLATES_BY_SUBCATEGORY["C3.3_regimen_partial"]
-    regimen_name, components = reg_sampler.random_regimen(min_drugs=3)
-    if len(components) < 3:
-        regimen_name, components = reg_sampler.random_regimen(min_drugs=2)
+    tpl = _pick_template(templates, rng)
+    regimen_name, components = reg_sampler.random_regimen(
+        min_drugs=3,
+        require_dose_profiles=("{oral_drug}" in tpl or _has_infusion_language(tpl) or " IV" in tpl),
+        require_iv=(_has_infusion_language(tpl) or " IV" in tpl),
+        require_oral="{oral_drug}" in tpl,
+    )
 
     # Show subset of drugs
     n_shown = max(1, len(components) // 2)
     shown_drugs = rng.sample(components, min(n_shown, len(components)))
     partial_drugs = " and ".join(shown_drugs)
-    oral_drug = rng.choice(components)
-
-    tpl = _pick_template(templates, rng)
+    oral_candidates = [
+        component for component in components
+        if component in sampler.dose_profiles
+        and "PO" in sampler.dose_profiles[component]["routes"]
+    ]
+    oral_drug = rng.choice(oral_candidates) if oral_candidates else shown_drugs[0]
     text = tpl.format(
         regimen_name=regimen_name,
         partial_drugs=partial_drugs,
@@ -885,7 +1356,7 @@ def generate_c3_3(sampler: DrugSampler, reg_sampler: RegimenSampler,
         drug_mentions=drug_mentions,
         regimen_mentions=[regimen_mention],
         num_drugs=len(drug_mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C3.3_regimen_partial"),
     )
 
 
@@ -893,39 +1364,30 @@ def generate_c3_4(reg_sampler: RegimenSampler, conditions: list[str],
                    rng: random.Random, idx: int) -> BenchmarkSample:
     """C3.4 — Cycles, lines, intent metadata."""
     templates = TEMPLATES_BY_SUBCATEGORY["C3.4_cycles_lines_intent"]
-    regimen_name, components = reg_sampler.random_regimen(min_drugs=2)
-    regimen_name_prev, comp_prev = reg_sampler.random_regimen(min_drugs=2)
+    regimen_name, components = reg_sampler.random_regimen(
+        min_drugs=2, require_condition=True
+    )
+    regimen_name_prev, comp_prev = reg_sampler.random_regimen(
+        min_drugs=2, require_condition=True
+    )
     while regimen_name_prev == regimen_name:
-        regimen_name_prev, comp_prev = reg_sampler.random_regimen(min_drugs=2)
+        regimen_name_prev, comp_prev = reg_sampler.random_regimen(
+            min_drugs=2, require_condition=True
+        )
 
-    condition = rng.choice(conditions) if conditions else "cancer"
-    intents = ["neoadjuvant", "adjuvant", "first-line", "second-line",
-               "salvage", "palliative", "induction", "consolidation", "maintenance"]
+    condition = reg_sampler.condition_for(regimen_name)
     stages = ["I", "II", "IIA", "IIB", "III", "IIIA", "IIIB", "IV"]
 
     num_cycles = rng.randint(4, 8)
     cycle_num = rng.randint(1, num_cycles)
     cycle_length = rng.choice(["2", "3", "4"])
-    intent = rng.choice(intents)
-
     tpl = _pick_template(templates, rng)
-
-    # Prevent intent mismatch: the template that says
-    # "{intent} chemotherapy with {regimen_name} x {num_cycles} cycles planned."
-    # works for any intent. But "Maintenance" template should use maintenance intent.
-    # Re-roll intent if template doesn't match semantics.
-    tpl_lower = tpl.lower()
-    if "maintenance" in tpl_lower:
-        intent = "maintenance"
-    elif "induction" in tpl_lower and "consolidation" in tpl_lower:
-        intent = "adjuvant"  # the overall line of therapy
-    elif "salvage" in tpl_lower:
-        intent = "salvage"
+    intent_surface, intent_normalized = _sample_intent(tpl, rng)
 
     text = tpl.format(
         regimen_name=regimen_name,
         regimen_name_prev=regimen_name_prev,
-        condition=condition, intent=intent,
+        condition=condition, intent=intent_surface,
         cycle_length=cycle_length, num_cycles=num_cycles,
         num_cycles_2=rng.randint(2, 4),
         num_cycles_prev=rng.randint(4, 6),
@@ -937,14 +1399,30 @@ def generate_c3_4(reg_sampler: RegimenSampler, conditions: list[str],
         DrugMention(drug_surface=regimen_name, drug_normalized=c).to_dict()
         for c in components
     ]
+    if regimen_name_prev in text:
+        drug_mentions.extend(
+            DrugMention(
+                drug_surface=regimen_name_prev,
+                drug_normalized=component,
+                status=DrugStatus.HISTORICAL.value,
+            ).to_dict()
+            for component in comp_prev
+        )
 
     regimen_mention = RegimenMention(
         regimen_surface=regimen_name,
         regimen_normalized=regimen_name,
         components_normalized=components,
-        cycle_info=f"cycle {cycle_num}/{num_cycles}, q{cycle_length}w",
-        intent=intent,
+        cycle_info=_visible_cycle_info(tpl, cycle_num, num_cycles, cycle_length),
+        intent=intent_normalized,
     ).to_dict()
+    regimen_mentions = [regimen_mention]
+    if regimen_name_prev in text:
+        regimen_mentions.append(RegimenMention(
+            regimen_surface=regimen_name_prev,
+            regimen_normalized=regimen_name_prev,
+            components_normalized=comp_prev,
+        ).to_dict())
 
     return BenchmarkSample(
         sample_id=f"ONCORX-{idx:04d}",
@@ -953,9 +1431,9 @@ def generate_c3_4(reg_sampler: RegimenSampler, conditions: list[str],
         subcategory="C3.4_cycles_lines_intent",
         difficulty="Very Hard",
         drug_mentions=drug_mentions,
-        regimen_mentions=[regimen_mention],
-        num_drugs=len(components),
-        note_type=_note_type(rng),
+        regimen_mentions=regimen_mentions,
+        num_drugs=len({mention["drug_normalized"] for mention in drug_mentions}),
+        note_type=_note_type(rng, "C3.4_cycles_lines_intent"),
     )
 
 
@@ -994,7 +1472,9 @@ def generate_c4_1(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
     # Derive status from template semantics instead of random assignment
     tpl_lower = tpl.lower()
     hold_keywords = ["hold", "held", "holding", "withheld", "temporarily"]
-    if any(kw in tpl_lower for kw in hold_keywords):
+    if "re-initiated" in tpl_lower:
+        status = DrugStatus.CURRENT.value
+    elif any(kw in tpl_lower for kw in hold_keywords):
         status = DrugStatus.HOLD.value
     else:
         status = DrugStatus.DISCONTINUED.value
@@ -1012,7 +1492,7 @@ def generate_c4_1(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C4.1_discontinued_hold"),
     )
 
 
@@ -1033,7 +1513,7 @@ def generate_c4_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
     reaction2 = rng.choice(["rash", "nausea", "hives", "itching"])
     severity = rng.choice(["mild", "moderate", "severe"])
     grade = rng.choice(["1", "2", "3", "4"])
-    drug_related = rng.choice([drug2, "similar agents"])
+    drug_related = "similar agents"
 
     tpl = _pick_template(templates, rng)
     text = tpl.format(
@@ -1044,17 +1524,41 @@ def generate_c4_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         drug_related=drug_related,
     )
 
-    # Detect if drug2 appears in an allergy-list context (reaction2 in template)
+    # Separate explicit allergy language from broader adverse-event language.
     drug2_is_allergy = "{reaction2}" in tpl
+    allergy_cues = [
+        "allergy", "allergic", "hypersensitivity", "anaphylactic", "nkda"
+    ]
+    drug1_is_allergy = any(cue in tpl.casefold() for cue in allergy_cues)
+    discontinued_cues = ["discontinued", "avoid", "contraindicated", "switched"]
+    drug1_status = (
+        DrugStatus.DISCONTINUED.value
+        if any(cue in text.casefold() for cue in discontinued_cues)
+        else DrugStatus.UNKNOWN.value
+    )
 
-    dm1 = DrugMention(drug_surface=drug1, drug_normalized=drug1, allergy=True,
-                       reason=reaction, status=DrugStatus.DISCONTINUED.value)
+    if "{reaction}" in tpl:
+        adverse_event = reaction
+    elif "anaphylactic reaction" in tpl.casefold():
+        adverse_event = "anaphylactic reaction"
+    elif "hypersensitivity" in tpl.casefold():
+        adverse_event = "hypersensitivity"
+    else:
+        adverse_event = None
+
+    dm1 = DrugMention(
+        drug_surface=drug1,
+        drug_normalized=drug1,
+        allergy=drug1_is_allergy,
+        adverse_event=adverse_event,
+        status=drug1_status,
+    )
     mentions = [dm1.to_dict()]
     if drug2 in text and drug2 != drug1:
         if drug2_is_allergy:
             dm2 = DrugMention(drug_surface=drug2, drug_normalized=drug2,
-                              allergy=True, reason=reaction2,
-                              status=DrugStatus.DISCONTINUED.value)
+                              allergy=True, adverse_event=reaction2,
+                              status=DrugStatus.UNKNOWN.value)
         else:
             dm2 = DrugMention(drug_surface=drug2, drug_normalized=drug2)
         mentions.append(dm2.to_dict())
@@ -1067,7 +1571,7 @@ def generate_c4_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C4.2_allergy_adr"),
     )
 
 
@@ -1106,7 +1610,7 @@ def generate_c4_3(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Hard",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C4.3_negated"),
     )
 
 
@@ -1122,10 +1626,14 @@ def generate_c4_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
     while drug3 in (drug1, drug2):
         drug3 = sampler.random_dosed_drug()
 
-    regimen_name, reg_components = reg_sampler.random_regimen(min_drugs=2)
-    regimen_name_prev, reg_prev_components = reg_sampler.random_regimen(min_drugs=2)
-    condition = rng.choice(conditions) if conditions else "cancer"
-    condition_prev = rng.choice(conditions) if conditions else "prior cancer"
+    regimen_name, reg_components = reg_sampler.random_regimen(
+        min_drugs=2, require_condition=True
+    )
+    regimen_name_prev, reg_prev_components = reg_sampler.random_regimen(
+        min_drugs=2, require_condition=True
+    )
+    condition = reg_sampler.condition_for(regimen_name)
+    condition_prev = reg_sampler.condition_for(regimen_name_prev)
 
     reasons = ["disease progression", "toxicity", "incomplete response", "relapse"]
     interaction_effects = ["QT prolongation", "increased myelosuppression",
@@ -1141,25 +1649,31 @@ def generate_c4_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
         if cum_drugs:
             drug1 = rng.choice(cum_drugs)
 
+    max_dose = CUMULATIVE_DOSE_LIMITS.get(drug1, "450 mg/m2")
+    max_value = int(max_dose.split()[0])
+    cumulative_value = rng.randint(max(1, max_value // 2), max(2, (max_value * 9) // 10))
+
     text = tpl.format(
         drug1=drug1, drug2=drug2, drug3=drug3,
         regimen_name=regimen_name, regimen_name_prev=regimen_name_prev,
         condition=condition, condition_prev=condition_prev,
         reason=rng.choice(reasons), reason1=rng.choice(["cancer", "malignancy", "ongoing treatment"]),
         date_range_prev="2022-2023", date_range_curr="2024-present",
-        cumulative_dose=f"{rng.randint(200, 500)} mg/m2",
-        max_dose="550 mg/m2",
+        cumulative_dose=f"{cumulative_value} mg/m2",
+        max_dose=max_dose,
         num_cycles_prev=rng.randint(4, 6),
         interaction_effect=rng.choice(interaction_effects),
     )
 
     # Derive drug1 status from template
-    current_keywords = ["concurrent", "caution: patient on", "interaction alert",
-                        "monitor for"]
-    if any(kw in tpl_lower for kw in current_keywords):
-        drug1_status = DrugStatus.CURRENT.value
-    else:
+    historical_keywords = [
+        "past treatment", "history of", "previously", "prior ",
+        "2022-2023", "cumulative", "lifetime",
+    ]
+    if any(kw in tpl_lower for kw in historical_keywords):
         drug1_status = DrugStatus.HISTORICAL.value
+    else:
+        drug1_status = DrugStatus.CURRENT.value
 
     # For line-of-therapy templates, only the latest line is current
     line_therapy_tpl = "prior line" in tpl_lower and ("second line" in tpl_lower or "third line" in tpl_lower)
@@ -1192,6 +1706,20 @@ def generate_c4_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
                     status=DrugStatus.HISTORICAL.value
                 ).to_dict())
 
+    regimen_mentions = []
+    if regimen_name in text:
+        regimen_mentions.append(RegimenMention(
+            regimen_surface=regimen_name,
+            regimen_normalized=regimen_name,
+            components_normalized=reg_components,
+        ).to_dict())
+    if regimen_name_prev in text:
+        regimen_mentions.append(RegimenMention(
+            regimen_surface=regimen_name_prev,
+            regimen_normalized=regimen_name_prev,
+            components_normalized=reg_prev_components,
+        ).to_dict())
+
     return BenchmarkSample(
         sample_id=f"ONCORX-{idx:04d}",
         clinical_text=text,
@@ -1199,8 +1727,9 @@ def generate_c4_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
         subcategory="C4.4_med_history_conflict",
         difficulty="Hard",
         drug_mentions=mentions,
+        regimen_mentions=regimen_mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C4.4_med_history_conflict"),
     )
 
 
@@ -1209,16 +1738,27 @@ def generate_c4_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
 def generate_c5_1(sampler: DrugSampler, rng: random.Random, idx: int) -> BenchmarkSample:
     """C5.1 — Abbreviations / shortened forms."""
     templates = TEMPLATES_BY_SUBCATEGORY["C5.1_abbreviations"]
-    abbrevs = list(DRUG_ABBREVIATIONS.items())
+    tpl = _pick_template(templates, rng)
+    force_iv = " IV" in tpl or "infus" in tpl.casefold()
+    abbrevs = [
+        (abbreviation, sampler.by_casefold[generic.casefold()])
+        for abbreviation, generic in DRUG_ABBREVIATIONS.items()
+        if generic.casefold() in sampler.by_casefold
+        and sampler.by_casefold[generic.casefold()] in sampler.dose_profiles
+        and (
+            not force_iv
+            or "IV" in sampler.dose_profiles[
+                sampler.by_casefold[generic.casefold()]
+            ]["routes"]
+        )
+    ]
     rng.shuffle(abbrevs)
 
     abbrev1, generic1 = abbrevs[0]
     abbrev2, generic2 = abbrevs[1] if len(abbrevs) > 1 else abbrevs[0]
 
-    d1 = sampler.random_dose(generic1)
-    d2 = sampler.random_dose(generic2)
-
-    tpl = _pick_template(templates, rng)
+    d1 = sampler.random_dose(generic1, required_route="IV" if force_iv else None)
+    d2 = sampler.random_dose(generic2, required_route="IV" if force_iv else None)
     text = tpl.format(
         drug_abbrev=abbrev1, drug_abbrev2=abbrev2,
         dose1=d1["dose"], route1=d1["route"], freq1=d1["freq"],
@@ -1247,7 +1787,7 @@ def generate_c5_1(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Hard",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C5.1_abbreviations"),
     )
 
 
@@ -1256,7 +1796,12 @@ def generate_c5_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
     templates = TEMPLATES_BY_SUBCATEGORY["C5.2_brand_names"]
 
     # Use explicit BRAND_NAME_MAP for reliable brand→generic pairing
-    brand_pairs = list(BRAND_NAME_MAP.items())
+    brand_pairs = [
+        (brand, sampler.by_casefold[generic.casefold()])
+        for brand, generic in BRAND_NAME_MAP.items()
+        if generic.casefold() in sampler.by_casefold
+        and sampler.by_casefold[generic.casefold()] in sampler.dose_profiles
+    ]
     rng.shuffle(brand_pairs)
 
     brand1, drug1 = brand_pairs[0]
@@ -1284,10 +1829,22 @@ def generate_c5_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         infusion_time=rng.choice(["30 minutes", "1 hour", "90 minutes"]),
     )
 
-    dm1 = DrugMention(drug_surface=brand1, drug_normalized=drug1)
+    switch_template = "Switch from {brand_name} to {brand_name2}" in tpl
+    dm1 = DrugMention(
+        drug_surface=brand1,
+        drug_normalized=drug1,
+        status=(
+            DrugStatus.DISCONTINUED.value
+            if switch_template else DrugStatus.CURRENT.value
+        ),
+    )
     mentions = [dm1.to_dict()]
     if brand2 in text and brand2 != brand1:
-        dm2 = DrugMention(drug_surface=brand2, drug_normalized=drug2)
+        dm2 = DrugMention(
+            drug_surface=brand2,
+            drug_normalized=drug2,
+            status=DrugStatus.CURRENT.value,
+        )
         mentions.append(dm2.to_dict())
 
     return BenchmarkSample(
@@ -1298,14 +1855,26 @@ def generate_c5_2(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Medium",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C5.2_brand_names"),
     )
 
 
 def generate_c5_3(sampler: DrugSampler, rng: random.Random, idx: int) -> BenchmarkSample:
     """C5.3 — Misspellings / typos."""
     templates = TEMPLATES_BY_SUBCATEGORY["C5.3_misspellings"]
-    misspell_drugs = list(MISSPELLING_PATTERNS.keys())
+    tpl = _pick_template(templates, rng)
+    force_iv = " IV" in tpl or "infus" in tpl.casefold()
+    misspell_drugs = [
+        name for name in MISSPELLING_PATTERNS
+        if name.casefold() in sampler.by_casefold
+        and sampler.by_casefold[name.casefold()] in sampler.dose_profiles
+        and (
+            not force_iv
+            or "IV" in sampler.dose_profiles[
+                sampler.by_casefold[name.casefold()]
+            ]["routes"]
+        )
+    ]
 
     drug1_correct = rng.choice(misspell_drugs)
     drug1_misspelled = rng.choice(MISSPELLING_PATTERNS[drug1_correct])
@@ -1317,9 +1886,10 @@ def generate_c5_3(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
 
     drug2_clean = sampler.random_dosed_drug()  # a correctly-spelled second drug
 
-    d1 = sampler.random_dose(drug1_correct)
-
-    tpl = _pick_template(templates, rng)
+    d1 = sampler.random_dose(
+        sampler.by_casefold[drug1_correct.casefold()],
+        required_route="IV" if force_iv else None,
+    )
     text = tpl.format(
         drug_misspelled=drug1_misspelled,
         drug_misspelled2=drug2_misspelled,
@@ -1345,7 +1915,7 @@ def generate_c5_3(sampler: DrugSampler, rng: random.Random, idx: int) -> Benchma
         difficulty="Very Hard",
         drug_mentions=mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C5.3_misspellings"),
     )
 
 
@@ -1353,14 +1923,25 @@ def generate_c5_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
                    conditions: list[str], rng: random.Random, idx: int) -> BenchmarkSample:
     """C5.4 — High-noise clinical text."""
     templates = TEMPLATES_BY_SUBCATEGORY["C5.4_high_noise"]
-    regimen_name, components = reg_sampler.random_regimen(min_drugs=2)
+    tpl = _pick_template(templates, rng)
+    required_slots = max(
+        [int(value) for value in re.findall(r"\{drug([1-3])\}", tpl)] or [2]
+    )
+    regimen_name, components = reg_sampler.random_regimen(
+        min_drugs=required_slots,
+        require_dose_profiles=True,
+        require_iv=_has_infusion_language(tpl) or " IV" in tpl,
+        require_condition=True,
+    )
 
-    drugs = components[:3]
-    if len(drugs) < 2:
-        drugs.append(sampler.random_dosed_drug())
+    drugs = components[:max(3, required_slots)]
 
-    dose_infos = [sampler.random_dose(d) for d in drugs]
-    condition = rng.choice(conditions) if conditions else "cancer"
+    force_iv = _has_infusion_language(tpl) or " IV" in tpl
+    dose_infos = [
+        sampler.random_dose(d, required_route="IV" if force_iv else None)
+        for d in drugs
+    ]
+    condition = reg_sampler.condition_for(regimen_name)
     subtypes = ["adenocarcinoma", "squamous cell", "poorly differentiated",
                 "high-grade", "triple-negative", "HER2-positive"]
     stages = ["IIA", "IIB", "IIIA", "IIIB", "IV"]
@@ -1369,11 +1950,27 @@ def generate_c5_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
     while drug_allergy in drugs:
         drug_allergy = sampler.random_dosed_drug()
 
-    antiemetics = [d for d in SUPPORTIVE_CARE_DRUGS if d in sampler.all_drugs][:4]
+    antiemetics = [
+        sampler.by_casefold[d.casefold()]
+        for d in SUPPORTIVE_CARE_DRUGS[:8]
+        if d.casefold() in sampler.by_casefold
+        and sampler.by_casefold[d.casefold()] in sampler.dose_profiles
+        and sampler.by_casefold[d.casefold()] != drug_allergy
+    ]
+    if "{drug_premed1}" in tpl or "{drug_premed2}" in tpl:
+        antiemetics = [
+            drug for drug in antiemetics
+            if "IV" in sampler.dose_profiles[drug]["routes"]
+        ]
+    if not antiemetics:
+        raise ValueError("No eligible antiemetic for selected high-noise template")
     ae1 = rng.choice(antiemetics) if antiemetics else "Ondansetron"
-    ae2 = rng.choice(antiemetics) if antiemetics else "Dexamethasone"
+    ae2_candidates = [drug for drug in antiemetics if drug != ae1]
+    ae2 = rng.choice(ae2_candidates or antiemetics)
 
-    tpl = _pick_template(templates, rng)
+    intent_surface, intent_normalized = _sample_intent(tpl, rng)
+    cycle_num = rng.randint(1, 6)
+    num_cycles = rng.randint(4, 8)
     text = tpl.format(
         age=rng.randint(35, 80),
         sex=rng.choice(["M", "F"]),
@@ -1382,9 +1979,9 @@ def generate_c5_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
         stage=rng.choice(stages),
         ecog=rng.choice(["0", "1", "2"]),
         regimen_name=regimen_name,
-        cycle_num=rng.randint(1, 6),
-        num_cycles=rng.randint(4, 8),
-        intent=rng.choice(["neoadjuvant", "adjuvant", "first-line", "palliative"]),
+        cycle_num=cycle_num,
+        num_cycles=num_cycles,
+        intent=intent_surface,
         drug1=drugs[0], dose1=dose_infos[0]["dose"], route1=dose_infos[0]["route"],
         freq1=dose_infos[0].get("freq", ""),
         drug2=drugs[1] if len(drugs) > 1 else drugs[0],
@@ -1398,13 +1995,20 @@ def generate_c5_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
         drug_premedx=ae1,
         drug_antiemetic=ae1,
         drug_antiemetic2=ae2,
-        drug_premed1=ae1, dose_pm1=sampler.random_dose(ae1)["dose"],
-        drug_premed2=ae2, dose_pm2=sampler.random_dose(ae2)["dose"],
-        drug_abx1=rng.choice(["cefepime", "piperacillin-tazobactam", "meropenem"]),
-        drug_abx2=rng.choice(["vancomycin", "gentamicin"]),
-        drug_abx_oral=rng.choice(["levofloxacin 500 mg PO daily",
-                                   "ciprofloxacin 500 mg PO BID",
-                                   "amoxicillin-clavulanate 875 mg PO BID"]),
+        drug_premed1=ae1,
+        dose_pm1=sampler.random_dose(
+            ae1,
+            required_route="IV" if "{drug_premed1}" in tpl else None,
+        )["dose"],
+        drug_premed2=ae2,
+        dose_pm2=sampler.random_dose(
+            ae2,
+            required_route="IV" if "{drug_premed2}" in tpl else None,
+        )["dose"],
+        drug_abx1=rng.choice(["Cefepime", "Meropenem"]),
+        drug_abx2=rng.choice(["Vancomycin", "Gentamicin"]),
+        drug_abx_oral=rng.choice(["Levofloxacin 500 mg PO daily",
+                                   "Ciprofloxacin 500 mg PO BID"]),
         mrn=rng.randint(100000, 999999),
         infusion_time1=rng.choice(["30 min", "1 hr", "90 min"]),
         infusion_time2=rng.choice(["2 hrs", "3 hrs", "46 hrs CI"]),
@@ -1423,12 +2027,23 @@ def generate_c5_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
         if sc in text and not any(m["drug_normalized"] == sc for m in mentions):
             mentions.append(DrugMention(drug_surface=sc, drug_normalized=sc).to_dict())
 
+    if "{drug_allergy}" in tpl:
+        mentions.append(DrugMention(
+            drug_surface=drug_allergy,
+            drug_normalized=drug_allergy,
+            status=DrugStatus.UNKNOWN.value,
+            allergy=True,
+            adverse_event="rash",
+        ).to_dict())
+
     regimen_mentions = []
     if regimen_name in text:
         regimen_mentions.append(RegimenMention(
             regimen_surface=regimen_name,
             regimen_normalized=regimen_name,
             components_normalized=components,
+            cycle_info=_visible_cycle_info(tpl, cycle_num, num_cycles, ""),
+            intent=intent_normalized,
         ).to_dict())
 
     return BenchmarkSample(
@@ -1440,7 +2055,7 @@ def generate_c5_4(sampler: DrugSampler, reg_sampler: RegimenSampler,
         drug_mentions=mentions,
         regimen_mentions=regimen_mentions,
         num_drugs=len(mentions),
-        note_type=_note_type(rng),
+        note_type=_note_type(rng, "C5.4_high_noise", text),
     )
 
 
@@ -1472,7 +2087,9 @@ GENERATOR_MAP = {
 }
 
 
-def generate_dataset(dry_run: bool = False) -> list[dict]:
+def generate_dataset(
+    dry_run: bool = False, output_dir: Path = OUTPUT_DIR
+) -> list[dict]:
     """Generate the full benchmark dataset."""
     rng = random.Random(RANDOM_SEED)
 
@@ -1481,6 +2098,9 @@ def generate_dataset(dry_run: bool = False) -> list[dict]:
     drug_table = load_drug_table(DRUG_TABLE_PATH)
     regimen_table = load_regimen_table(REGIMEN_TABLE_PATH)
     conditions = load_conditions(CONDITIONS_PATH)
+    conditions_by_regimen = load_conditions_by_regimen(
+        CONDITIONS_PATH, REGIMEN_TABLE_PATH
+    )
 
     print(f"  Drugs:     {len(drug_table):,}")
     print(f"  Regimens:  {len(regimen_table):,}")
@@ -1488,12 +2108,18 @@ def generate_dataset(dry_run: bool = False) -> list[dict]:
 
     sampler = DrugSampler(drug_table, rng)
     drug_names_set = {d.lower() for d in drug_table.keys()} | {d.lower() for d in ONCOLOGY_DRUGS}
-    reg_sampler = RegimenSampler(regimen_table, rng, drug_names_set)
+    reg_sampler = RegimenSampler(
+        regimen_table,
+        rng,
+        drug_names_set,
+        dose_profiles=sampler.dose_profiles,
+        conditions_by_regimen=conditions_by_regimen,
+    )
 
     samples: list[dict] = []
+    template_assignments: list[dict] = []
     seen_texts: set[str] = set()
     sample_idx = 1
-    errors = 0
     MAX_RETRIES = 100  # retries to avoid duplicates
 
     def _call_generator(gen_key, idx):
@@ -1548,66 +2174,65 @@ def generate_dataset(dry_run: bool = False) -> list[dict]:
             print(f"  Generating {subcat_code} ({target_count} samples)...", end=" ", flush=True)
 
             for _ in range(target_count):
+                sample = None
+                for _attempt in range(MAX_RETRIES):
+                    candidate = _call_generator(gen_key, sample_idx)
+                    if candidate is None:
+                        raise RuntimeError(f"No generator registered for {subcat_code}")
+                    while "  " in candidate.clinical_text:
+                        candidate.clinical_text = candidate.clinical_text.replace("  ", " ")
+                    candidate = _finalize_sample(candidate)
+                    text_key = candidate.clinical_text.strip().casefold()
+                    if text_key not in seen_texts:
+                        sample = candidate
+                        seen_texts.add(text_key)
+                        break
+                if sample is None:
+                    raise RuntimeError(
+                        f"Could not produce a unique sample for {subcat_code} "
+                        f"after {MAX_RETRIES} attempts"
+                    )
+
+                if _LAST_TEMPLATE_TEXT is None:
+                    raise RuntimeError(
+                        f"Generator for {subcat_code} did not record a template"
+                    )
                 try:
-                    # Retry loop to avoid duplicate texts
-                    s = None
-                    for attempt in range(MAX_RETRIES):
-                        candidate = _call_generator(gen_key, sample_idx)
-                        if candidate is None:
-                            break
-                        # Collapse double spaces from empty template placeholders
-                        while "  " in candidate.clinical_text:
-                            candidate.clinical_text = candidate.clinical_text.replace("  ", " ")
-                        text_key = candidate.clinical_text.strip().lower()
-                        if text_key not in seen_texts:
-                            s = candidate
-                            seen_texts.add(text_key)
-                            break
-                    else:
-                        # All retries produced duplicates; accept last one
-                        s = candidate
-                        if s:
-                            seen_texts.add(s.clinical_text.strip().lower())
+                    template_index = TEMPLATES_BY_SUBCATEGORY[subcat_code].index(
+                        _LAST_TEMPLATE_TEXT
+                    )
+                except ValueError as exc:
+                    raise RuntimeError(
+                        f"Selected template is not registered for {subcat_code}"
+                    ) from exc
 
-                    if s is None:
-                        continue
+                template_assignments.append({
+                    "sample_id": sample.sample_id,
+                    "subcategory": subcat_code,
+                    "template_id": f"{subcat_code}:{template_index:03d}",
+                    "template_sha256": hashlib.sha256(
+                        _LAST_TEMPLATE_TEXT.encode("utf-8")
+                    ).hexdigest(),
+                })
 
-                    samples.append(s.to_dict())
-                    sample_idx += 1
-                    generated += 1
-
-                except (KeyError, IndexError, ValueError) as e:
-                    errors += 1
-                    sample_idx += 1
-                    try:
-                        drug = sampler.random_drug()
-                        fallback = BenchmarkSample(
-                            sample_id=f"ONCORX-{sample_idx - 1:04d}",
-                            clinical_text=f"Patient currently on {drug}.",
-                            category=cat_code,
-                            subcategory=subcat_code,
-                            difficulty=subcat_info["difficulty"],
-                            drug_mentions=[DrugMention(drug_surface=drug, drug_normalized=drug).to_dict()],
-                            num_drugs=1,
-                            note_type=_note_type(rng),
-                        )
-                        text_key = fallback.clinical_text.strip().lower()
-                        if text_key not in seen_texts:
-                            seen_texts.add(text_key)
-                            samples.append(fallback.to_dict())
-                            generated += 1
-                    except Exception:
-                        pass
+                samples.append(sample.to_dict())
+                sample_idx += 1
+                generated += 1
 
             print(f"done ({generated}/{target_count})")
 
     print(f"\nTotal samples generated: {len(samples)}")
-    if errors:
-        print(f"Template errors (with fallback): {errors}")
+    expected_total = sum(
+        category["total"] for category in CATEGORY_DISTRIBUTION.values()
+    )
+    if len(samples) != expected_total:
+        raise RuntimeError(
+            f"Generated {len(samples)} samples; expected {expected_total}"
+        )
 
     if not dry_run:
-        OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
-        out_jsonl = OUTPUT_DIR / "oncorx_bench.jsonl"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        out_jsonl = output_dir / "oncorx_bench.jsonl"
         with open(out_jsonl, "w", encoding="utf-8") as f:
             for s in samples:
                 f.write(json.dumps(s, ensure_ascii=False) + "\n")
@@ -1622,10 +2247,34 @@ def generate_dataset(dry_run: bool = False) -> list[dict]:
             stats[cat].setdefault(subcat, 0)
             stats[cat][subcat] += 1
 
-        stats_path = OUTPUT_DIR / "generation_stats.json"
+        stats_path = output_dir / "generation_stats.json"
         with open(stats_path, "w") as f:
             json.dump(stats, f, indent=2)
         print(f"Stats written to: {stats_path}")
+
+        template_catalog_bytes = json.dumps(
+            TEMPLATES_BY_SUBCATEGORY,
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+        assignment_manifest = {
+            "schema_version": 1,
+            "random_seed": RANDOM_SEED,
+            "template_catalog_sha256": hashlib.sha256(
+                template_catalog_bytes
+            ).hexdigest(),
+            "num_templates": sum(
+                len(items) for items in TEMPLATES_BY_SUBCATEGORY.values()
+            ),
+            "num_assignments": len(template_assignments),
+            "assignments": template_assignments,
+        }
+        assignment_path = output_dir / "template_assignments.json"
+        with open(assignment_path, "w", encoding="utf-8") as f:
+            json.dump(assignment_manifest, f, indent=2, ensure_ascii=False)
+            f.write("\n")
+        print(f"Template assignments written to: {assignment_path}")
 
     return samples
 
@@ -1637,5 +2286,6 @@ def generate_dataset(dry_run: bool = False) -> list[dict]:
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate OncoRx-Bench dataset")
     parser.add_argument("--dry-run", action="store_true", help="Print stats only")
+    parser.add_argument("--output-dir", type=Path, default=OUTPUT_DIR)
     args = parser.parse_args()
-    generate_dataset(dry_run=args.dry_run)
+    generate_dataset(dry_run=args.dry_run, output_dir=args.output_dir)

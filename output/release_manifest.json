@@ -1,0 +1,132 @@
+{
+  "artifacts": {
+    "dataset_profile.json": {
+      "bytes": 2247,
+      "sha256": "35edb4aa6842ecc06ac20a6cab6cc61857b59b5bf7f97defcb7d1dcd9c061909"
+    },
+    "generation_stats.json": {
+      "bytes": 797,
+      "sha256": "9768c1ec4409e6df806c5cda424c20e313b85c52ef8fb5bc54b07e5507b59a12"
+    },
+    "oncorx_bench.jsonl": {
+      "bytes": 1554771,
+      "sha256": "97a6c2a22eacf0d68e1762051fbe57b943f24c032a014eadd64f7e36aecf952f"
+    },
+    "oncorx_bench_full.csv": {
+      "bytes": 1528420,
+      "sha256": "34ec33fe79bd43033a8dd32301b44470eb3a716ab96ea329c365c211a0ded097"
+    },
+    "oncorx_bench_test.csv": {
+      "bytes": 293161,
+      "sha256": "a936aa48f2d5db7222879f08169141aeb6266303026b7ee50d7dcb3007bf9b76"
+    },
+    "oncorx_bench_test.jsonl": {
+      "bytes": 301386,
+      "sha256": "e33b5aeb194bc3fd0fcb5e6b0b3c82cd95cdf0c3218e4dc3e9f63bec3c0c7210"
+    },
+    "oncorx_bench_train.csv": {
+      "bytes": 1235428,
+      "sha256": "14240114246feb8b4588a50a2b3b698357860b94d23ddfff9e089276a4065182"
+    },
+    "oncorx_bench_train.jsonl": {
+      "bytes": 1253385,
+      "sha256": "63cb9426bae86c02f41a58953fbf0657eaab84d28929406bb2d96cb7443b645f"
+    },
+    "split_manifest.json": {
+      "bytes": 17019,
+      "sha256": "c9b61fd6907495de9b40bda3ba5cc8b63db197017fe18a861409542a34f2534b"
+    },
+    "template_assignments.json": {
+      "bytes": 466238,
+      "sha256": "63bcfc745b231e40ccb0a3b83265ef9ad6dd7c1a05c30a72a4e46ccd437d83b4"
+    },
+    "validation_report.json": {
+      "bytes": 1814,
+      "sha256": "93f397ed279ec21cd6c5d7e653afb566972f1f4975fdb7c46cfec3848aad0ff4"
+    }
+  },
+  "knowledge_provenance_sha256": "c27e50c9fb5e9c0e07e76617f1f686616c6211679bc053c65ed75468a0773683",
+  "profile": {
+    "drug_objects": 3525,
+    "regimen_objects": 444,
+    "samples": 2000
+  },
+  "python": {
+    "external_packages": [],
+    "implementation": "CPython",
+    "version": "3.9.6"
+  },
+  "random_seed": 42,
+  "release": "oncorx-bench-reproducible-v1",
+  "schema_version": 1,
+  "source_sha256": {
+    "dataset_config.py": "e6e64186cbfd1184631160c55092975da376f3b0c00c0933b6ef817ee015c5ae",
+    "export_csv.py": "b7efab3022520488779d4efe0a6f4de9ef1f73de97f155a94b36949e9e5dd2f7",
+    "generate_dataset.py": "eefa74b368ccc3ed8b5ef880aa4ab2461ce1a4112f0d7923dbfe162c2ef914b4",
+    "schema.py": "d5fcd79b4eb3a288bae0bdce31027a981381be63ec4e6476444281ae90b7df4c",
+    "scripts/build_uotd_inputs.py": "e03d96e9be7054316e40e138fcf5c6f72304c3b9fdada91521cd92a53d3fbbdd",
+    "scripts/profile_release.py": "06bae31616daabc7bb975845deb8b2c1d60868d120ae0fa364de249e1d630f3b",
+    "scripts/reproduce_release.py": "b9528f16c9b7aa1bcf9ccd7e508d01021721b47e6a7832bf84338ebc61f19b1c",
+    "templates.py": "97a52a71caea61106485f6528c795ad66d4c767ad754a31dac87d896b6645ccc",
+    "validate_dataset.py": "884a2804289906ec762f13ddeea715a51e1cfc9467a4500cb5aa547e875c1a5e"
+  },
+  "split": {
+    "row_counts": {
+      "full": 2000,
+      "test": 400,
+      "train": 1600
+    },
+    "strategy": "subcategory_stratified_template_grouped_80_20",
+    "template_disjoint": true
+  },
+  "uotd": {
+    "build": "publication-build-2026-08-09",
+    "commit": "e4ba3722b5505cfa587b30032b8896d86baf8092",
+    "repository": "https://github.com/shivanna-ornl/unified-oncology-treatment-database",
+    "rxnorm_api_version": "3.1.354",
+    "rxnorm_dataset_version": "03-Aug-2026",
+    "source_files": {
+      "metadata/build_release.json": {
+        "sha256": "cdf6e3231420897e9f3ccee430dbd2cf0d47dd28b386fe3829f6269e11593b09"
+      },
+      "metadata/release_manifest.json": {
+        "sha256": "6c13645b0c112297e15c6776d7c5366744fee4b14b6d394b3ffde97ae9c33c75"
+      },
+      "metadata/rxnorm_api_manifest.json": {
+        "sha256": "cf366286dbf5f6e99df13a34dd681371df77d661d2271c0e786375c14d6693d3"
+      },
+      "outputs/production/Anchor_Drugs.csv": {
+        "sha256": "4a225e5c2bf0557b4b93206f832f00e963a6ea23035b2ffcc4912878ec11ccb4"
+      },
+      "outputs/production/Anchor_Drugs_And_Synonyms.csv": {
+        "sha256": "c42f89453780896d37a1b8bb8f90799194ac2710764d980e34493298aea8c820"
+      },
+      "outputs/production/Anchor_Drugs_To_Regimens.csv": {
+        "sha256": "c8ad83b432d84553cb5f14318cf11bff10be3c33ce81bfe46cfa5713673727cb"
+      },
+      "outputs/production/Anchor_Regimen.csv": {
+        "sha256": "9bb2ea12ca1cba2b2f668c69ce92ea306801a087d29ea6cb45da05ce58a52f01"
+      },
+      "outputs/production/Conditions_And_Regimens.csv": {
+        "sha256": "b179b99ab9a0cc320ba44af368e078c120512fb47cc9d1f3214f5140b8ebb09c"
+      }
+    }
+  },
+  "validation": {
+    "error_counts": {
+      "distribution_errors": 0,
+      "drug_grounding_errors": 0,
+      "duplicate_errors": 0,
+      "input_errors": 0,
+      "json_errors": 0,
+      "knowledge_errors": 0,
+      "regimen_grounding_errors": 0,
+      "schema_errors": 0,
+      "sig_errors": 0,
+      "template_placeholder_errors": 0,
+      "text_evidence_errors": 0
+    },
+    "passed": true,
+    "total_errors": 0
+  }
+}

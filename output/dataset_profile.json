@@ -1,0 +1,88 @@
+{
+  "canonical_jsonl_sha256": "97a6c2a22eacf0d68e1762051fbe57b943f24c032a014eadd64f7e36aecf952f",
+  "categories": 5,
+  "category_profile": {
+    "C1": {
+      "drug_objects": 770,
+      "mean_whitespace_terms": 6.6,
+      "regimen_objects": 0,
+      "rows": 600,
+      "sig_objects": 354,
+      "template_pool": 100
+    },
+    "C2": {
+      "drug_objects": 530,
+      "mean_whitespace_terms": 13.2,
+      "regimen_objects": 0,
+      "rows": 450,
+      "sig_objects": 515,
+      "template_pool": 65
+    },
+    "C3": {
+      "drug_objects": 1410,
+      "mean_whitespace_terms": 12.4,
+      "regimen_objects": 394,
+      "rows": 450,
+      "sig_objects": 267,
+      "template_pool": 60
+    },
+    "C4": {
+      "drug_objects": 460,
+      "mean_whitespace_terms": 8.1,
+      "regimen_objects": 22,
+      "rows": 300,
+      "sig_objects": 12,
+      "template_pool": 69
+    },
+    "C5": {
+      "drug_objects": 355,
+      "mean_whitespace_terms": 11.2,
+      "regimen_objects": 28,
+      "rows": 200,
+      "sig_objects": 138,
+      "template_pool": 53
+    }
+  },
+  "component_assignments": 1110,
+  "configured_note_types_observed": 10,
+  "difficulty_distribution": {
+    "Easy": 350,
+    "Hard": 580,
+    "Medium": 840,
+    "Very Hard": 230
+  },
+  "drug_objects": 3525,
+  "explicit_drug_objects": 2974,
+  "knowledge_view_rows": {
+    "Conditions_And_Regimens.csv": 804,
+    "drug_table.csv": 241,
+    "regimen_projection_audit.csv": 2151,
+    "regimen_table.csv": 492
+  },
+  "mean_whitespace_terms": 10.1,
+  "median_whitespace_terms": 8.0,
+  "note_type_distribution": {
+    "allergy_note": 27,
+    "chemo_order": 361,
+    "discharge_summary": 66,
+    "medication_reconciliation": 76,
+    "nursing_note": 66,
+    "oncology_consult": 239,
+    "pharmacy_order": 253,
+    "progress_note": 477,
+    "telephone_encounter": 21,
+    "treatment_plan": 414
+  },
+  "regimen_inference_drug_objects": 551,
+  "regimen_objects": 444,
+  "samples": 2000,
+  "sig_objects": 1286,
+  "subcategories": 20,
+  "templates_configured": 347,
+  "unique_components": 109,
+  "unique_evidence_surfaces_exact": 433,
+  "unique_explicit_drug_surfaces_exact": 328,
+  "unique_normalized_drugs": 170,
+  "unique_normalized_regimens": 176,
+  "unique_regimen_inference_surfaces_exact": 105
+}

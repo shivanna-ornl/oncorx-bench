@@ -1,0 +1,805 @@
+condition_id,condition_name,regimen_id,source_id,regimen_name
+1,acquired coagulopathy,338,1,capecitabine and docetaxel (tx)
+6,acquired hemophilia a,338,1,capecitabine and docetaxel (tx)
+15,acute lymphoblastic leukemia infant,774,1,"cyclophosphamide, etoposide, methotrexate"
+36,acute myeloid leukemia,177,1,azacitidine and gemtuzumab ozogamicin
+37,acute myeloid leukemia,178,1,azacitidine and ivosidenib
+38,acute myeloid leukemia,180,1,azacitidine and sorafenib
+39,acute myeloid leukemia,181,1,azacitidine and venetoclax
+42,acute myeloid leukemia,185,1,"azacitidine, vorinostat, gemtuzumab ozogamicin"
+43,acute myeloid leukemia,289,1,busulfan and cyclophosphamide
+44,acute myeloid leukemia,290,1,busulfan and fludarabine
+52,acute myeloid leukemia,626,1,clofarabine and lodac/decitabine
+53,acute myeloid leukemia,628,1,"clofarabine and melphalan, then allo hsct"
+75,acute myeloid leukemia,910,1,decitabine and valproate
+76,acute myeloid leukemia,911,1,decitabine and venetoclax
+79,acute myeloid leukemia,1069,1,etoposide and mitoxantrone
+118,acute myeloid leukemia pediatric,289,1,busulfan and cyclophosphamide
+137,acute promyelocytic leukemia,133,1,arsenic trioxide and idarubicin
+139,acute promyelocytic leukemia,135,1,"arsenic trioxide, atra, gemtuzumab ozogamicin"
+140,acute promyelocytic leukemia,136,1,"arsenic trioxide, atra, idarubicin"
+147,acute promyelocytic leukemia,162,1,"atra, mercaptopurine, methotrexate"
+148,acute promyelocytic leukemia,291,1,busulfan and melphalan
+155,acute promyelocytic leukemia,1326,1,"idarubicin, then mitoxantrone, then idarubicin"
+156,acute promyelocytic leukemia,1327,1,"idarubicin, then mitoxantrone, then idarubicin, with atra"
+157,acute promyelocytic leukemia,1546,1,mercaptopurine and methotrexate
+159,adrenocortical carcinoma,570,1,cisplatin and mitotane
+162,adrenocortical carcinoma,1587,1,mitotane and streptozocin
+175,allogeneic hsct,289,1,busulfan and cyclophosphamide
+176,allogeneic hsct,290,1,busulfan and fludarabine
+177,allogeneic hsct,293,1,"busulfan, cyclophosphamide, decitabine, g-csf"
+178,allogeneic hsct,294,1,"busulfan, fludarabine, ibritumomab tiuxetan"
+179,allogeneic hsct,296,1,"busulfan, fludarabine, thiotepa"
+180,allogeneic hsct,543,1,cisplatin and fluorouracil (cf)
+181,allogeneic hsct,627,1,clofarabine and melphalan
+183,allogeneic hsct,776,1,"cyclophosphamide, fludarabine, thiotepa"
+187,allogeneic hsct,1142,1,fludarabine and melphalan
+190,allogeneic hsct,1150,1,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+191,allogeneic hsct,1151,1,"fludarabine, cyclophosphamide, tbi for ducb or haploidentical transplant"
+194,anal cancer,338,1,capecitabine and docetaxel (tx)
+195,anal cancer,361,1,"capecitabine, mitomycin, rt"
+196,anal cancer,543,1,cisplatin and fluorouracil (cf)
+197,anal cancer,549,1,cisplatin and fluorouracil (cf) and rt
+198,anal cancer,1166,1,"fluorouracil, mitomycin, rt"
+203,anaplastic glioma,379,1,carboplatin and bevacizumab
+207,anaplastic glioma,1392,1,irinotecan and bevacizumab
+222,anaplastic large cell lymphoma,1150,1,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+229,angiosarcoma,338,1,capecitabine and docetaxel (tx)
+236,aplastic anemia,151,1,"atg (horse), cyclosporine, eltrombopag"
+238,aplastic anemia,153,1,"atg (horse), cyclosporine, sirolimus"
+250,autologous hsct,269,1,bortezomib and melphalan
+253,autologous hsct,289,1,busulfan and cyclophosphamide
+254,autologous hsct,291,1,busulfan and melphalan
+255,autologous hsct,338,1,capecitabine and docetaxel (tx)
+261,autologous hsct,775,1,"cyclophosphamide, etoposide, tbi"
+293,b-cell acute lymphoblastic leukemia,860,1,dasatinib and blinatumomab
+317,b-cell acute lymphoblastic leukemia,1425,1,l-asparaginase and methotrexate
+321,b-cell acute lymphoblastic leukemia,1546,1,mercaptopurine and methotrexate
+322,b-cell acute lymphoblastic leukemia,1552,1,"mercaptopurine, methotrexate, vincristine"
+324,b-cell acute lymphoblastic leukemia,1554,1,"mercaptopurine, methotrexate, wb-xrt"
+325,b-cell acute lymphoblastic leukemia,1556,1,methotrexate and pegaspargase
+332,b-cell acute lymphoblastic leukemia,1790,1,ponatinib and blinatumomab
+356,b-cell acute lymphoblastic leukemia pediatric,774,1,"cyclophosphamide, etoposide, methotrexate"
+372,b-cell acute lymphoblastic leukemia pediatric,1074,1,"etoposide, ifosfamide, imatinib"
+375,b-cell acute lymphoblastic leukemia pediatric,1428,1,"l-asparaginase, vincristine, prednisolone"
+377,b-cell acute lymphoblastic leukemia pediatric,1546,1,mercaptopurine and methotrexate
+379,b-cell acute lymphoblastic leukemia pediatric,1548,1,mercaptopurine and vincristine
+380,b-cell acute lymphoblastic leukemia pediatric,1552,1,"mercaptopurine, methotrexate, vincristine"
+381,b-cell acute lymphoblastic leukemia pediatric,1561,1,methotrexate and vincristine
+393,bladder cancer,338,1,capecitabine and docetaxel (tx)
+394,bladder cancer,391,1,carboplatin and gemcitabine (gcb)
+395,bladder cancer,392,1,carboplatin and gemcitabine (gcb) and atezolizumab
+396,bladder cancer,396,1,carboplatin and gemcitabine (gcb) and pembrolizumab
+397,bladder cancer,415,1,carboplatin and paclitaxel (cp) and rt
+399,bladder cancer,549,1,cisplatin and fluorouracil (cf) and rt
+400,bladder cancer,556,1,cisplatin and gemcitabine (gc) and atezolizumab
+401,bladder cancer,563,1,cisplatin and gemcitabine (gc) and pembrolizumab
+402,bladder cancer,568,1,cisplatin and methotrexate
+405,bladder cancer,944,1,docetaxel and ramucirumab
+406,bladder cancer,988,1,durvalumab and tremelimumab
+408,bladder cancer,1039,1,enfortumab vedotin and pembrolizumab
+411,bladder cancer,1166,1,"fluorouracil, mitomycin, rt"
+435,braf,828,1,dabrafenib and trametinib
+439,breast cancer,33,1,abemaciclib and anastrozole
+441,breast cancer,35,1,abemaciclib and fulvestrant
+442,breast cancer,36,1,abemaciclib and letrozole
+455,breast cancer,100,1,alpelisib and fulvestrant
+457,breast cancer,111,1,anastrozole and fulvestrant
+458,breast cancer,112,1,anastrozole and goserelin
+459,breast cancer,113,1,anastrozole and palbociclib
+460,breast cancer,114,1,anastrozole and ribociclib
+461,breast cancer,115,1,anastrozole and trastuzumab
+463,breast cancer,117,1,"anastrozole, goserelin, palbociclib"
+464,breast cancer,118,1,"anastrozole, lapatinib, trastuzumab"
+473,breast cancer,331,1,capecitabine and bevacizumab
+474,breast cancer,338,1,capecitabine and docetaxel (tx)
+475,breast cancer,340,1,capecitabine and fulvestrant
+476,breast cancer,342,1,capecitabine and ixabepilone
+477,breast cancer,343,1,capecitabine and lapatinib
+478,breast cancer,344,1,capecitabine and margetuximab
+479,breast cancer,346,1,capecitabine and neratinib
+480,breast cancer,348,1,"capecitabine and paclitaxel, nanoparticle albumin-bound"
+482,breast cancer,352,1,capecitabine and trastuzumab (xh)
+483,breast cancer,353,1,capecitabine and trastuzumab (xh) and tucatinib
+486,breast cancer,356,1,"capecitabine, bevacizumab, trastuzumab"
+487,breast cancer,376,1,capivasertib and fulvestrant
+488,breast cancer,383,1,carboplatin and docetaxel
+489,breast cancer,384,1,carboplatin and etoposide (ce)
+490,breast cancer,391,1,carboplatin and gemcitabine (gcb)
+491,breast cancer,396,1,carboplatin and gemcitabine (gcb) and pembrolizumab
+493,breast cancer,403,1,carboplatin and paclitaxel (cp) and bevacizumab
+494,breast cancer,417,1,carboplatin and paclitaxel (cp) and trastuzumab
+502,breast cancer,534,1,cisplatin and bevacizumab
+503,breast cancer,543,1,cisplatin and fluorouracil (cf)
+523,breast cancer,754,1,cyclophosphamide and epirubicin (ec) and bevacizumab
+524,breast cancer,758,1,cyclophosphamide and methotrexate (cm)
+551,breast cancer,935,1,docetaxel and bevacizumab
+552,breast cancer,937,1,docetaxel and gemcitabine
+553,breast cancer,947,1,docetaxel and trastuzumab (th) and pyrotinib
+576,breast cancer,1053,1,epirubicin and vinorelbine (ve)
+578,breast cancer,1057,1,eribulin and margetuximab
+579,breast cancer,1058,1,eribulin and trastuzumab
+582,breast cancer,1080,1,everolimus and exemestane
+583,breast cancer,1084,1,everolimus and tamoxifen
+585,breast cancer,1087,1,exemestane and palbociclib
+586,breast cancer,1088,1,exemestane and trastuzumab
+589,breast cancer,1091,1,"exemestane, lapatinib, trastuzumab"
+605,breast cancer,1156,1,fluorouracil and methotrexate (mf)
+611,breast cancer,1216,1,fulvestrant and palbociclib
+612,breast cancer,1217,1,fulvestrant and ribociclib
+614,breast cancer,1237,1,gemcitabine and bevacizumab
+615,breast cancer,1239,1,gemcitabine and margetuximab
+616,breast cancer,1247,1,gemcitabine and trastuzumab
+619,breast cancer,1266,1,goserelin and letrozole
+620,breast cancer,1268,1,goserelin and tamoxifen
+622,breast cancer,1270,1,"goserelin, letrozole, ribociclib"
+623,breast cancer,1271,1,"goserelin, ribociclib, tamoxifen"
+627,breast cancer,1438,1,lapatinib and letrozole
+628,breast cancer,1439,1,lapatinib and paclitaxel (tl)
+629,breast cancer,1440,1,lapatinib and trastuzumab
+631,breast cancer,1442,1,"lapatinib, letrozole, trastuzumab"
+632,breast cancer,1460,1,letrozole and bevacizumab
+633,breast cancer,1461,1,letrozole and palbociclib
+634,breast cancer,1462,1,letrozole and ribociclib
+635,breast cancer,1463,1,letrozole and trastuzumab
+637,breast cancer,1465,1,letrozole-tamoxifen
+643,breast cancer,1591,1,mitoxantrone and vinorelbine (mv)
+652,breast cancer,1648,1,"neratinib and paclitaxel, then ac"
+653,breast cancer,1649,1,"neratinib and paclitaxel, then ddac"
+662,breast cancer,1710,1,paclitaxel and bevacizumab
+663,breast cancer,1712,1,paclitaxel and pembrolizumab
+664,breast cancer,1716,1,paclitaxel and vinorelbine
+665,breast cancer,1717,1,"paclitaxel, nanoparticle albumin-bound and bevacizumab"
+673,breast cancer,1759,1,pertuzumab and trastuzumab
+690,breast cancer,1961,1,tamoxifen and trastuzumab
+692,breast cancer,1963,1,tamoxifen-anastrozole
+693,breast cancer,1964,1,tamoxifen-exemestane
+694,breast cancer,1965,1,tamoxifen-letrozole
+705,breast cancer,2017,1,toremifene and trastuzumab
+717,breast cancer,2109,1,vinorelbine and bevacizumab
+718,breast cancer,2110,1,vinorelbine and margetuximab
+719,breast cancer,2111,1,vinorelbine and trastuzumab (vh)
+720,breast cancer,2112,1,vinorelbine and trastuzumab (vh) and everolimus
+724,burkitt lymphoma,338,1,capecitabine and docetaxel (tx)
+740,carcinoma of unknown primary,338,1,capecitabine and docetaxel (tx)
+741,carcinoma of unknown primary,383,1,carboplatin and docetaxel
+742,carcinoma of unknown primary,391,1,carboplatin and gemcitabine (gcb)
+743,carcinoma of unknown primary,395,1,carboplatin and gemcitabine (gcb) and paclitaxel
+744,carcinoma of unknown primary,399,1,carboplatin and irinotecan
+747,carcinoma of unknown primary,937,1,docetaxel and gemcitabine
+748,carcinoma of unknown primary,1060,1,erlotinib and bevacizumab
+749,carcinoma of unknown primary,1238,1,gemcitabine and irinotecan
+762,cellular therapy conditioning regimens,543,1,cisplatin and fluorouracil (cf)
+763,cellular therapy conditioning regimens,773,1,"cyclophosphamide, etoposide, fludarabine"
+768,cervical cancer,338,1,capecitabine and docetaxel (tx)
+769,cervical cancer,383,1,carboplatin and docetaxel
+770,cervical cancer,384,1,carboplatin and etoposide (ce)
+771,cervical cancer,391,1,carboplatin and gemcitabine (gcb)
+772,cervical cancer,398,1,carboplatin and ifosfamide
+773,cervical cancer,403,1,carboplatin and paclitaxel (cp) and bevacizumab
+774,cervical cancer,413,1,carboplatin and paclitaxel (cp) and pembrolizumab
+775,cervical cancer,419,1,"carboplatin and paclitaxel (cp), bevacizumab, pembrolizumab"
+779,cervical cancer,545,1,"cisplatin and fluorouracil (cf) and hydroxyurea, rt"
+780,cervical cancer,549,1,cisplatin and fluorouracil (cf) and rt
+781,cervical cancer,564,1,cisplatin and gemcitabine (gc) and rt
+782,cervical cancer,567,1,cisplatin and ifosfamide
+783,cervical cancer,569,1,cisplatin and mitomycin
+786,cervical cancer,592,1,"cisplatin, paclitaxel, atezolizumab, bevacizumab"
+787,cervical cancer,593,1,"cisplatin, paclitaxel, bevacizumab"
+788,cervical cancer,594,1,"cisplatin, paclitaxel, bevacizumab, pembrolizumab"
+789,cervical cancer,597,1,"cisplatin, paclitaxel, pembrolizumab"
+791,cervical cancer,1166,1,"fluorouracil, mitomycin, rt"
+798,cervical cancer,1719,1,"paclitaxel, topotecan, bevacizumab"
+804,chimeric antigen receptor t cells,543,1,cisplatin and fluorouracil (cf)
+806,cholangiocarcinoma,341,1,capecitabine and gemcitabine
+807,cholangiocarcinoma,345,1,capecitabine and mitomycin
+811,cholangiocarcinoma,391,1,carboplatin and gemcitabine (gcb)
+812,cholangiocarcinoma,559,1,cisplatin and gemcitabine (gc) and durvalumab
+814,cholangiocarcinoma,563,1,cisplatin and gemcitabine (gc) and pembrolizumab
+816,cholangiocarcinoma,1060,1,erlotinib and bevacizumab
+823,cholangiocarcinoma,1240,1,gemcitabine and mitomycin
+827,cholangiocarcinoma,1251,1,"gemcitabine, cisplatin, s-1"
+828,cholangiocarcinoma,1253,1,gemcitabine/fluorouracil and rt
+833,cholangiocarcinoma,1456,1,lenvatinib and pembrolizumab
+838,chronic lymphocytic leukemia,58,1,acalabrutinib and obinutuzumab
+841,chronic lymphocytic leukemia,96,1,alemtuzumab and rituximab
+844,chronic lymphocytic leukemia,224,1,bendamustine and obinutuzumab
+845,chronic lymphocytic leukemia,225,1,bendamustine and ofatumumab
+846,chronic lymphocytic leukemia,226,1,bendamustine and rituximab (br)
+847,chronic lymphocytic leukemia,227,1,bendamustine and rituximab (br) and ibrutinib
+848,chronic lymphocytic leukemia,228,1,bendamustine and rituximab (br) and idelalisib
+850,chronic lymphocytic leukemia,290,1,busulfan and fludarabine
+852,chronic lymphocytic leukemia,380,1,carboplatin and cisplatin
+854,chronic lymphocytic leukemia,504,1,chlorambucil and obinutuzumab (gclb)
+855,chronic lymphocytic leukemia,505,1,chlorambucil and ofatumumab
+857,chronic lymphocytic leukemia,508,1,chlorambucil and rituximab (rclb)
+860,chronic lymphocytic leukemia,543,1,cisplatin and fluorouracil (cf)
+870,chronic lymphocytic leukemia,1140,1,fludarabine and alemtuzumab
+871,chronic lymphocytic leukemia,1141,1,fludarabine and ibrutinib
+873,chronic lymphocytic leukemia,1145,1,fludarabine and rituximab (fr)
+877,chronic lymphocytic leukemia,1248,1,gemcitabine and vinorelbine
+879,chronic lymphocytic leukemia,1312,1,ibrutinib and obinutuzumab
+880,chronic lymphocytic leukemia,1313,1,ibrutinib and ofatumumab
+881,chronic lymphocytic leukemia,1314,1,ibrutinib and rituximab
+882,chronic lymphocytic leukemia,1315,1,ibrutinib and ublituximab
+883,chronic lymphocytic leukemia,1316,1,ibrutinib and venetoclax
+885,chronic lymphocytic leukemia,1318,1,"ibrutinib, venetoclax, obinutuzumab"
+886,chronic lymphocytic leukemia,1331,1,idelalisib and ofatumumab
+887,chronic lymphocytic leukemia,1332,1,idelalisib and rituximab
+890,chronic lymphocytic leukemia,1450,1,lenalidomide and ofatumumab
+891,chronic lymphocytic leukemia,1452,1,lenalidomide and rituximab (r2)
+907,chronic lymphocytic leukemia,2095,1,venetoclax and rituximab
+909,chronic lymphocytic leukemia,2148,1,zanubrutinib and obinutuzumab
+919,chronic myeloid leukemia,1299,1,hydroxyurea and plicamycin
+923,chronic myeloid leukemia,1352,1,imatinib and peginterferon alfa-2a
+934,chronic myeloid leukemia - historical,1299,1,hydroxyurea and plicamycin
+939,chronic myelomonocytic leukemia,179,1,azacitidine and lenalidomide
+940,chronic myelomonocytic leukemia,182,1,azacitidine and vorinostat
+960,classical hodgkin lymphoma,222,1,bendamustine and brentuximab vedotin
+963,classical hodgkin lymphoma,279,1,brentuximab vedotin and dacarbazine
+964,classical hodgkin lymphoma,280,1,brentuximab vedotin and nivolumab
+970,classical hodgkin lymphoma,384,1,carboplatin and etoposide (ce)
+992,classical hodgkin lymphoma,1143,1,"fludarabine and melphalan, then allo hsct"
+995,classical hodgkin lymphoma,1243,1,gemcitabine and rituximab
+999,classical hodgkin lymphoma,1344,1,ifosfamide and vinorelbine
+1020,classical hodgkin lymphoma,1914,1,sirolimus and vorinostat
+1036,clear cell renal cell carcinoma,172,1,axitinib and avelumab
+1037,clear cell renal cell carcinoma,173,1,axitinib and pembrolizumab
+1038,clear cell renal cell carcinoma,175,1,axitinib and toripalimab
+1041,clear cell renal cell carcinoma,236,1,bevacizumab and interferon alfa-2a
+1043,clear cell renal cell carcinoma,313,1,cabozantinib and nivolumab
+1045,clear cell renal cell carcinoma,315,1,"cabozantinib, ipilimumab, nivolumab"
+1046,clear cell renal cell carcinoma,1060,1,erlotinib and bevacizumab
+1047,clear cell renal cell carcinoma,1081,1,everolimus and lenvatinib
+1049,clear cell renal cell carcinoma,1246,1,gemcitabine and sunitinib
+1052,clear cell renal cell carcinoma,1384,1,ipilimumab and nivolumab
+1053,clear cell renal cell carcinoma,1456,1,lenvatinib and pembrolizumab
+1071,cns lymphoma,1342,1,ifosfamide and methotrexate
+1072,cns lymphoma,1481,1,"lomustine, methotrexate, procarbazine"
+1076,cns lymphoma,1558,1,methotrexate and rituximab
+1093,cns melanoma,828,1,dabrafenib and trametinib
+1096,cns melanoma,1384,1,ipilimumab and nivolumab
+1098,cold agglutinin disease,226,1,bendamustine and rituximab (br)
+1100,cold agglutinin disease,1145,1,fludarabine and rituximab (fr)
+1118,colorectal cancer,69,1,adagrasib and cetuximab
+1122,colorectal cancer,251,1,"binimetinib, encorafenib, cetuximab"
+1123,colorectal cancer,331,1,capecitabine and bevacizumab
+1124,colorectal cancer,342,1,capecitabine and ixabepilone
+1132,colorectal cancer,830,1,"dabrafenib, trametinib, panitumumab"
+1133,colorectal cancer,988,1,durvalumab and tremelimumab
+1134,colorectal cancer,1038,1,encorafenib and cetuximab
+1136,colorectal cancer,1153,1,fluorouracil and bevacizumab
+1137,colorectal cancer,1156,1,fluorouracil and methotrexate (mf)
+1138,colorectal cancer,1157,1,fluorouracil and mitomycin
+1166,colorectal cancer,1384,1,ipilimumab and nivolumab
+1167,colorectal cancer,1393,1,irinotecan and cetuximab
+1169,colorectal cancer,1399,1,"irinotecan, vemurafenib, cetuximab"
+1173,colorectal cancer,1440,1,lapatinib and trastuzumab
+1180,colorectal cancer,1759,1,pertuzumab and trastuzumab
+1184,colorectal cancer,1924,1,sotorasib and panitumumab
+1191,colorectal cancer,2041,1,tucatinib and trastuzumab
+1192,craniopharyngioma,650,1,cobimetinib and vemurafenib
+1193,cutaneous basal cell carcinoma,255,1,bleomycin and cisplatin
+1194,cutaneous basal cell carcinoma,338,1,capecitabine and docetaxel (tx)
+1198,cutaneous squamous cell carcinoma,255,1,bleomycin and cisplatin
+1199,cutaneous squamous cell carcinoma,338,1,capecitabine and docetaxel (tx)
+1202,cutaneous squamous cell carcinoma,589,1,"cisplatin, interferon alfa-2a, isotretinoin"
+1207,cutaneous t-cell lymphoma,240,1,bexarotene and pralatrexate
+1210,cutaneous t-cell lymphoma,290,1,busulfan and fludarabine
+1211,cutaneous t-cell lymphoma,297,1,"busulfan, fludarabine, thiotepa, then allo hsct"
+1213,cutaneous t-cell lymphoma,1143,1,"fludarabine and melphalan, then allo hsct"
+1239,diffuse large b-cell lymphoma,226,1,bendamustine and rituximab (br)
+1240,diffuse large b-cell lymphoma,229,1,bendamustine and rituximab (br) and polatuzumab vedotin
+1246,diffuse large b-cell lymphoma,295,1,"busulfan, fludarabine, ibritumomab tiuxetan, then allo hsct"
+1279,diffuse large b-cell lymphoma,1075,1,"etoposide, ifosfamide, methotrexate"
+1280,diffuse large b-cell lymphoma,1083,1,everolimus and rituximab
+1284,diffuse large b-cell lymphoma,1150,1,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+1286,diffuse large b-cell lymphoma,1243,1,gemcitabine and rituximab
+1296,diffuse large b-cell lymphoma,1452,1,lenalidomide and rituximab (r2)
+1297,diffuse large b-cell lymphoma,1453,1,lenalidomide and tafasitamab
+1315,diffuse large b-cell lymphoma,1725,1,panobinostat and rituximab
+1371,endometrial cancer,338,1,capecitabine and docetaxel (tx)
+1372,endometrial cancer,406,1,carboplatin and paclitaxel (cp) and dostarlimab
+1373,endometrial cancer,407,1,carboplatin and paclitaxel (cp) and durvalumab
+1374,endometrial cancer,413,1,carboplatin and paclitaxel (cp) and pembrolizumab
+1375,endometrial cancer,417,1,carboplatin and paclitaxel (cp) and trastuzumab
+1376,endometrial cancer,420,1,"carboplatin and paclitaxel (cp), olaparib, durvalumab"
+1379,endometrial cancer,567,1,cisplatin and ifosfamide
+1385,endometrial cancer,1343,1,ifosfamide and paclitaxel
+1387,endometrial cancer,1456,1,lenvatinib and pembrolizumab
+1388,endometrial cancer,1531,1,medroxyprogesterone acetate and tamoxifen
+1390,endometrial cancer,1534,1,megestrol and tamoxifen
+1398,erbb2,1759,1,pertuzumab and trastuzumab
+1405,esophageal adenocarcinoma,332,1,capecitabine and cisplatin (cx)
+1406,esophageal adenocarcinoma,333,1,capecitabine and cisplatin (cx) and cetuximab
+1407,esophageal adenocarcinoma,338,1,capecitabine and docetaxel (tx)
+1408,esophageal adenocarcinoma,342,1,capecitabine and ixabepilone
+1411,esophageal adenocarcinoma,399,1,carboplatin and irinotecan
+1412,esophageal adenocarcinoma,415,1,carboplatin and paclitaxel (cp) and rt
+1413,esophageal adenocarcinoma,426,1,"carboplatin, etoposide, rt"
+1415,esophageal adenocarcinoma,543,1,cisplatin and fluorouracil (cf)
+1416,esophageal adenocarcinoma,549,1,cisplatin and fluorouracil (cf) and rt
+1417,esophageal adenocarcinoma,590,1,"cisplatin, irinotecan, rt"
+1425,esophageal adenocarcinoma,1168,1,"fluorouracil, paclitaxel, rt"
+1428,esophageal adenocarcinoma,1394,1,irinotecan and mitomycin
+1433,esophageal adenocarcinoma,1713,1,paclitaxel and ramucirumab
+1435,esophageal cancer,332,1,capecitabine and cisplatin (cx)
+1436,esophageal cancer,338,1,capecitabine and docetaxel (tx)
+1437,esophageal cancer,342,1,capecitabine and ixabepilone
+1438,esophageal cancer,357,1,"capecitabine, carboplatin, paclitaxel, rt"
+1439,esophageal cancer,358,1,"capecitabine, cisplatin, rt"
+1440,esophageal cancer,359,1,"capecitabine, docetaxel, oxaliplatin, rt"
+1441,esophageal cancer,360,1,"capecitabine, docetaxel, rt"
+1442,esophageal cancer,362,1,"capecitabine, oxaliplatin, rt"
+1443,esophageal cancer,363,1,"capecitabine, paclitaxel, rt"
+1444,esophageal cancer,399,1,carboplatin and irinotecan
+1445,esophageal cancer,415,1,carboplatin and paclitaxel (cp) and rt
+1446,esophageal cancer,430,1,"carboplatin, fluorouracil, rt"
+1447,esophageal cancer,543,1,cisplatin and fluorouracil (cf)
+1448,esophageal cancer,548,1,cisplatin and fluorouracil (cf) and pembrolizumab
+1449,esophageal cancer,549,1,cisplatin and fluorouracil (cf) and rt
+1450,esophageal cancer,584,1,"cisplatin, docetaxel, rt"
+1451,esophageal cancer,590,1,"cisplatin, irinotecan, rt"
+1452,esophageal cancer,612,1,"cisplatin, vinorelbine, rt"
+1453,esophageal cancer,938,1,docetaxel and irinotecan
+1454,esophageal cancer,954,1,"docetaxel, fluorouracil, rt"
+1462,esophageal cancer,1167,1,"fluorouracil, oxaliplatin, rt"
+1475,esophageal squamous cell carcinoma,332,1,capecitabine and cisplatin (cx)
+1476,esophageal squamous cell carcinoma,335,1,capecitabine and cisplatin (cx) and tislelizumab
+1477,esophageal squamous cell carcinoma,338,1,capecitabine and docetaxel (tx)
+1478,esophageal squamous cell carcinoma,347,1,capecitabine and oxaliplatin (capeox) and tislelizumab
+1480,esophageal squamous cell carcinoma,384,1,carboplatin and etoposide (ce)
+1481,esophageal squamous cell carcinoma,415,1,carboplatin and paclitaxel (cp) and rt
+1482,esophageal squamous cell carcinoma,543,1,cisplatin and fluorouracil (cf)
+1483,esophageal squamous cell carcinoma,544,1,cisplatin and fluorouracil (cf) and cetuximab
+1484,esophageal squamous cell carcinoma,546,1,cisplatin and fluorouracil (cf) and nivolumab
+1485,esophageal squamous cell carcinoma,548,1,cisplatin and fluorouracil (cf) and pembrolizumab
+1486,esophageal squamous cell carcinoma,549,1,cisplatin and fluorouracil (cf) and rt
+1488,esophageal squamous cell carcinoma,551,1,cisplatin and fluorouracil (cf) and sugemalimab
+1489,esophageal squamous cell carcinoma,552,1,cisplatin and fluorouracil (cf) and tislelizumab
+1490,esophageal squamous cell carcinoma,584,1,"cisplatin, docetaxel, rt"
+1491,esophageal squamous cell carcinoma,595,1,"cisplatin, paclitaxel, camrelizumab"
+1492,esophageal squamous cell carcinoma,597,1,"cisplatin, paclitaxel, pembrolizumab"
+1493,esophageal squamous cell carcinoma,598,1,"cisplatin, paclitaxel, sintilimab"
+1494,esophageal squamous cell carcinoma,599,1,"cisplatin, paclitaxel, tislelizumab"
+1495,esophageal squamous cell carcinoma,600,1,"cisplatin, paclitaxel, toripalimab"
+1496,esophageal squamous cell carcinoma,612,1,"cisplatin, vinorelbine, rt"
+1498,esophageal squamous cell carcinoma,1158,1,fluorouracil and oxaliplatin (fuox) and tislelizumab
+1499,esophageal squamous cell carcinoma,1159,1,fluorouracil and paclitaxel
+1500,esophageal squamous cell carcinoma,1166,1,"fluorouracil, mitomycin, rt"
+1501,esophageal squamous cell carcinoma,1167,1,"fluorouracil, oxaliplatin, rt"
+1502,esophageal squamous cell carcinoma,1168,1,"fluorouracil, paclitaxel, rt"
+1504,esophageal squamous cell carcinoma,1384,1,ipilimumab and nivolumab
+1508,esophageal squamous cell carcinoma,1701,1,oxaliplatin and paclitaxel
+1509,esophageal squamous cell carcinoma,1704,1,"oxaliplatin, paclitaxel, tislelizumab"
+1520,ewing sarcoma,291,1,busulfan and melphalan
+1521,ewing sarcoma,762,1,cyclophosphamide and topotecan
+1522,ewing sarcoma,937,1,docetaxel and gemcitabine
+1525,ewing sarcoma,1395,1,irinotecan and temozolomide
+1539,extranodal nk- and t-cell lymphoma nasal type,1428,1,"l-asparaginase, vincristine, prednisolone"
+1547,follicular lymphoma,224,1,bendamustine and obinutuzumab
+1548,follicular lymphoma,225,1,bendamustine and ofatumumab
+1549,follicular lymphoma,226,1,bendamustine and rituximab (br)
+1551,follicular lymphoma,237,1,bevacizumab and rituximab
+1552,follicular lymphoma,273,1,bortezomib and rituximab (vr)
+1561,follicular lymphoma,543,1,cisplatin and fluorouracil (cf)
+1563,follicular lymphoma,717,1,copanlisib and rituximab
+1572,follicular lymphoma,1145,1,fludarabine and rituximab (fr)
+1585,follicular lymphoma,1452,1,lenalidomide and rituximab (r2)
+1588,follicular lymphoma,1481,1,"lomustine, methotrexate, procarbazine"
+1612,follicular lymphoma,2132,1,vorinostat and rituximab
+1616,follicular lymphoma,2148,1,zanubrutinib and obinutuzumab
+1617,gallbladder cancer,341,1,capecitabine and gemcitabine
+1618,gallbladder cancer,342,1,capecitabine and ixabepilone
+1619,gallbladder cancer,345,1,capecitabine and mitomycin
+1623,gallbladder cancer,391,1,carboplatin and gemcitabine (gcb)
+1626,gallbladder cancer,1060,1,erlotinib and bevacizumab
+1631,gallbladder cancer,1240,1,gemcitabine and mitomycin
+1634,gallbladder cancer,1251,1,"gemcitabine, cisplatin, s-1"
+1641,gastric cancer,332,1,capecitabine and cisplatin (cx)
+1642,gastric cancer,334,1,capecitabine and cisplatin (cx) and pembrolizumab
+1643,gastric cancer,336,1,capecitabine and cisplatin (cx) and trastuzumab
+1644,gastric cancer,337,1,"capecitabine and cisplatin (cx), pertuzumab, trastuzumab"
+1645,gastric cancer,338,1,capecitabine and docetaxel (tx)
+1646,gastric cancer,347,1,capecitabine and oxaliplatin (capeox) and tislelizumab
+1652,gastric cancer,373,1,"capeox, pembrolizumab, trastuzumab"
+1653,gastric cancer,383,1,carboplatin and docetaxel
+1654,gastric cancer,543,1,cisplatin and fluorouracil (cf)
+1655,gastric cancer,548,1,cisplatin and fluorouracil (cf) and pembrolizumab
+1656,gastric cancer,552,1,cisplatin and fluorouracil (cf) and tislelizumab
+1657,gastric cancer,553,1,cisplatin and fluorouracil (cf) and trastuzumab
+1658,gastric cancer,555,1,"cisplatin and fluorouracil (cf), pembrolizumab, trastuzumab"
+1676,gastric cancer,1157,1,fluorouracil and mitomycin
+1679,gastric cancer,1164,1,"fluorouracil, folinic acid, mitomycin"
+1685,gastric cancer,1394,1,irinotecan and mitomycin
+1693,gastric cancer,1713,1,paclitaxel and ramucirumab
+1716,gestational trophoblastic neoplasia,1546,1,mercaptopurine and methotrexate
+1721,glioblastoma,379,1,carboplatin and bevacizumab
+1726,glioblastoma,1298,1,hydroxyurea and imatinib
+1728,glioblastoma,1392,1,irinotecan and bevacizumab
+1730,glioblastoma,1479,1,lomustine and bevacizumab
+1732,glioblastoma,1483,1,"lomustine, temozolomide, rt"
+1742,graft versus host disease,782,1,cyclosporine and mycophenolate mofetil
+1743,graft versus host disease,784,1,"cyclosporine, corticosteroids, rituximab"
+1744,graft versus host disease,785,1,"cyclosporine, mycophenolate mofetil, sirolimus"
+1746,graft versus host disease,1559,1,methotrexate and tacrolimus
+1747,graft versus host disease,1563,1,"methotrexate, tacrolimus, vorinostat"
+1750,hairy cell leukemia,226,1,bendamustine and rituximab (br)
+1751,hairy cell leukemia,615,1,cladribine and rituximab
+1762,head and neck cancer,338,1,capecitabine and docetaxel (tx)
+1763,head and neck cancer,383,1,carboplatin and docetaxel
+1764,head and neck cancer,390,1,carboplatin and fluorouracil
+1765,head and neck cancer,415,1,carboplatin and paclitaxel (cp) and rt
+1767,head and neck cancer,427,1,"carboplatin, fluorouracil, cetuximab"
+1768,head and neck cancer,428,1,"carboplatin, fluorouracil, cetuximab, rt"
+1769,head and neck cancer,429,1,"carboplatin, fluorouracil, pembrolizumab"
+1770,head and neck cancer,430,1,"carboplatin, fluorouracil, rt"
+1771,head and neck cancer,475,1,celecoxib and methotrexate
+1772,head and neck cancer,476,1,"celecoxib, erlotinib, methotrexate"
+1773,head and neck cancer,477,1,"celecoxib, erlotinib, methotrexate, nivolumab"
+1776,head and neck cancer,535,1,cisplatin and cetuximab
+1777,head and neck cancer,543,1,cisplatin and fluorouracil (cf)
+1778,head and neck cancer,544,1,cisplatin and fluorouracil (cf) and cetuximab
+1779,head and neck cancer,547,1,cisplatin and fluorouracil (cf) and panitumumab
+1780,head and neck cancer,548,1,cisplatin and fluorouracil (cf) and pembrolizumab
+1781,head and neck cancer,549,1,cisplatin and fluorouracil (cf) and rt
+1784,head and neck cancer,578,1,"cisplatin, cetuximab, rt"
+1787,head and neck cancer,950,1,"docetaxel, cetuximab, rt"
+1788,head and neck cancer,953,1,"docetaxel, fluorouracil, hydroxyurea, rt"
+1791,head and neck cancer,1165,1,"fluorouracil, hydroxyurea, rt"
+1792,head and neck cancer,1166,1,"fluorouracil, mitomycin, rt"
+1806,hepatoblastoma,338,1,capecitabine and docetaxel (tx)
+1807,hepatoblastoma,554,1,cisplatin and fluorouracil (cf) and vincristine
+1816,hepatocellular carcinoma,147,1,atezolizumab and bevacizumab
+1821,hepatocellular carcinoma,331,1,capecitabine and bevacizumab
+1828,hepatocellular carcinoma,988,1,durvalumab and tremelimumab
+1830,hepatocellular carcinoma,1060,1,erlotinib and bevacizumab
+1837,hepatocellular carcinoma,1384,1,ipilimumab and nivolumab
+1894,hodgkin lymphoma,222,1,bendamustine and brentuximab vedotin
+1897,hodgkin lymphoma,279,1,brentuximab vedotin and dacarbazine
+1898,hodgkin lymphoma,280,1,brentuximab vedotin and nivolumab
+1904,hodgkin lymphoma,384,1,carboplatin and etoposide (ce)
+1927,hodgkin lymphoma,1243,1,gemcitabine and rituximab
+1931,hodgkin lymphoma,1344,1,ifosfamide and vinorelbine
+1952,hodgkin lymphoma,1914,1,sirolimus and vorinostat
+2006,kaposi sarcoma,257,1,bleomycin and vincristine (bo)
+2007,kaposi sarcoma,338,1,capecitabine and docetaxel (tx)
+2022,large granular lymphocytic leukemia,338,1,capecitabine and docetaxel (tx)
+2025,leiomyosarcoma,832,1,dacarbazine and gemcitabine
+2027,leiomyosarcoma,937,1,docetaxel and gemcitabine
+2035,light-chain (al) amyloidosis,269,1,bortezomib and melphalan
+2037,light-chain (al) amyloidosis,338,1,capecitabine and docetaxel (tx)
+2060,low-grade glioma,384,1,carboplatin and etoposide (ce)
+2061,low-grade glioma,423,1,carboplatin and teniposide
+2063,low-grade glioma,828,1,dabrafenib and trametinib
+2066,low-grade glioma pediatric,384,1,carboplatin and etoposide (ce)
+2067,low-grade glioma pediatric,828,1,dabrafenib and trametinib
+2070,low-grade serous ovarian cancer,338,1,capecitabine and docetaxel (tx)
+2077,malignant peritoneal mesothelioma,147,1,atezolizumab and bevacizumab
+2079,malignant pleural mesothelioma,338,1,capecitabine and docetaxel (tx)
+2080,malignant pleural mesothelioma,391,1,carboplatin and gemcitabine (gcb)
+2081,malignant pleural mesothelioma,440,1,"carboplatin, pemetrexed, bevacizumab"
+2082,malignant pleural mesothelioma,445,1,"carboplatin, pemetrexed, pembrolizumab"
+2083,malignant pleural mesothelioma,571,1,cisplatin and pemetrexed
+2084,malignant pleural mesothelioma,572,1,cisplatin and raltitrexed
+2086,malignant pleural mesothelioma,605,1,"cisplatin, pemetrexed, pembrolizumab"
+2087,malignant pleural mesothelioma,609,1,"cisplatin, pemetrexed, ttfields"
+2089,malignant pleural mesothelioma,1248,1,gemcitabine and vinorelbine
+2091,malignant pleural mesothelioma,1384,1,ipilimumab and nivolumab
+2094,malignant solid neoplasm braf-mutated,828,1,dabrafenib and trametinib
+2098,malignant solid neoplasm erbb2-mutated,1759,1,pertuzumab and trastuzumab
+2112,malt lymphoma,106,1,"amoxicillin, clarithromycin, ppi, bismuth"
+2113,malt lymphoma,226,1,bendamustine and rituximab (br)
+2115,malt lymphoma,508,1,chlorambucil and rituximab (rclb)
+2117,malt lymphoma,615,1,cladribine and rituximab
+2121,malt lymphoma,622,1,"clarithromycin, tetracycline, ppi, bismuth"
+2123,malt lymphoma,1145,1,fludarabine and rituximab (fr)
+2124,malt lymphoma,1452,1,lenalidomide and rituximab (r2)
+2126,malt lymphoma,1481,1,"lomustine, methotrexate, procarbazine"
+2127,malt lymphoma,1567,1,"metronidazole, tetracycline, ppi, bismuth"
+2131,mantle cell lymphoma,132,1,arsenic trioxide and chlorambucil
+2136,mantle cell lymphoma,226,1,bendamustine and rituximab (br)
+2139,mantle cell lymphoma,273,1,bortezomib and rituximab (vr)
+2144,mantle cell lymphoma,508,1,chlorambucil and rituximab (rclb)
+2147,mantle cell lymphoma,543,1,cisplatin and fluorouracil (cf)
+2148,mantle cell lymphoma,615,1,cladribine and rituximab
+2155,mantle cell lymphoma,1145,1,fludarabine and rituximab (fr)
+2157,mantle cell lymphoma,1150,1,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+2161,mantle cell lymphoma,1314,1,ibrutinib and rituximab
+2162,mantle cell lymphoma,1316,1,ibrutinib and venetoclax
+2166,mantle cell lymphoma,1452,1,lenalidomide and rituximab (r2)
+2169,mantle cell lymphoma,1481,1,"lomustine, methotrexate, procarbazine"
+2193,mantle cell lymphoma,1989,1,temsirolimus and rituximab
+2201,marginal zone lymphoma,226,1,bendamustine and rituximab (br)
+2209,marginal zone lymphoma,1452,1,lenalidomide and rituximab (r2)
+2243,melanoma,249,1,binimetinib and encorafenib
+2245,melanoma,338,1,capecitabine and docetaxel (tx)
+2246,melanoma,382,1,carboplatin and dacarbazine
+2248,melanoma,403,1,carboplatin and paclitaxel (cp) and bevacizumab
+2250,melanoma,536,1,cisplatin and dacarbazine
+2251,melanoma,575,1,cisplatin and temozolomide
+2252,melanoma,580,1,"cisplatin, dacarbazine, il-2, ifn alfa-2b plus /- carmustine"
+2253,melanoma,581,1,"cisplatin, dacarbazine, interferon alfa-2b"
+2254,melanoma,582,1,"cisplatin, dacarbazine, paclitaxel"
+2255,melanoma,583,1,"cisplatin, dacarbazine, tamoxifen"
+2256,melanoma,650,1,cobimetinib and vemurafenib
+2257,melanoma,652,1,"cobimetinib, vemurafenib, atezolizumab"
+2260,melanoma,828,1,dabrafenib and trametinib
+2262,melanoma,833,1,dacarbazine and interferon alfa-2a
+2263,melanoma,834,1,dacarbazine and ipilimumab
+2264,melanoma,835,1,dacarbazine and tamoxifen
+2273,melanoma,1384,1,ipilimumab and nivolumab
+2275,melanoma,1387,1,ipilimumab-nivolumab
+2281,melanoma,1662,1,nivolumab-ipilimumab
+2286,melanoma,1980,1,temozolomide and bevacizumab
+2303,multiple myeloma,266,1,bortezomib and cyclophosphamide
+2306,multiple myeloma,269,1,bortezomib and melphalan
+2309,multiple myeloma,274,1,bortezomib and vorinostat
+2314,multiple myeloma,338,1,capecitabine and docetaxel (tx)
+2316,multiple myeloma,452,1,carfilzomib and lenalidomide (kr)
+2317,multiple myeloma,453,1,carfilzomib and panobinostat
+2381,multiple myeloma,1541,1,"melphalan monotherapy, then busulfan and fludarabine, then allo hsct"
+2382,multiple myeloma,1542,1,"melphalan monotherapy, then melphalan and busulfan"
+2434,myelodysplastic syndrome,179,1,azacitidine and lenalidomide
+2435,myelodysplastic syndrome,182,1,azacitidine and vorinostat
+2438,myelodysplastic syndrome,289,1,busulfan and cyclophosphamide
+2439,myelodysplastic syndrome,290,1,busulfan and fludarabine
+2455,myelofibrosis,338,1,capecitabine and docetaxel (tx)
+2464,nasopharyngeal carcinoma,338,1,capecitabine and docetaxel (tx)
+2466,nasopharyngeal carcinoma,390,1,carboplatin and fluorouracil
+2467,nasopharyngeal carcinoma,391,1,carboplatin and gemcitabine (gcb)
+2468,nasopharyngeal carcinoma,417,1,carboplatin and paclitaxel (cp) and trastuzumab
+2470,nasopharyngeal carcinoma,539,1,cisplatin and epirubicin
+2471,nasopharyngeal carcinoma,543,1,cisplatin and fluorouracil (cf)
+2472,nasopharyngeal carcinoma,549,1,cisplatin and fluorouracil (cf) and rt
+2473,nasopharyngeal carcinoma,557,1,cisplatin and gemcitabine (gc) and camrelizumab
+2474,nasopharyngeal carcinoma,565,1,cisplatin and gemcitabine (gc) and toripalimab
+2482,neuroblastoma,291,1,busulfan and melphalan
+2494,neuroblastoma,763,1,cyclophosphamide and vincristine
+2496,neuroblastoma,1264,1,"gm-csf, il-2, isotretinoin, dinutuximab"
+2497,neuroblastoma,1398,1,"irinotecan, temozolomide, dinutuximab"
+2498,neuroblastoma,1406,1,isotretinoin and dinutuximab beta
+2502,neuroendocrine carcinoma,384,1,carboplatin and etoposide (ce)
+2503,neuroendocrine carcinoma,399,1,carboplatin and irinotecan
+2504,neuroendocrine tumor,351,1,capecitabine and temozolomide
+2507,neuroendocrine tumor,1162,1,fluorouracil and streptozocin
+2519,nk- and t-cell lymphoma,1150,1,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+2530,non-small cell lung cancer,89,1,afatinib and bevacizumab
+2531,non-small cell lung cancer,90,1,afatinib and cetuximab
+2532,non-small cell lung cancer,91,1,afatinib and paclitaxel
+2543,non-small cell lung cancer,249,1,binimetinib and encorafenib
+2547,non-small cell lung cancer,312,1,cabozantinib and erlotinib
+2550,non-small cell lung cancer,338,1,capecitabine and docetaxel (tx)
+2552,non-small cell lung cancer,380,1,carboplatin and cisplatin
+2553,non-small cell lung cancer,383,1,carboplatin and docetaxel
+2554,non-small cell lung cancer,384,1,carboplatin and etoposide (ce)
+2555,non-small cell lung cancer,391,1,carboplatin and gemcitabine (gcb)
+2556,non-small cell lung cancer,395,1,carboplatin and gemcitabine (gcb) and paclitaxel
+2557,non-small cell lung cancer,397,1,carboplatin and gemcitabine/erlotinib
+2558,non-small cell lung cancer,399,1,carboplatin and irinotecan
+2560,non-small cell lung cancer,403,1,carboplatin and paclitaxel (cp) and bevacizumab
+2561,non-small cell lung cancer,405,1,carboplatin and paclitaxel (cp) and cemiplimab
+2562,non-small cell lung cancer,408,1,carboplatin and paclitaxel (cp) and ipilimumab
+2563,non-small cell lung cancer,411,1,carboplatin and paclitaxel (cp) and nivolumab
+2564,non-small cell lung cancer,415,1,carboplatin and paclitaxel (cp) and rt
+2566,non-small cell lung cancer,426,1,"carboplatin, etoposide, rt"
+2567,non-small cell lung cancer,431,1,"carboplatin, lazertinib, pemetrexed, amivantamab"
+2570,non-small cell lung cancer,436,1,"carboplatin, osimertinib, pemetrexed"
+2571,non-small cell lung cancer,438,1,"carboplatin, pemetrexed, amivantamab"
+2572,non-small cell lung cancer,440,1,"carboplatin, pemetrexed, bevacizumab"
+2573,non-small cell lung cancer,445,1,"carboplatin, pemetrexed, pembrolizumab"
+2574,non-small cell lung cancer,449,1,"carboplatin, vinorelbine, rt"
+2578,non-small cell lung cancer,537,1,cisplatin and docetaxel (dc) and durvalumab
+2579,non-small cell lung cancer,538,1,cisplatin and docetaxel (dc) and nivolumab
+2580,non-small cell lung cancer,558,1,cisplatin and gemcitabine (gc) and cetuximab
+2581,non-small cell lung cancer,566,1,cisplatin and gemcitabine/erlotinib
+2582,non-small cell lung cancer,571,1,cisplatin and pemetrexed
+2584,non-small cell lung cancer,576,1,cisplatin and vinorelbine (cvb) and nivolumab
+2586,non-small cell lung cancer,584,1,"cisplatin, docetaxel, rt"
+2587,non-small cell lung cancer,588,1,"cisplatin, gefitinib, pemetrexed"
+2588,non-small cell lung cancer,591,1,"cisplatin, osimertinib, pemetrexed"
+2589,non-small cell lung cancer,596,1,"cisplatin, paclitaxel, cemiplimab"
+2590,non-small cell lung cancer,605,1,"cisplatin, pemetrexed, pembrolizumab"
+2591,non-small cell lung cancer,606,1,"cisplatin, pemetrexed, rt"
+2593,non-small cell lung cancer,611,1,"cisplatin, vinorelbine, cetuximab"
+2594,non-small cell lung cancer,612,1,"cisplatin, vinorelbine, rt"
+2596,non-small cell lung cancer,828,1,dabrafenib and trametinib
+2599,non-small cell lung cancer,935,1,docetaxel and bevacizumab
+2600,non-small cell lung cancer,937,1,docetaxel and gemcitabine
+2601,non-small cell lung cancer,940,1,docetaxel and nintedanib
+2602,non-small cell lung cancer,941,1,docetaxel and nivolumab
+2603,non-small cell lung cancer,944,1,docetaxel and ramucirumab
+2604,non-small cell lung cancer,948,1,docetaxel and vandetanib
+2605,non-small cell lung cancer,949,1,docetaxel and vinorelbine
+2606,non-small cell lung cancer,988,1,durvalumab and tremelimumab
+2610,non-small cell lung cancer,1060,1,erlotinib and bevacizumab
+2611,non-small cell lung cancer,1062,1,erlotinib and ramucirumab
+2615,non-small cell lung cancer,1232,1,gefitinib and pemetrexed
+2617,non-small cell lung cancer,1234,1,"gefitinib, nedaplatin, pemetrexed"
+2618,non-small cell lung cancer,1248,1,gemcitabine and vinorelbine
+2622,non-small cell lung cancer,1341,1,ifosfamide and gemcitabine
+2623,non-small cell lung cancer,1384,1,ipilimumab and nivolumab
+2637,non-small cell lung cancer,1749,1,pemetrexed and bevacizumab
+2657,non-small cell lung cancer nonsquamous,338,1,capecitabine and docetaxel (tx)
+2658,non-small cell lung cancer nonsquamous,383,1,carboplatin and docetaxel
+2659,non-small cell lung cancer nonsquamous,384,1,carboplatin and etoposide (ce)
+2660,non-small cell lung cancer nonsquamous,391,1,carboplatin and gemcitabine (gcb)
+2662,non-small cell lung cancer nonsquamous,403,1,carboplatin and paclitaxel (cp) and bevacizumab
+2663,non-small cell lung cancer nonsquamous,418,1,"carboplatin and paclitaxel (cp), bevacizumab, nivolumab"
+2664,non-small cell lung cancer nonsquamous,426,1,"carboplatin, etoposide, rt"
+2666,non-small cell lung cancer nonsquamous,439,1,"carboplatin, pemetrexed, atezolizumab"
+2667,non-small cell lung cancer nonsquamous,440,1,"carboplatin, pemetrexed, bevacizumab"
+2668,non-small cell lung cancer nonsquamous,441,1,"carboplatin, pemetrexed, camrelizumab"
+2669,non-small cell lung cancer nonsquamous,442,1,"carboplatin, pemetrexed, cemiplimab"
+2670,non-small cell lung cancer nonsquamous,443,1,"carboplatin, pemetrexed, durvalumab"
+2671,non-small cell lung cancer nonsquamous,444,1,"carboplatin, pemetrexed, ipilimumab, nivolumab"
+2672,non-small cell lung cancer nonsquamous,445,1,"carboplatin, pemetrexed, pembrolizumab"
+2673,non-small cell lung cancer nonsquamous,446,1,"carboplatin, pemetrexed, sintilimab"
+2674,non-small cell lung cancer nonsquamous,447,1,"carboplatin, pemetrexed, sugemalimab"
+2675,non-small cell lung cancer nonsquamous,448,1,"carboplatin, pemetrexed, tislelizumab"
+2676,non-small cell lung cancer nonsquamous,571,1,cisplatin and pemetrexed
+2677,non-small cell lung cancer nonsquamous,601,1,"cisplatin, pemetrexed, cemiplimab"
+2678,non-small cell lung cancer nonsquamous,602,1,"cisplatin, pemetrexed, durvalumab"
+2679,non-small cell lung cancer nonsquamous,603,1,"cisplatin, pemetrexed, ipilimumab, nivolumab"
+2680,non-small cell lung cancer nonsquamous,604,1,"cisplatin, pemetrexed, nivolumab"
+2681,non-small cell lung cancer nonsquamous,605,1,"cisplatin, pemetrexed, pembrolizumab"
+2682,non-small cell lung cancer nonsquamous,607,1,"cisplatin, pemetrexed, sintilimab"
+2683,non-small cell lung cancer nonsquamous,608,1,"cisplatin, pemetrexed, tislelizumab"
+2686,non-small cell lung cancer nonsquamous,1384,1,ipilimumab and nivolumab
+2687,non-small cell lung cancer nonsquamous,1656,1,nintedanib and pemetrexed
+2689,non-small cell lung cancer nonsquamous,1710,1,paclitaxel and bevacizumab
+2690,non-small cell lung cancer nonsquamous,1749,1,pemetrexed and bevacizumab
+2697,non-small cell lung cancer squamous,338,1,capecitabine and docetaxel (tx)
+2698,non-small cell lung cancer squamous,391,1,carboplatin and gemcitabine (gcb)
+2699,non-small cell lung cancer squamous,394,1,carboplatin and gemcitabine (gcb) and durvalumab
+2703,non-small cell lung cancer squamous,404,1,carboplatin and paclitaxel (cp) and camrelizumab
+2704,non-small cell lung cancer squamous,407,1,carboplatin and paclitaxel (cp) and durvalumab
+2705,non-small cell lung cancer squamous,408,1,carboplatin and paclitaxel (cp) and ipilimumab
+2706,non-small cell lung cancer squamous,409,1,"carboplatin and paclitaxel (cp) and ipilimumab, nivolumab"
+2707,non-small cell lung cancer squamous,413,1,carboplatin and paclitaxel (cp) and pembrolizumab
+2708,non-small cell lung cancer squamous,414,1,carboplatin and paclitaxel (cp) and penpulimab
+2709,non-small cell lung cancer squamous,416,1,carboplatin and paclitaxel (cp) and sugemalimab
+2713,non-small cell lung cancer squamous,559,1,cisplatin and gemcitabine (gc) and durvalumab
+2714,non-small cell lung cancer squamous,561,1,cisplatin and gemcitabine (gc) and necitumumab
+2715,non-small cell lung cancer squamous,562,1,cisplatin and gemcitabine (gc) and nivolumab
+2716,non-small cell lung cancer squamous,563,1,cisplatin and gemcitabine (gc) and pembrolizumab
+2718,non-small cell lung cancer squamous,1384,1,ipilimumab and nivolumab
+2728,osteosarcoma,338,1,capecitabine and docetaxel (tx)
+2729,osteosarcoma,586,1,"cisplatin, epirubicin, ifosfamide"
+2731,osteosarcoma,755,1,cyclophosphamide and etoposide
+2732,osteosarcoma,762,1,cyclophosphamide and topotecan
+2733,osteosarcoma,937,1,docetaxel and gemcitabine
+2744,osteosarcoma,1561,1,methotrexate and vincristine
+2748,ovarian cancer,101,1,altretamine and cisplatin (hd)
+2752,ovarian cancer,338,1,capecitabine and docetaxel (tx)
+2753,ovarian cancer,381,1,carboplatin and cyclophosphamide
+2754,ovarian cancer,383,1,carboplatin and docetaxel
+2755,ovarian cancer,391,1,carboplatin and gemcitabine (gcb)
+2756,ovarian cancer,393,1,carboplatin and gemcitabine (gcb) and bevacizumab
+2757,ovarian cancer,403,1,carboplatin and paclitaxel (cp) and bevacizumab
+2758,ovarian cancer,410,1,carboplatin and paclitaxel (cp) and nintedanib
+2759,ovarian cancer,412,1,carboplatin and paclitaxel (cp) and olaparib
+2764,ovarian cancer,503,1,chlorambucil and cisplatin
+2767,ovarian cancer,579,1,"cisplatin, cyclophosphamide, interferon gamma-1b"
+2772,ovarian cancer,1379,1,ip carboplatin and paclitaxel
+2773,ovarian cancer,1380,1,ip cisplatin and cyclophosphamide
+2774,ovarian cancer,1381,1,ip cisplatin and paclitaxel
+2778,ovarian cancer,1689,1,olaparib and bevacizumab
+2780,ovarian cancer,1710,1,paclitaxel and bevacizumab
+2781,ovarian cancer,1711,1,paclitaxel and pazopanib
+2789,ovarian cancer,2015,1,topotecan and bevacizumab
+2793,pancreatic cancer,339,1,capecitabine and erlotinib
+2794,pancreatic cancer,341,1,capecitabine and gemcitabine
+2797,pancreatic cancer,391,1,carboplatin and gemcitabine (gcb)
+2798,pancreatic cancer,955,1,"docetaxel, gemcitabine, rt"
+2799,pancreatic cancer,1061,1,erlotinib and gemcitabine
+2812,pancreatic cancer,1250,1,"gemcitabine, cetuximab, rt"
+2813,pancreatic cancer,1253,1,gemcitabine/fluorouracil and rt
+2824,pancreatic net,351,1,capecitabine and temozolomide
+2829,pancreatic net,1162,1,fluorouracil and streptozocin
+2837,pancreatic net,1980,1,temozolomide and bevacizumab
+2838,pancreatic net,1985,1,temozolomide and thalidomide
+2848,penile cancer,338,1,capecitabine and docetaxel (tx)
+2849,penile cancer,399,1,carboplatin and irinotecan
+2850,penile cancer,543,1,cisplatin and fluorouracil (cf)
+2860,peripheral t-cell lymphoma,270,1,bortezomib and panobinostat
+2875,peripheral t-cell lymphoma,1150,1,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+2887,plasma cell leukemia,338,1,capecitabine and docetaxel (tx)
+2894,polycythemia vera,338,1,capecitabine and docetaxel (tx)
+2908,primary mediastinal b-cell lymphoma,1150,1,"fludarabine, busulfan, cyclophosphamide, then allo hsct"
+2917,prostate cancer,38,1,abiraterone and apalutamide
+2919,prostate cancer,40,1,abiraterone and olaparib
+2931,prostate cancer,87,1,"adt, darolutamide, docetaxel"
+2932,prostate cancer,88,1,"adt, enzalutamide, talazoparib"
+2935,prostate cancer,244,1,bicalutamide and goserelin
+2936,prostate cancer,245,1,bicalutamide and leuprolide
+2942,prostate cancer,338,1,capecitabine and docetaxel (tx)
+2943,prostate cancer,383,1,carboplatin and docetaxel
+2951,prostate cancer,936,1,docetaxel and estramustine
+2954,prostate cancer,951,1,"docetaxel, enzalutamide, prednisolone"
+2955,prostate cancer,952,1,"docetaxel, estramustine, goserelin"
+2957,prostate cancer,1045,1,enzalutamide and leuprolide
+2959,prostate cancer,1172,1,flutamide and goserelin
+2960,prostate cancer,1173,1,flutamide and leuprolide
+2962,prostate cancer,1175,1,"flutamide, goserelin, rt"
+2963,prostate cancer,1176,1,"flutamide, leuprolide, rt"
+2969,prostate cancer,1418,1,ketoconazole and hydrocortisone
+2970,prostate cancer,1419,1,"ketoconazole, hydrocortisone, dutasteride"
+2972,prostate cancer,1589,1,mitoxantrone and hydrocortisone
+2980,prostate cancer,1933,1,suramin and hydrocortisone
+2987,rectal cancer,364,1,"capecitabine, sorafenib, rt"
+2994,rectal cancer,1167,1,"fluorouracil, oxaliplatin, rt"
+3001,renal cell carcinoma,147,1,atezolizumab and bevacizumab
+3003,renal cell carcinoma,236,1,bevacizumab and interferon alfa-2a
+3006,renal cell carcinoma,543,1,cisplatin and fluorouracil (cf)
+3007,renal cell carcinoma,1060,1,erlotinib and bevacizumab
+3008,renal cell carcinoma,1081,1,everolimus and lenvatinib
+3010,renal cell carcinoma,1246,1,gemcitabine and sunitinib
+3012,renal cell carcinoma,1361,1,interferon alfa-2a and isotretinoin
+3016,renal cell carcinoma,1456,1,lenvatinib and pembrolizumab
+3046,sarcomatoid renal cell carcinoma,1246,1,gemcitabine and sunitinib
+3057,small cell lung cancer,338,1,capecitabine and docetaxel (tx)
+3058,small cell lung cancer,384,1,carboplatin and etoposide (ce)
+3059,small cell lung cancer,385,1,carboplatin and etoposide (ce) and atezolizumab
+3060,small cell lung cancer,386,1,carboplatin and etoposide (ce) and bevacizumab
+3061,small cell lung cancer,387,1,carboplatin and etoposide (ce) and durvalumab
+3062,small cell lung cancer,388,1,carboplatin and etoposide (ce) and pembrolizumab
+3063,small cell lung cancer,389,1,carboplatin and etoposide (ce) and serplulimab
+3064,small cell lung cancer,399,1,carboplatin and irinotecan
+3065,small cell lung cancer,408,1,carboplatin and paclitaxel (cp) and ipilimumab
+3066,small cell lung cancer,426,1,"carboplatin, etoposide, rt"
+3072,small cell lung cancer,487,1,cev (carboplatin/etoposide)
+3074,small cell lung cancer,540,1,cisplatin and etoposide (ep) and bevacizumab
+3075,small cell lung cancer,541,1,cisplatin and etoposide (ep) and durvalumab
+3076,small cell lung cancer,542,1,cisplatin and etoposide (ep) and pembrolizumab
+3077,small cell lung cancer,587,1,"cisplatin, etoposide, irinotecan"
+3078,small cell lung cancer,757,1,cyclophosphamide and lomustine
+3079,small cell lung cancer,778,1,"cyclophosphamide, lomustine, methotrexate"
+3080,small cell lung cancer,779,1,"cyclophosphamide, lomustine, procarbazine"
+3081,small cell lung cancer,780,1,"cyclophosphamide, methotrexate, rt"
+3083,small cell lung cancer,1052,1,epirubicin and ifosfamide
+3087,small cell lung cancer,1343,1,ifosfamide and paclitaxel
+3089,small cell lung cancer,1384,1,ipilimumab and nivolumab
+3108,smoldering multiple myeloma,338,1,capecitabine and docetaxel (tx)
+3114,soft tissue sarcoma,832,1,dacarbazine and gemcitabine
+3116,soft tissue sarcoma,937,1,docetaxel and gemcitabine
+3122,soft tissue sarcoma,1052,1,epirubicin and ifosfamide
+3124,soft tissue sarcoma,1248,1,gemcitabine and vinorelbine
+3175,t-cell acute lymphoblastic leukemia pediatric,1552,1,"mercaptopurine, methotrexate, vincristine"
+3182,t-cell prolymphocytic leukemia,1316,1,ibrutinib and venetoclax
+3183,t-cell prolymphocytic leukemia,1754,1,pentostatin and alemtuzumab
+3188,testicular cancer,257,1,bleomycin and vincristine (bo)
+3191,testicular cancer,384,1,carboplatin and etoposide (ce)
+3192,testicular cancer,391,1,carboplatin and gemcitabine (gcb)
+3194,testicular cancer,510,1,"chlorambucil, dactinomycin, methotrexate"
+3196,testicular cancer,539,1,cisplatin and epirubicin
+3198,testicular cancer,1252,1,"gemcitabine, oxaliplatin, paclitaxel"
+3201,testicular cancer,1343,1,ifosfamide and paclitaxel
+3203,testicular cancer,1700,1,oxaliplatin and bevacizumab
+3216,thymoma,338,1,capecitabine and docetaxel (tx)
+3217,thymoma,341,1,capecitabine and gemcitabine
+3218,thymoma,384,1,carboplatin and etoposide (ce)
+3228,thyroid cancer,828,1,dabrafenib and trametinib
+3257,transformed lymphoma,1452,1,lenalidomide and rituximab (r2)
+3258,transformed lymphoma,1453,1,lenalidomide and tafasitamab
+3269,upper tract urothelial carcinoma,391,1,carboplatin and gemcitabine (gcb)
+3274,urothelial carcinoma,338,1,capecitabine and docetaxel (tx)
+3275,urothelial carcinoma,391,1,carboplatin and gemcitabine (gcb)
+3276,urothelial carcinoma,392,1,carboplatin and gemcitabine (gcb) and atezolizumab
+3277,urothelial carcinoma,396,1,carboplatin and gemcitabine (gcb) and pembrolizumab
+3279,urothelial carcinoma,556,1,cisplatin and gemcitabine (gc) and atezolizumab
+3280,urothelial carcinoma,562,1,cisplatin and gemcitabine (gc) and nivolumab
+3281,urothelial carcinoma,563,1,cisplatin and gemcitabine (gc) and pembrolizumab
+3283,urothelial carcinoma,944,1,docetaxel and ramucirumab
+3284,urothelial carcinoma,988,1,durvalumab and tremelimumab
+3286,urothelial carcinoma,1039,1,enfortumab vedotin and pembrolizumab
+3303,uveal melanoma,1384,1,ipilimumab and nivolumab
+3310,vascular sarcoma,338,1,capecitabine and docetaxel (tx)
+3324,vulvar cancer,338,1,capecitabine and docetaxel (tx)
+3328,waldenstroem macroglobulinemia,226,1,bendamustine and rituximab (br)
+3329,waldenstroem macroglobulinemia,273,1,bortezomib and rituximab (vr)
+3333,waldenstroem macroglobulinemia,615,1,cladribine and rituximab
+3338,waldenstroem macroglobulinemia,1145,1,fludarabine and rituximab (fr)
+3340,waldenstroem macroglobulinemia,1314,1,ibrutinib and rituximab
+3351,waldenstroem macroglobulinemia,2000,1,thalidomide and rituximab
+3359,wilms tumor,839,1,dactinomycin and vincristine

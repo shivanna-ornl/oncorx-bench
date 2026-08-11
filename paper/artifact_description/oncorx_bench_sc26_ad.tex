@@ -1,0 +1,263 @@
+% SC26 Artifact Description for OncoRx-Bench.
+% Structure follows the official SC26 sc26repro paper-author template.
+% This file intentionally contains AD material only; no AE appendix is present.
+\documentclass[conference]{IEEEtran}
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{tagging}
+\usepackage{sc26repro}
+
+% Required for final submission: keep explanations and examples disabled.
+%\usetag{explanation}
+%\usetag{example}
+
+% Replace these paper-facing placeholders with immutable public revisions when
+% the submission policy and final release revisions are fixed.
+\newcommand{\CodeRevision}{\texttt{[FINAL CODE URL / REVISION]}}
+\newcommand{\DatasetRevision}{\texttt{[FINAL DATASET URL / REVISION]}}
+\newcommand{\DatasetDOI}{\texttt{[FINAL ARCHIVAL DOI, IF ASSIGNED]}}
+\newcommand{\UOTDCommitA}{\texttt{e4ba3722b5505cfa587b}}
+\newcommand{\UOTDCommitB}{\texttt{30032b8896d86baf8092}}
+\newcommand{\ReleaseHashA}{\texttt{97a6c2a22eacf0d68e1762051fbe57b9}}
+\newcommand{\ReleaseHashB}{\texttt{43f24c032a014eadd64f7e36aecf952f}}
+
+\begin{document}
+
+\twocolumn[%
+{\begin{center}
+\Huge
+Appendix: Artifact Description
+\end{center}}
+]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% AD Appendix only
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\appendixAD
+
+\section{Overview of Contributions and Artifacts}
+
+\subsection{Paper's Main Contributions}
+
+\begin{description}
+\item[$C_1$] A deterministic adapter that materializes generator-facing drug,
+regimen, and condition views from a pinned Unified Oncology Treatment Database
+(UOTD) release, with source hashes, provenance, and a fail-closed regimen
+projection audit.
+
+\item[$C_2$] A five-category, 20-subcategory oncology-medication extraction
+taxonomy with fixed quotas and 347 versioned clinical-text templates.
+
+\item[$C_3$] A standard-library-only generation and validation pipeline that
+produces a deterministic 2,000-row benchmark, exact evidence offsets, grounded
+annotations, and a template-disjoint 1,600/400 train/test split.
+
+\item[$C_4$] Dataset interfaces for medication recognition and normalization,
+prescribing-attribute extraction, contextual interpretation, and regimen
+resolution, accompanied by category-level profiles and release manifests.
+\end{description}
+
+\subsection{Computational Artifacts}
+
+\begin{description}
+\item[$A_1$] \textbf{OncoRx-Bench reproducibility bundle.} Generator,
+configuration, schemas, UOTD adapter, checked-in knowledge views, strict
+validator, split/profile utilities, regression tests, and manifests.
+Repository/revision: \CodeRevision. No archival DOI is assigned in this draft.
+
+\item[$A_2$] \textbf{OncoRx-Bench dataset release.} Canonical and split JSONL
+and CSV files, validation report, dataset profile, template assignments, and
+release/split manifests. Dataset revision: \DatasetRevision. Archival DOI:
+\DatasetDOI.
+\end{description}
+
+For dual-anonymous paper review, identity-bearing repository locations are
+represented by revision placeholders. The final AD should replace each
+placeholder with an immutable revision. The upstream UOTD input is pinned at
+commit \UOTDCommitA\allowbreak\UOTDCommitB.
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}p{0.08\columnwidth}p{0.20\columnwidth}p{0.58\columnwidth}@{}}
+\toprule
+\textbf{ID} & \textbf{Supports} & \textbf{Related paper elements} \\
+\midrule
+$A_1$ & $C_1$--$C_3$ & Knowledge-grounded generation pipeline figure;
+source-role, contracts, taxonomy, controls, and software-module tables;
+integrity results. \\
+\addlinespace
+$A_2$ & $C_2$--$C_4$ & Dataset-composition, category-profile,
+representative-instance, and benchmark-interface tables. \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Artifact Identification}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newartifact
+
+\artrel
+
+Artifact $A_1$ operationalizes $C_1$--$C_3$: its UOTD adapter establishes
+knowledge lineage, its configuration and templates instantiate the taxonomy,
+and its release driver connects generation, validation, splitting, profiling,
+and byte comparison.  It supports reproducibility claims, not clinical
+correctness.
+
+\artexp
+
+A successful check regenerates 2,000 records byte-for-byte.  The knowledge
+views contain 241 drug rows, 492 regimen rows, 804 condition associations, and
+2,151 projection-audit decisions.  Validation reports zero schema, quota,
+identifier, grounding, offset, evidence, signature, placeholder, or duplicate
+errors.  The 1,600/400 split has no shared source template; the canonical
+JSONL SHA-256 is \ReleaseHashA\allowbreak\ReleaseHashB; and all 24 tests pass.
+These outcomes establish artifact identity and structural integrity, not
+clinical adjudication, real-note generalization, or treatment safety.
+
+\arttime
+
+Budget 2--5 minutes for setup, less than 1 minute for release checking, and
+less than 1 minute for tests and manifest review.  On the verification host,
+these steps took 0.93 and 3.14 seconds, respectively.  A network-dependent UOTD
+view rebuild may require another 1--5 minutes.
+
+\artin
+
+\artinpart{Hardware}
+
+A 64-bit CPU, 1~GiB available memory, and 100~MiB temporary storage suffice.
+No accelerator, cluster, interconnect, or privileged service is required;
+network access is used only by the optional UOTD download check.
+
+\artinpart{Software}
+
+The frozen environment is CPython 3.9.6 and $A_1$ at \CodeRevision.  All
+runtime paths use only the standard library; \texttt{requirements.txt}
+declares no external package.  A POSIX-like shell is optional.
+
+\artinpart{Datasets / Inputs}
+
+The normative inputs are \texttt{drug\_table.csv},
+\texttt{regimen\_table.csv}, and \texttt{Conditions\_And\_Regimens.csv} under
+\texttt{data/knowledge}.  Provenance, hashes, and projection decisions are
+checked in.  The optional adapter check uses UOTD commit
+\UOTDCommitA\allowbreak\UOTDCommitB.  The full synonym inventory is not
+republished, and the derived views do not supersede upstream terms.
+
+\artinpart{Installation and Deployment}
+
+Clone or unpack $A_1$ and select CPython 3.9.6.  No compilation, container,
+database, credentials, or service is needed.  The repository currently has no
+source-code license; this must be resolved or retained explicitly as an
+archival reuse limitation.
+
+\artcomp
+
+The workflow and dependencies are:
+
+\begin{description}
+\item[$T_1$] Verify the checked-in knowledge-view and provenance hashes.
+\item[$T_2$] Using random seed 42, instantiate the 20 configured subcategories
+and 347 templates to produce exactly 2,000 JSONL records.
+\item[$T_3$] Run strict schema, grounding, evidence, quota, and duplicate
+validation; any error terminates the workflow with a nonzero status.
+\item[$T_4$] Construct template-grouped 80/20 splits and recompute exports,
+profiles, LaTeX statistics, and manifests.
+\item[$T_5$] Byte-compare every regenerated output with the archive.
+\end{description}
+
+Thus, $T_1\rightarrow T_2\rightarrow T_3\rightarrow T_4\rightarrow
+T_5$.  The single entry point is
+\texttt{python3 scripts/reproduce\_release.py --check}; the accompanying test
+entry point is \texttt{python3 -m unittest discover -s tests -v}.  Because the
+pipeline is deterministic, no statistical repetitions are used; tests also
+check cross-process byte identity under different \texttt{PYTHONHASHSEED}s.
+
+\artout
+
+Inspect the validation, split, profile, and release JSON manifests.  A pass has
+zero errors, exact quotas, zero template overlap, and matching SHA-256 values.
+The profile generates \texttt{paper/generated\_stats.tex}, tying paper tables
+to the canonical JSONL.
+
+\newartifact
+
+\artrel
+
+Artifact $A_2$ supports $C_2$ and $C_4$ and is the output of $C_3$.  Its
+annotations, partitions, and profile underlie the paper's dataset tables and
+examples.  No LLM experiment is reported, so it reproduces the resource and
+descriptive statistics, not model results.
+
+% Manual column break keeps the final two-column page visually balanced.
+\newpage
+\artexp
+
+Expect 2,000 synthetic rows in five categories and 20 subcategories, 3,525
+drug objects, 1,286 populated prescribing-information objects, 444 regimen
+objects, 170 unique drugs, 176 unique regimens, and 347 templates.  Full/train/
+test counts are 2,000/1,600/400, validation has zero errors, and the canonical
+hash is \ReleaseHashA\allowbreak\ReleaseHashB.
+
+\arttime
+
+Budget less than 2 minutes to obtain the 6.5~MiB bundle and 1--2 minutes to
+check manifests, profiles, and examples.  No model execution is involved.
+
+\artin
+
+\artinpart{Hardware}
+
+No specialized hardware is required beyond storage for a 6.5~MiB text bundle.
+
+\artinpart{Software}
+
+Any JSONL/CSV reader suffices.  CPython 3.9.6 and $A_1$ are needed only for
+validation or regeneration; no Hugging Face package is required.
+
+\artinpart{Datasets / Inputs}
+
+$A_2$ at \DatasetRevision contains canonical and split JSONL/CSV plus manifests
+and profiles.  Its text is synthetic and contains no patient records.  It is
+not clinically adjudicated or intended for patient care; redistribution
+remains subject to the notices and upstream terms in $A_1$.
+
+\artinpart{Installation and Deployment}
+
+Download the immutable $A_2$ revision; static inspection needs no deployment.
+For regeneration, use the matching $A_1$ revision recorded in the release
+manifest.
+
+\artcomp
+
+The dataset-level workflow is $D_1\rightarrow D_2\rightarrow D_3$:
+
+\begin{description}
+\item[$D_1$] Verify the downloaded files against the SHA-256 values in
+\texttt{release\_manifest.json}.
+\item[$D_2$] Confirm row counts, exhaustive split IDs, and zero template
+overlap.
+\item[$D_3$] Compare the profile and paper-example IDs, or invoke $A_1$ for
+strict validation and regeneration.
+\end{description}
+
+Fixed parameters are the 2,000-row quotas, seed 42, nested schema, and
+template-grouped subcategory-stratified split.  No repetitions are applicable.
+
+\artout
+
+Compare manifests and the profile with the expected values and paper tables.
+Checksums establish identity; validation and split checks establish structural
+consistency, not clinical validity or transfer to real notes.
+
+\end{document}

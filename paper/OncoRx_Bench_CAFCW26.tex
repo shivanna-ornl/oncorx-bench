@@ -1,0 +1,1142 @@
+% OncoRx-Bench -- CAFCW26/SC26 review manuscript
+% SC26 requires the IEEE conference proceedings format.
+% Review mode is anonymous by default. Change \anonymoustrue to
+% \anonymousfalse only for a camera-ready version after confirming the
+% CAFCW26 review policy.
+% CAFCW26 proceedings papers must meet SC26 technical-paper requirements.
+% Prepare the mandatory paper checklist and Artifact Description appendix
+% (or an explanation that no artifact exists). Confirm only the workshop-
+% specific upload mechanism and deadlines in Linklings.
+\documentclass[conference]{IEEEtran}
+
+\newif\ifanonymous
+\anonymoustrue
+
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage[nopatch=eqnum]{microtype}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{url}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage[hidelinks]{hyperref}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+\newcommand{\dataset}{\textsc{OncoRx-Bench}}
+\newcommand{\code}[1]{\texttt{#1}}
+\ifanonymous
+\newcommand{\kbfull}{an anonymized integrated oncology knowledge artifact}
+\newcommand{\kbname}{the anonymized upstream knowledge artifact}
+\newcommand{\kbadj}{upstream-artifact}
+\else
+\newcommand{\kbfull}{the Unified Oncology Treatment Database (UOTD)}
+\newcommand{\kbname}{UOTD}
+\newcommand{\kbadj}{UOTD}
+\fi
+\IfFileExists{generated_stats.tex}
+  {\input{generated_stats.tex}}
+  {\input{paper/generated_stats.tex}}
+\newcommand{\blfootnote}[1]{%
+  \begingroup
+  \renewcommand{\thefootnote}{}%
+  \footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
+\title{OncoRx-Bench: A Knowledge-Grounded Framework for
+Generating Synthetic Benchmarks for Oncology Clinical Entity Extraction}
+
+\ifanonymous
+\author{\IEEEauthorblockN{Anonymous Authors}
+\IEEEauthorblockA{Anonymous Institution}}
+\else
+\author{\IEEEauthorblockN{Abhishek Shivanna, Jordan Tschida, Mayanka Chandrashekar,\\
+John Gounley, and Heidi A. Hanson}
+\IEEEauthorblockA{Computational Sciences and Engineering Division\\
+Oak Ridge National Laboratory}}
+\fi
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Expert-labeled clinical corpora are costly to create and difficult to share,
+yet evaluating large language models (LLMs) benefits from repeatable benchmarks
+that expose specific extraction challenges. Oncology is especially demanding
+because a
+system must recognize and normalize drug variants, recover prescribing
+attributes, distinguish contextual mentions, and resolve named regimens into
+their component agents. We present \dataset, a reusable knowledge-grounded
+framework for constructing controlled synthetic benchmarks for these tasks.
+The framework separates a versioned knowledge-input layer from a configurable
+challenge taxonomy, template library, constrained samplers, scenario-specific
+text and annotation generation, integrity controls, and
+export interfaces. The reference knowledge views are materialized by a
+checksum-verifying adapter from a pinned revision of \kbfull{}. A reference
+configuration uses 347 templates across five categories and 20 subcategories to
+generate 2,000 short clinical-style snippets. The resulting dataset contains
+\FinalDrugObjects{} structured drug objects spanning
+\FinalUniqueDrugs{} normalized drugs and
+\FinalUniqueEvidenceSurfaces{} stored evidence surfaces
+(\FinalUniqueExplicitSurfaces{} literal drug surfaces and
+\FinalUniqueInferenceSurfaces{} regimen-evidence spans), together with
+\FinalRegimenObjects{} regimen objects covering
+\FinalUniqueRegimens{} regimen names. Its
+task-selected targets are intended to support future benchmarking of LLM-based
+entity recognition, normalization, prescribing-attribute extraction,
+contextual status interpretation, regimen resolution, and robustness to
+abbreviations, brands, and misspellings. Within each scenario-specific
+function, synthetic text and task-selected target objects are produced from a
+shared pool of sampled values, reducing the amount of sample-by-sample manual
+annotation needed for new configurations. Synthetic benchmarks remain
+complementary to
+expert-labeled clinical data and require independent clinical review before any
+claim of clinical validity. This paper describes the framework and benchmark
+interfaces; systematic LLM comparisons are reserved for future work.
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+
+Oncology notes compress medication information into generic and brand names,
+abbreviations, regimen acronyms, dose--route--frequency instructions, cycle
+descriptions, prior therapy, temporary holds, negation, allergies, and adverse
+reactions. Medication extraction benchmarks have therefore progressed from
+drug-mention recognition toward attribute and context modeling. The i2b2
+medication challenge included dosage, route, frequency, duration, and reason
+\cite{uzuner2010}; MADE 1.0 added indications and adverse drug events in
+cancer-patient records \cite{jagannatha2019}; and the 2022 n2c2 task modeled
+medication-event action, negation, temporality, certainty, and actor
+\cite{mahajan2023}. These resources are valuable, but access to clinical text is
+constrained by privacy and institutional data-sharing restrictions
+\cite{chapman2011}. Gold-standard construction can require detailed guidelines,
+independent annotation, and adjudication \cite{uzuner2010annotation}. The rapid
+adoption of LLMs creates an additional need for
+benchmarks that are reproducible, extensible, and organized around interpretable
+failure modes rather than a single aggregate test set.
+
+Knowledge- and template-driven generators that do not ingest patient narratives
+can broaden controlled benchmark coverage without directly distributing patient
+records. Their value is greatest when the generation process is transparent,
+task dimensions are controlled, and the output is carefully documented
+\cite{walonoski2018,gebru2021}.
+They do not replace real clinical corpora: template consistency does not by
+itself establish clinical validity or reproduce the distribution of electronic
+health records.
+
+We present \dataset\ as a framework and a reference dataset instantiation. The
+framework links normalized oncology knowledge inputs to a challenge taxonomy and
+generates synthetic text together with structured targets. The present paper
+makes four contributions:
+
+\begin{enumerate}[leftmargin=*,nosep]
+    \item a reproducible adapter from a pinned \kbadj{} relational snapshot to
+    generator-facing drug--alias, regimen--component, and condition views,
+    separated from author-specified configuration resources;
+    \item a five-category, 20-subcategory taxonomy covering canonical
+    mentions, prescribing attributes, regimen semantics, contextual status,
+    and noisy surface forms;
+    \item a generation engine that is deterministic under a fixed \kbadj{}
+    revision, adapter, materialized views, code, software environment,
+    configuration, ordering, and seed, with 347 templates, constrained entity
+    sampling, and scenario-level text and annotation construction; and
+    \item benchmark interfaces for LLM entity recognition, normalization,
+    attribute extraction, contextual interpretation, and regimen resolution,
+    with category-level analysis and extensible configurations.
+\end{enumerate}
+
+The framework reduces the amount of sample-by-sample labeling needed to create
+an initial benchmark, but it does not remove the need for expert review. No
+independent clinical validation was performed for the current release, and the
+dataset is intended for extraction research rather than clinical decision
+support, prescribing, or safety evaluation.
+
+\section{Related Work and Knowledge Resources}
+\label{sec:related}
+
+\subsection{Medication Information Extraction}
+
+The i2b2 medication challenge established a common evaluation setting for
+extracting medication names and associated fields from discharge summaries
+\cite{uzuner2010}. MADE 1.0 focused on medications, indications, and adverse
+events in longitudinal EHR notes from patients with cancer
+\cite{jagannatha2019}. The 2018 n2c2
+shared task evaluated medication and adverse-event concepts and relations
+\cite{henry2020}, whereas the 2022 n2c2 task emphasized contextualized
+medication changes \cite{mahajan2023}. More recently, large language models
+have been studied as zero- and few-shot clinical information extractors
+\cite{agrawal2022}. Such systems make it useful to expose task-specific
+benchmark slices that can distinguish surface normalization, attribute
+recovery, contextual interpretation, and implicit regimen knowledge.
+
+\subsection{Synthetic Clinical Data and Dataset Documentation}
+
+Synthetic health data can facilitate method development and reproducible
+testing when real records are inaccessible; Synthea is a prominent example of
+a transparent generator for synthetic longitudinal records
+\cite{walonoski2018}. Template-generated clinical text serves a different
+purpose: it permits direct control over which linguistic and semantic challenge
+appears in each sample and can emit structured labels at generation time.
+Because synthetic data inherit the assumptions of their generators, clear
+documentation of motivation, composition, construction, intended use, and
+limitations remains essential \cite{gebru2021}. \dataset\ follows this
+framework-oriented view: the generator is the primary contribution, and the
+2,000-row collection is one deterministic output obtained when the input
+content and ordering, code, configuration, and seed are fixed.
+
+\subsection{Drug and Regimen Terminologies}
+
+Normalized input views can be constructed from complementary resources such as
+RxNorm, HemOnc, NCI Thesaurus, DrugBank, AACT, CanMED, and SEER*Rx
+\cite{nelson2011,warner2019,sioutos2007,knox2024,tasneem2012,
+canmed2024,seerrx2026}. For the reference release, these resources are
+integrated through a pinned revision of \kbfull{}
+publication build \cite{shivanna2026uotd}.
+\ifanonymous
+The identity-bearing build label and revision are withheld during review.
+\else
+The build is \code{publication-build-2026-08-09} at Git commit
+\code{e4ba3722b550}.
+\fi
+\kbname{} applies deterministic
+source-priority integration and a final RxNorm semantic gate, and publishes
+relational drug, synonym, regimen, component, and condition tables. AACT is
+retained by \kbname{} as a stand-alone clinical-trials table and is not consumed by
+the \dataset\ adapter. \kbname{}'s published QA establishes file, schema,
+referential, and identifier consistency; it does not clinically adjudicate
+regimen component semantics.
+
+\section{Framework Architecture}
+\label{sec:framework}
+
+The framework separates benchmark construction into four layers: knowledge,
+configuration, generation, and delivery. This separation allows the input
+vocabulary and benchmark taxonomy to evolve independently. A particular
+collection such as \dataset\ is produced by fixing the \kbadj{} revision, adapter,
+materialized-view content and ordering, code, software environment,
+configuration, category targets, and random seed.
+
+\subsection{Knowledge and Normalization Layer}
+
+The released generator consumes three denormalized files under
+\code{data/knowledge}. \code{drug\_table.csv} stores an upstream drug identifier,
+canonical display name, and a JSON array of aliases;
+\code{regimen\_table.csv} stores an upstream regimen identifier, name, projection
+method, and a JSON array of component drugs; and
+\code{Conditions\_And\_Regimens.csv} retains condition--regimen associations.
+JSON arrays prevent commas inside names from being interpreted as list
+delimiters. The loaders retain backward compatibility with the legacy
+comma-separated representation, but the JSON-array views are the normative
+release inputs.
+
+The versioned adapter \code{scripts/build\_uotd\_inputs.py} verifies SHA-256
+hashes for five production tables from the pinned \kbadj{} revision, normalizes
+Unicode and whitespace, performs identifier-based joins, and orders rows and
+list values deterministically. It writes complete input and output provenance
+to \code{data/knowledge/provenance.json}. The views can be rebuilt from either
+a local upstream checkout or the five production tables at the pinned public
+commit.
+
+Inspection of the upstream regimen relations identified source-integration cases
+in which a direct union of linked components would over-expand a benchmark
+target. The OncoRx adapter therefore applies a conservative, auditable
+projection: it deduplicates direct links; retains component names only when
+they occur as token-bounded terms in the canonical regimen name; requires at
+least two retained components; excludes a row when an explicit
+author-controlled drug surface in the regimen name is missing from the upstream
+links; and adds a terminal parenthetical acronym only when it is release-unique
+for one retained component tuple. \code{regimen\_projection\_audit.csv} records every retained
+and quarantined upstream regimen and the reason for that decision. These rules are
+benchmark-eligibility safeguards, not clinical validation of a regimen.
+
+Upstream normalization reconciles source concepts, aliases, identifiers, and
+provenance. The subsequent flattening retains only the fields required by the
+generator. This avoids source-specific joins during generation and makes the
+exact input content and ordering explicit for reproducibility.
+
+Table~\ref{tab:source-roles} summarizes the role of each upstream knowledge
+source. It reports functional roles rather than combining source row counts,
+because releases, access terms, and filtering rules are source-specific.
+
+\begin{table*}[t]
+\caption{Roles of upstream resources in the pinned \kbadj{} build. The benchmark
+adapter consumes the materialized production tables rather than querying these resources
+during generation.}
+\label{tab:source-roles}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l Y Y@{}}
+\toprule
+\textbf{Resource} & \textbf{Primary framework role} & \textbf{Normalized contribution} \\
+\midrule
+RxNorm & Clinical drug normalization and synonym linkage & Canonical drug concepts, identifiers, and surface variants \\
+HemOnc & Oncology regimen representation & Regimen names, aliases, and component agents \\
+NCI Thesaurus & Cancer-oriented terminology & Disease, drug, therapy, and molecular terminology \\
+DrugBank & Drug nomenclature & Alternative names and identifiers subject to source access terms \\
+AACT & ClinicalTrials.gov intervention representation & Stand-alone upstream table; not consumed by the benchmark adapter \\
+CanMED & Oncology medication coding & NDC nomenclature used in the pinned \kbadj{} build \\
+SEER*Rx & Antineoplastic drug and regimen classification & Treatment categories, drug names, and regimen terminology \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Configuration and Output Contracts}
+
+The configuration layer defines the category hierarchy, target sample counts,
+intended difficulty labels, random seed, curated oncology and supportive-care
+pools, surface-variation maps, and attribute option lists. Templates use named
+slots such as \code{drug1}, \code{regimen\_name}, \code{dose1},
+\code{route1}, \code{freq1}, \code{condition}, and \code{intent}.
+Scenario-specific functions encode sampled values selected as targets for that
+subcategory; not every rendered slot is serialized as an annotation field.
+
+The output contract is likewise source-independent. Every sample contains an
+identifier, synthetic text, category metadata, a drug-object list, and a
+regimen-object list. JSONL is the canonical nested representation; CSV export
+serializes object lists as JSON strings for inspection and tool integration.
+The JSONL/CSV delivery pattern can be retained across differently sized
+benchmark versions and future domain extensions, although domain-specific
+schemas and task manifests may change.
+
+\begin{table}[t]
+\caption{Layered contracts of the synthetic-benchmark framework.}
+\label{tab:contracts}
+\centering
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}l Y@{}}
+\toprule
+\textbf{Layer} & \textbf{Contract} \\
+\midrule
+Knowledge & Canonical drugs and aliases, regimen names and components, and condition terms \\
+Configuration & Taxonomy, quotas, templates, candidate pools, seed, attribute options \\
+Generation & Slot values, rendered text, task-selected drug/regimen objects \\
+Delivery & JSONL/CSV schemas, category metadata, reusable benchmark subsets \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Reference Benchmark Construction}
+\label{sec:design}
+
+\subsection{Challenge Taxonomy}
+
+Table~\ref{tab:taxonomy} summarizes the target distribution. The labels
+\emph{Easy}, \emph{Medium}, \emph{Hard}, and \emph{Very Hard} are generator
+designations, not human- or model-validated difficulty measurements. Categories
+are diagnostic axes rather than mutually exclusive clinical phenomena.
+
+\begin{table*}[t]
+\caption{Taxonomy and target counts. Each category contains four
+subcategories; parenthetical values are sample counts. Difficulty is an
+intended generator label.}
+\label{tab:taxonomy}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}c l Y r l@{}}
+\toprule
+\textbf{Cat.} & \textbf{Axis} & \textbf{Subcategories} & \textbf{$n$} & \textbf{Intended difficulty} \\
+\midrule
+C1 & Core extraction & Single canonical drug (150); drug with dose/route (200); two drugs (150); supportive care (100) & 600 & Easy--Medium \\
+C2 & Prescribing information & Dose--route--frequency (150); taper/titration (100); prn/conditional (100); duration/stop (100) & 450 & Medium--Hard \\
+C3 & Regimen semantics & Explicit multi-drug regimen (150); acronym only (150); partial component list (100); cycle/line/intent (50) & 450 & Hard--Very Hard \\
+C4 & Context and safety language & Discontinued/held (100); allergy/ADR (80); negated (70); history/conflict (50) & 300 & Medium--Hard \\
+C5 & Noise and ambiguity & Abbreviation (60); brand name (60); misspelling (50); distractor-rich paragraph (30) & 200 & Medium--Very Hard \\
+\midrule
+ & \textbf{Total} & 20 subcategories & \textbf{2,000} & \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+The five categories are designed to isolate different construction axes. C1
+varies the number and type of explicit medication mentions. C2 adds structured
+administration language such as route, frequency, taper, conditional use, and
+duration. C3 shifts the representation unit from individual drugs to named
+regimens, including acronym-only and partial-component descriptions. C4 places
+otherwise recognizable medications under discontinuation, history, negation,
+allergy, or conflict language. C5 changes the observed surface through curated
+abbreviations, brands, misspellings, and longer distractor text. These axes are
+not mutually exclusive clinical phenomena; they are template-generation
+controls used to organize the artifact.
+
+Each subcategory target exceeds the size of its template pool, so templates are
+sampled repeatedly during generation. Table~\ref{tab:template-allocation}
+reports the target divided by the number of available templates. The ratio
+ranges from 3.3 to 10.0 but does not imply equal use of individual templates.
+
+\begin{table*}[t]
+\caption{Template-pool sizes in the supplied \code{templates.py}. Ratio is the
+configured target divided by the number of available templates; random
+sampling does not enforce equal use of individual templates.}
+\label{tab:template-allocation}
+\centering
+\footnotesize
+\begin{tabular}{@{}c r r r @{\hspace{1.5em}} c r r r@{}}
+\toprule
+\textbf{Subcat.} & \textbf{Target} & \textbf{Templates} & \textbf{Ratio} &
+\textbf{Subcat.} & \textbf{Target} & \textbf{Templates} & \textbf{Ratio} \\
+\midrule
+C1.1 & 150 & 30 & 5.0 & C3.3 & 100 & 15 & 6.7 \\
+C1.2 & 200 & 25 & 8.0 & C3.4 &  50 & 10 & 5.0 \\
+C1.3 & 150 & 25 & 6.0 & C4.1 & 100 & 20 & 5.0 \\
+C1.4 & 100 & 20 & 5.0 & C4.2 &  80 & 16 & 5.0 \\
+C2.1 & 150 & 20 & 7.5 & C4.3 &  70 & 20 & 3.5 \\
+C2.2 & 100 & 15 & 6.7 & C4.4 &  50 & 13 & 3.8 \\
+C2.3 & 100 & 15 & 6.7 & C5.1 &  60 & 15 & 4.0 \\
+C2.4 & 100 & 15 & 6.7 & C5.2 &  60 & 15 & 4.0 \\
+C3.1 & 150 & 15 & 10.0 & C5.3 &  50 & 15 & 3.3 \\
+C3.2 & 150 & 20 & 7.5 & C5.4 &  30 &  8 & 3.8 \\
+\midrule
+\multicolumn{2}{@{}l}{\textbf{Total}} & \textbf{347} & &
+\multicolumn{2}{l}{\textbf{Configured samples}} & \textbf{2,000} & \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Generation Inputs}
+
+The release requires all three checked-in views: canonical drugs with aliases,
+benchmark-eligible regimens with projected component drugs, and
+condition--regimen associations. Missing, malformed, or checksum-inconsistent
+inputs stop the release workflow rather than silently selecting a fallback
+vocabulary. The final materialization contains
+\FinalDrugViewRows{} drug rows,
+\FinalRegimenViewRows{} regimen rows, and
+\FinalConditionViewRows{} condition--regimen rows; the complete
+counts and hashes are recorded in the machine-readable provenance manifest.
+
+The supplied reference configuration additionally contains author-specified
+control resources: 122 oncology-oriented drug names, 42 supportive-care drugs,
+43 per-drug dose-option profiles, 57 brand-to-generic mappings, 37
+abbreviation mappings, 20 misspelling dictionaries with four variants per
+drug, 20 drug-specific adverse-reaction profiles, 15 prn condition profiles,
+and four anthracycline cumulative-dose scenario constraints. The candidate
+pools keep the generator focused on oncology and supportive-care language while
+the input views retain a broader normalized vocabulary. The dose, route,
+frequency, taper, adverse-reaction, cumulative-dose, and drug--reason values
+are generator constraints, not independently validated clinical
+recommendations. They can be replaced with versioned, clinically reviewed
+joint tuples without changing the template or serialization layers.
+
+Table~\ref{tab:controls} summarizes the controls in the reference
+configuration. They are explicit configuration objects rather than values
+embedded inside prompt text, so they can be versioned, expanded, or replaced
+independently of the template library.
+
+\begin{table*}[t]
+\caption{Author-specified control resources in the reference configuration.
+They constrain generation and are not presented as clinically validated
+recommendations.}
+\label{tab:controls}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l r Y@{}}
+\toprule
+\textbf{Control resource} & \textbf{Size} & \textbf{Framework function} \\
+\midrule
+Oncology-oriented pool & 122 & Candidate sampling across treatment and supportive contexts \\
+Supportive-care pool & 42 & Antiemetic, growth-factor, analgesic, and related scenarios \\
+Drug-specific dose profiles & 43 & Candidate dose, route, and frequency values \\
+Brand-to-generic mappings & 57 & Controlled brand normalization challenges \\
+Abbreviation mappings & 37 & Controlled abbreviation normalization challenges \\
+Misspelling dictionaries & 20 drugs $\times$ 4 & Seeded, controlled surface corruption \\
+Adverse-reaction profiles & 20 drugs & Allergy and adverse-reaction context templates \\
+prn condition profiles & 15 drugs & Drug--reason pairing for a profiled subset of conditional-use templates \\
+Cumulative-dose constraints & 4 drugs & Anthracycline-specific values in cumulative-dose scenarios \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+The reference configuration uses ten note-type labels. Each subcategory has an
+author-specified eligible subset selected for compatibility with its template
+family, and selection within that subset uses the same seeded pseudorandom
+generator as the remaining scenario values. These labels do not estimate the
+prevalence of document types in an external EHR corpus and are not independently
+validated note classifications.
+
+The authors report that Anthropic Claude Sonnet 4.7 assisted initial drafting
+of portions of the source code, template library, configuration resources, and
+explanatory text \cite{anthropic2026}. The exact prompts and decoding settings
+were not retained, so that developmental drafting process cannot be replayed
+exactly. The retained, versioned artifacts were subsequently audited and
+revised. No LLM is invoked while rendering individual dataset rows; release
+generation uses the deterministic Python procedure described below.
+
+\subsection{Generation Procedure}
+
+Figure~\ref{fig:pipeline} shows the benchmark-construction path. With random
+seed 42, the reference configuration iterates through 20 subcategory
+specifications, selects a template from the corresponding pool, samples
+entities and optional attributes, renders text, and constructs structured
+annotations. Duplicate detection uses a lowercase, whitespace-trimmed key while
+preserving the rendered text and permits up to 100 candidate-generation
+attempts. For regimen-bearing scenarios that require a condition, the
+condition is sampled from associations for the selected upstream regimen rather
+than from an independent global list. The exporter serializes object lists into CSV columns
+and constructs an exact 80/20 split within every subcategory while keeping each
+source-template group wholly in train or test.
+
+\begin{figure*}[t]
+\centering
+\begin{tikzpicture}[
+  stage/.style={draw=black!65, rounded corners=2pt, align=center,
+    text width=2.85cm, minimum height=1.55cm, inner sep=3pt,
+    font=\scriptsize, fill=blue!4},
+  arrow/.style={-{Stealth[length=5pt]}, semithick, draw=black!70},
+  node distance=0.43cm]
+\node[stage] (inputs) {\textbf{1. Knowledge materialization}\\Pinned upstream tables\\SHA-verified adapter\\Three generator views};
+\node[stage, right=of inputs] (constraints) {\textbf{2. Curated lists}\\Oncology/supportive pools\\Alias and typo maps\\Dose option profiles};
+\node[stage, right=of constraints] (instantiate) {\textbf{3. Instantiation}\\20 subcategories\\347 templates\\Seeded sampling};
+\node[stage, right=of instantiate] (labels) {\textbf{4. Scenario output}\\Synthetic text\\Drug/regimen objects\\Status/prescribing fields};
+\node[stage, right=of labels] (deliver) {\textbf{5. Audit and release}\\Nested-schema checks\\Grounding and offsets\\JSONL/CSV and hashes};
+\draw[arrow] (inputs) -- (constraints);
+\draw[arrow] (constraints) -- (instantiate);
+\draw[arrow] (instantiate) -- (labels);
+\draw[arrow] (labels) -- (deliver);
+\end{tikzpicture}
+\caption{Knowledge-grounded synthetic benchmark generation pipeline. A fixed
+upstream revision, adapter, normalized-view content and ordering, author-specified
+constraints, template targets, software environment, code, and seed produce a
+deterministic dataset output.}
+\label{fig:pipeline}
+\end{figure*}
+
+Generation is target-driven rather than distribution-estimating. For each
+subcategory, the implementation constructs the configured number of valid
+samples or stops with an error. Identifiers use a monotonically increasing
+counter. Text and task-specific target objects are constructed from shared
+sampled slot values; exceptions do not produce simplified rows with targets
+from a failed scenario.
+
+The duplicate-control loop forms a lowercased, trimmed comparison key from the
+generated text and permits up to 100 candidate-generation attempts. If every
+attempt collides, generation stops rather than admitting a known duplicate.
+Runs are repeatable when the pinned upstream revision, adapter, materialized-view
+content and ordering, code, software environment, configuration, and seed are
+fixed.
+
+The companion integrity script checks required and optional field types,
+nested objects, enumerations, category quotas, difficulty and note-type values,
+unique sample identifiers, generated-drug counts, and character-offset/surface
+agreement. It verifies normalized drugs, regimen names, and projected regimen
+components against the canonical generator views; flags unresolved template
+slots and normalized duplicate text; and exits nonzero on failure. Split checks
+confirm exhaustive, disjoint identifiers and zero shared source templates.
+These controls establish structural,
+referential, and release consistency only; they do not establish joint clinical
+correctness or exhaustive annotation of incidental medication language. The
+exporter serializes nested objects as JSON strings and creates human-readable
+summaries.
+
+\paragraph{Observed integrity results.}
+For the final 2,000-row release, the release checks report
+\FinalValidationErrors{} structural or referential errors and
+\FinalDuplicateTexts{} normalized duplicate texts from the strict validator;
+the split manifest and exporter checks report
+\FinalSplitLeakageErrors{} source-template split-overlap errors. No automated
+result in this paragraph constitutes clinical validation.
+
+\subsection{Reference Implementation}
+
+The implementation mirrors the layered design rather than placing generation
+logic in one monolithic script. Table~\ref{tab:modules} identifies the core
+modules and release utilities. This decomposition makes it possible to
+modify a taxonomy, add templates, revise schema fields, or change export policy
+without rewriting the other layers. \ifanonymous
+Source code, validation utilities, and release materials are described by an
+artifact citation withheld from the paper body for review
+\cite{shivanna2026github}.\else
+Source code, validation utilities, and release materials are available in the
+project repository \cite{shivanna2026github}.\fi
+
+\begin{table*}[t]
+\caption{Reference software modules and framework responsibilities.}
+\label{tab:modules}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l Y@{}}
+\toprule
+\textbf{Module} & \textbf{Responsibility} \\
+\midrule
+\code{scripts/build\_uotd\_inputs.py} & Pinned upstream acquisition, checksum verification, deterministic view materialization, regimen projection, and provenance/audit output \\
+\code{dataset\_config.py} & Seed, category quotas, candidate vocabularies, attribute profiles, and controlled variation maps \\
+\code{templates.py} & 347 template strings organized by 20 subcategories \\
+\code{generate\_dataset.py} & Knowledge-view loaders, samplers, subcategory generators, text--target construction, and JSONL serialization \\
+\code{schema.py} & Drug, prescribing-information, regimen, offset, and benchmark-sample output objects \\
+\code{validate\_dataset.py} & Nested schema, enum, grounding, offset, evidence, quota, and duplicate checks with nonzero failure status \\
+\code{export\_csv.py} & JSONL/CSV export and deterministic subcategory-stratified, source-template-grouped partitioning \\
+\code{scripts/reproduce\_release.py} & One-command generation, validation, export, profiling, manifest construction, and byte comparison \\
+\code{scripts/profile\_release.py} & Dataset statistics and generated LaTeX values used by the paper tables \\
+\code{data/knowledge/provenance.json} & Upstream revision, source and output hashes, view counts, transformation policy, and projection summary \\
+\code{data/knowledge/regimen\_projection\_audit.csv} & Per-regimen retained/quarantined status and component-projection evidence \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\paragraph{Reproducible release.}
+The command \code{python3 scripts/reproduce\_release.py {-}{-}check} verifies
+the pinned knowledge views, regenerates JSONL in a temporary directory, runs
+the strict validator, rebuilds the full and split JSONL/CSV artifacts and paper
+statistics, and byte-compares every result with the archive. The reference
+artifact uses CPython 3.9.6 with no external Python packages. Its canonical
+JSONL SHA-256 is
+\code{\FinalJsonlShaA}\allowbreak\code{\FinalJsonlShaB}. The release manifest
+records complete source and artifact hashes. For double-anonymous review,
+identity-bearing repository and dataset revisions are withheld from the paper
+body and should be restored in the camera-ready version.
+
+\subsection{Annotation Objects}
+
+Each row contains an identifier, synthetic text, category, subcategory,
+intended difficulty, auxiliary note-type label, generated-drug count,
+drug-object list, and regimen-object list.
+
+A drug object contains a stored surface string, normalized name, inclusive
+start and exclusive end character offsets, medication state, separate
+contextual flags, an optional reason or adverse event, and optional prescribing
+information. The field \code{evidence\_type} distinguishes a literal
+\code{explicit\_surface} from a \code{regimen\_inference} whose evidence span
+is the named regimen. The field \code{status} records temporal/action state and takes
+one of \code{current}, \code{planned}, \code{historical},
+\code{discontinued}, \code{hold}, or \code{unknown}. The Boolean fields
+\code{negated}, \code{allergy}, and \code{uncertain} are separate contextual
+properties rather than additional status values. The separate
+\code{adverse\_event} field stores a rendered reaction or toxicity when the
+scenario attributes it to the medication.
+
+The serialized field \code{sig} stores optional prescribing information,
+including dose value and unit, route, frequency, duration, form, \code{prn},
+taper, cycle-day, and infusion-time fields. The reference release populates
+only fields supported by the rendered text. A regimen object contains its
+surface and normalized forms, inclusive/exclusive character offsets,
+benchmark-eligible normalized components, and optional cycle and intent
+metadata. The optional \code{intent} field is separate from medication status
+and may take one of \code{neoadjuvant}, \code{adjuvant}, \code{first\_line},
+\code{second\_line}, \code{third\_line\_plus}, \code{maintenance},
+\code{palliative}, \code{curative}, \code{salvage}, \code{conditioning},
+\code{consolidation}, \code{induction}, or \code{other}. Cycle and intent
+metadata are serialized only when the corresponding value is expressed in the
+synthetic text.
+
+The schema deliberately supports both literal medication mentions and regimen
+resolution. A named regimen can therefore carry a normalized component list
+even when the individual agents are not written in the snippet. Category and
+subcategory metadata can be combined with a task manifest to identify eligible
+rows and select the target fields relevant to an LLM benchmarking task. For a
+component inferred from a named regimen, any stored surface and offsets identify
+the regimen evidence span; they do not assert a literal span for the unwritten
+component name.
+
+\section{Generated Dataset and Benchmark Interfaces}
+\label{sec:dataset}
+
+\subsection{Reference Dataset Composition}
+
+Binding the framework to the taxonomy, template library, curated lists, and
+seed described above produces the 2,000-row reference dataset summarized in
+Table~\ref{tab:profile}. These statistics characterize the generated resource
+rather than a model experiment. The collection contains
+\FinalDrugObjects{} structured drug objects and
+\FinalRegimenObjects{} regimen objects, enabling one dataset to
+support multiple extraction interfaces. \ifanonymous
+The corresponding data artifact is identified through an anonymous artifact
+citation \cite{shivanna2026hf}.\else
+The corresponding dataset release is available through Hugging Face
+\cite{shivanna2026hf}.\fi
+
+\begin{table}[t]
+\caption{Composition of the reference \dataset\ configuration.}
+\label{tab:profile}
+\centering
+\footnotesize
+\begin{tabularx}{\columnwidth}{@{}Y r@{}}
+\toprule
+\textbf{Statistic} & \textbf{Value} \\
+\midrule
+Samples / configured note types & 2,000 / 10 \\
+Categories / subcategories & 5 / 20 \\
+Templates & 347 \\
+Drug annotation objects & \FinalDrugObjects \\
+Unique normalized drugs / stored evidence surfaces & \FinalUniqueDrugs{} / \FinalUniqueEvidenceSurfaces \\
+Literal drug / regimen-evidence surfaces & \FinalUniqueExplicitSurfaces{} / \FinalUniqueInferenceSurfaces \\
+Drug objects with prescribing information & \FinalSigObjects \\
+Regimen objects / unique names & \FinalRegimenObjects{} / \FinalUniqueRegimens \\
+Component assignments / unique components & \FinalComponentAssignments{} / \FinalUniqueComponents \\
+Mean / median whitespace terms & \FinalMeanTerms{} / \FinalMedianTerms \\
+Easy / Medium / Hard / Very Hard & 350 / 840 / 580 / 230 \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Table~\ref{tab:category-profile} shows how annotation structures follow the
+five framework axes. C1 and C2 contribute prescribing-information objects, C3
+concentrates regimen structures, C4 concentrates contextual medication states,
+and C5 applies surface perturbations and distractors. The allocation is
+intentional: benchmark users
+can select a category aligned with the extraction capability being studied
+instead of treating every row as the same task.
+
+\begin{table*}[t]
+\caption{Reference-dataset profile by framework category. Mean terms are
+computed by whitespace splitting.}
+\label{tab:category-profile}
+\centering
+\footnotesize
+\begin{tabular}{@{}c r r r r r r@{}}
+\toprule
+\textbf{Category} & \textbf{Rows} & \textbf{Template pool} &
+\textbf{Mean terms} & \textbf{Drug objects} & \textbf{Prescr. objects} &
+\textbf{Regimen objects} \\
+\midrule
+C1 & 600 & 100 & \FinalCOneMeanTerms & \FinalCOneDrugs & \FinalCOneSigs & \FinalCOneRegimens \\
+C2 & 450 & 65  & \FinalCTwoMeanTerms & \FinalCTwoDrugs & \FinalCTwoSigs & \FinalCTwoRegimens \\
+C3 & 450 & 60  & \FinalCThreeMeanTerms & \FinalCThreeDrugs & \FinalCThreeSigs & \FinalCThreeRegimens \\
+C4 & 300 & 69  & \FinalCFourMeanTerms & \FinalCFourDrugs & \FinalCFourSigs & \FinalCFourRegimens \\
+C5 & 200 & 53  & \FinalCFiveMeanTerms & \FinalCFiveDrugs & \FinalCFiveSigs & \FinalCFiveRegimens \\
+\midrule
+\textbf{Total} & \textbf{2,000} & \textbf{347} & \FinalMeanTerms &
+\FinalDrugObjects & \FinalSigObjects & \FinalRegimenObjects \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Illustrative Generated Instances}
+
+Table~\ref{tab:examples} illustrates the coupling between rendered text and
+structured targets. The examples span two dose--route--frequency orders, a
+partial regimen description, a negated medication,
+and a misspelled surface form. They are examples of framework behavior and
+have not undergone independent clinical review. The rows were selected from
+and checked against the final regenerated JSONL artifact.
+
+\begin{table*}[t]
+\caption{Representative synthetic rows and generated target structures.}
+\label{tab:examples}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l l Y Y@{}}
+\toprule
+\textbf{ID} & \textbf{Subcat.} & \textbf{Synthetic text} &
+\textbf{Generated target summary} \\
+\midrule
+ONCORX-0603 & C2.1 & Current regimen: Bevacizumab 15 mg/kg IV q3w. & Bevacizumab; dose 15 mg/kg; route IV; frequency q3w \\
+ONCORX-0606 & C2.1 & Current regimen: Capecitabine 850 mg/m2 PO BID days 1-14 q3w. & Capecitabine; dose 850 mg/m2; route PO; frequency BID days 1-14 q3w \\
+ONCORX-1354 & C3.3 & cisplatin and etoposide (ep) and bevacizumab: Etoposide IV, with remaining agents scheduled separately. & Regimen components: Bevacizumab, Cisplatin, Etoposide; Etoposide route IV \\
+ONCORX-1681 & C4.3 & No indication for Tamoxifen at this time. & Tamoxifen; negated=true; status=unknown \\
+ONCORX-1922 & C5.3 & Infused paclitaxle 175 mg/m2 IV. & paclitaxle $\rightarrow$ Paclitaxel; dose 175 mg/m2; route IV \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{LLM Benchmarking Interface}
+
+Prior work has evaluated zero- and few-shot LLMs for clinical information
+extraction and implemented structured LLM extraction pipelines
+\cite{agrawal2022,hsu2025}. The schema developed here is intended to support
+future zero-shot, few-shot, retrieval-augmented, and fine-tuned evaluations. No
+LLM results are reported in this paper.
+
+Table~\ref{tab:llm-tasks} maps eligible framework categories to four extraction
+interfaces. Separating the interfaces avoids requiring a model to emit fields
+that a category was not constructed to represent. It also supports
+category-level reporting: for example, normalization behavior can be examined
+separately for canonical names, brands, abbreviations, and misspellings, while
+regimen resolution can be isolated from literal drug recognition. A future
+evaluation release should add a versioned task manifest identifying eligible
+rows and the target projection for each interface.
+
+\begin{table*}[t]
+\caption{Intended LLM benchmarking interfaces supported by the framework.}
+\label{tab:llm-tasks}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{@{}l l Y Y@{}}
+\toprule
+\textbf{Interface} & \textbf{Primary categories} &
+\textbf{Requested model output} & \textbf{Controlled challenge} \\
+\midrule
+Mention extraction and normalization & C1, C5.1--C5.3 &
+Drug surface and canonical generic name &
+Canonical names, brands, abbreviations, and misspellings \\
+Prescribing-information extraction & C1.2; eligible C2 rows &
+Drug-linked dose, unit, route, frequency, duration, \code{prn}, and taper fields when populated &
+Attribute combinations and order phrasing \\
+Regimen resolution & C3.2--C3.4; eligible C3.1 rows &
+Regimen name and benchmark-eligible component projection, with cycle and intent fields when visibly supported &
+Explicit, acronym-only, and partial-component descriptions \\
+Contextual medication interpretation & C4 &
+Medication temporal/action status plus separate negation and allergy flags &
+Current, planned, historical, held, discontinued, negated, and allergy contexts \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+A reproducible LLM study built on the framework should freeze the upstream
+revision, adapter and knowledge views, configuration, template version, seed,
+and task schema. It should also
+state whether the model can access an external drug or regimen knowledge base,
+whether decoding is constrained to valid JSON, and whether demonstrations are
+selected from the same category. Future template-, entity-, and
+regimen-disjoint configurations can support stronger generalization studies.
+These are benchmark-design choices, not properties that must remain fixed
+across all uses of the framework. Future paired configurations can hold the
+target entity fixed while varying surface form, syntax, context, or noise for
+controlled robustness analysis.
+
+\subsection{Extensibility and Scale}
+
+The framework is modular along three dimensions. First, a domain extension can
+reuse orchestration and delivery while supplying domain-specific knowledge
+views, schema objects, templates, candidate pools, and generator functions.
+Second, new task axes can be registered without changing existing categories.
+Third, targets and seeds can produce benchmark versions with different sizes
+and challenge mixtures.
+
+The reference implementation uses one pseudorandom generator and constructs
+categories sequentially. Parallel generation is an architectural extension,
+not a property of the current code. A future distributed implementation could
+assign deterministic seed ranges to shards and reconcile duplicates globally;
+reproducibility and scaling would need to be measured before performance claims
+are made on high-performance computing systems.
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Why a Generation Framework is Needed}
+
+Access to clinical text remains limited by privacy, institutional sharing
+restrictions, and the effort required to create expert ground truth
+\cite{chapman2011,uzuner2010annotation}. Medication and regimen extraction add
+specialized labels that often require clinical knowledge, making it difficult
+to build a separate human-annotated corpus for every task variant. Synthetic
+corpora have therefore been investigated as complementary resources for
+clinical entity extraction and, in some settings, relation extraction
+\cite{brekke2021,li2021}.
+
+The framework addresses this bottleneck by producing text and task-selected
+targets within the same scenario-specific generation function from shared
+sampled values. This reduces the initial sample-by-sample labeling burden and
+provides configured control over category
+targets and surface perturbations; the reference instantiation realizes all
+configured category counts. An investigator can add a failure mode, regenerate
+a slice from fixed inputs, and preserve a common output schema. The benefit is
+controlled coverage, not a claim of real-note representativeness.
+
+\subsection{Knowledge Grounding and Controlled Variation}
+
+Knowledge grounding separates what an entity means from how it appears in text.
+Canonical drug names, projected regimen components, and regimen--condition
+associations enter through the pinned knowledge-derived views, whereas brands,
+abbreviations, misspellings, and selected drug--reason relations enter through
+explicit author-controlled configuration maps. Although the loader constructs
+a general alias map, current generators use controlled surface-variation maps
+rather than sampling the entire alias inventory. Templates then vary syntax
+and context while retaining task-specific targets. Referential grounding and
+lexical projection improve traceability, but neither establishes clinical
+correctness. Recent work on knowledge-guided clinical text generation supports
+this general design direction \cite{xu2024}.
+
+This separation is useful for LLM evaluation. Direct models can be compared
+with models that receive a drug or regimen knowledge source, and constrained
+JSON generation can be compared with free-form extraction under the same
+category definitions. Fine-grained categories help identify whether a failure
+arises from mention recognition, normalization, contextual interpretation, or
+knowledge-dependent regimen expansion rather than collapsing all behaviors into
+one score.
+
+\subsection{Complementarity with Human-Labeled Data}
+
+Synthetic benchmarks should be used alongside, not instead of, expert-labeled
+clinical corpora. Studies of synthetic clinical notes have shown that they can
+support entity-extraction development, while also emphasizing the importance of
+testing transfer to real text \cite{brekke2021,li2021}. For \dataset, a sensible
+future program is to use the synthetic categories for controlled stress testing
+and use access-controlled real-note datasets for external validity. This
+division preserves the control and configurability of the framework without
+overstating the clinical realism of its outputs.
+\section{Limitations and Future Work}
+\label{sec:limitations}
+
+\textbf{Synthetic scope.}
+The reference dataset contains short, English-language, template-generated
+snippets. It does not reproduce document-level coreference, longitudinal
+chronology, institutional writing styles, copy-forward behavior, or the full
+distribution of errors in real electronic health records. The intended
+difficulty tiers are design labels rather than empirically established measures
+of human or model difficulty. The scenario-conditioned note-type labels are
+generator metadata and should not be interpreted as an estimate of document
+prevalence or as validated note classification.
+
+\textbf{Knowledge grounding and clinical validity.}
+The framework obtains normalization targets from input tables and curated
+mappings, but entity-level grounding does not establish the
+clinical appropriateness of every disease, drug, dose, route, frequency, and
+schedule combination. No independent clinical validation was performed for the
+current dataset. It must not be used for prescribing, regimen validation,
+contraindication assessment, or patient-care decisions. Future configurations
+should use clinically reviewed joint tuples and a documented expert sampling
+and adjudication protocol. The conservative OncoRx regimen projection prevents
+known source-link unions from being copied directly into benchmark targets, but
+it is a lexical, fail-closed eligibility rule. It can exclude valid regimens and
+does not prove that every retained component set is clinically complete or
+appropriate.
+
+\textbf{Annotation and partition design.}
+The current release provides sample-level, task-selective structured targets;
+it does not guarantee exhaustive annotation of every medication-like string in
+every category. Distractor-rich C5.4 templates may contain incidental medication
+text outside the task-selected target list. The release provides character
+offsets for stored evidence surfaces and an \code{evidence\_type} field that
+separates literal drug surfaces from components inferred through a regimen
+span, but it does not yet provide explicit task-eligibility masks or per-object
+source-provenance identifiers. The supplied 80/20 split is an in-distribution,
+subcategory-stratified, source-template-disjoint split; entity- and
+regimen-disjoint partitions should complement it in future generalization
+studies.
+
+\textbf{Reproducibility and licensing.}
+The reference release freezes the upstream revision and source-table hashes,
+adapter, materialized views and their hashes, code, configuration, software
+environment, random seed, generated artifacts, and validation report. The
+benchmark can therefore be regenerated from the checked-in views, and the views
+can be independently rebuilt from the pinned public production tables.
+Reconstructing \kbname{} itself from raw third-party sources still requires users to
+obtain license-appropriate snapshots; public availability of a derived file
+does not supersede upstream access or redistribution terms. The upstream source
+manifest, OncoRx provenance manifest, and regimen-projection audit document this
+boundary. The generator does not require patient narratives, but governance of
+source data and generated releases remains necessary.
+
+\textbf{Future validation and benchmarking.}
+The release audit covers nested schema and enumeration conformance,
+surface--offset agreement, referential grounding, configured distributions,
+duplicate control, partition exhaustiveness, and source-template overlap.
+These automated checks do not establish clinical semantic consistency,
+exhaustive task annotation, or transfer to real notes. Future work will add
+documented expert review of a representative sample. A separate empirical study
+will compare direct, few-shot, fine-tuned, and knowledge-augmented LLM
+extractors using frozen prompts and model versions. Human evaluation of clinical
+LLM outputs has included factuality, reasoning, bias, and the likelihood and
+severity of potential harm \cite{singhal2023}.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+\dataset\ presents synthetic clinical benchmark construction as a reusable
+framework rather than a one-time corpus-generation exercise. Modular knowledge
+inputs, a 20-subcategory task taxonomy, category-specific samplers, controlled
+variation resources, 347 templates, and scenario-level text and target
+generation support deterministic construction of structured benchmarks when
+the upstream revision, adapter, materialized inputs, software environment, code,
+configuration, ordering, and seed are fixed. The reference configuration
+produces 2,000 examples spanning canonical entities, prescribing attributes, regimen resolution,
+contextual mentions, and perturbed surface forms.
+
+Such controlled synthetic datasets can complement scarce expert-annotated
+clinical corpora by providing repeatable challenge sets for LLM-based entity
+extraction and category-specific analysis. They do not replace evaluation on
+real clinical text or establish clinical correctness. Future work will add
+independent clinical review, exhaustive task annotations, broader language
+generation, stronger partitioning, and systematic LLM comparisons.
+
+\section*{Acknowledgment}
+
+Anthropic Claude Sonnet 4.7 assisted initial drafts of portions of the code,
+templates, configuration, and explanatory text, as disclosed in
+Section~\ref{sec:design} \cite{anthropic2026}. OpenAI Codex was used to audit
+and materially revise the knowledge adapter, generator, schema, validator,
+splitter, tests, release artifacts, documentation, and manuscript
+\cite{openai2026codex}. AI-assisted wording may appear in the abstract and
+Sections~I--VIII. No LLM generated individual dataset rows at release time.
+The authors reviewed and approved all retained code, data, and manuscript
+revisions and remain fully responsible for the work's content. \ifanonymous
+Author-identifying funding and contract acknowledgments
+are omitted for anonymous review.\else
+\blfootnote{Notice: This manuscript has been authored by UT-Battelle LLC under
+contract DE-AC05-00OR22725 with the US Department of Energy (DOE). The US
+government retains and the publisher, by accepting the article for publication,
+acknowledges that the US government retains a nonexclusive, paid-up,
+irrevocable, worldwide license to publish or reproduce the published form of
+this manuscript, or allow others to do so, for US government purposes. DOE will
+provide public access to these results of federally sponsored research in
+accordance with the DOE Public Access Plan
+(\url{https://www.energy.gov/doe-public-access-plan}).}
+\fi
+
+% Apply \IEEEtriggeratref only after the final text and references are frozen.
+\begin{thebibliography}{99}
+
+\bibitem{uzuner2010}
+O. Uzuner, I. Solti, and E. Cadag, ``Extracting medication information from
+clinical text,'' \emph{J. Am. Med. Inform. Assoc.}, vol. 17, no. 5,
+pp. 514--518, 2010, doi: \href{https://doi.org/10.1136/jamia.2010.003947}{10.1136/jamia.2010.003947}.
+
+\bibitem{jagannatha2019}
+A. Jagannatha, F. Liu, W. Liu, and H. Yu, ``Overview of the first natural
+language processing challenge for extracting medication, indication, and
+adverse drug events from electronic health record notes (MADE 1.0),''
+\emph{Drug Saf.}, vol. 42, no. 1, pp. 99--111, 2019, doi:
+\href{https://doi.org/10.1007/s40264-018-0762-z}{10.1007/s40264-018-0762-z}.
+
+\bibitem{mahajan2023}
+D. Mahajan, J. J. Liang, C.-H. Tsou, and O. Uzuner, ``Overview of the 2022
+n2c2 shared task on contextualized medication event extraction in clinical
+notes,'' \emph{J. Biomed. Inform.}, vol. 144, Art. no. 104432, 2023, doi:
+\href{https://doi.org/10.1016/j.jbi.2023.104432}{10.1016/j.jbi.2023.104432}.
+
+\bibitem{chapman2011}
+W. W. Chapman, P. M. Nadkarni, L. Hirschman, L. W. D'Avolio, G. K. Savova,
+and O. Uzuner, ``Overcoming barriers to NLP for clinical text: The role of
+shared tasks and the need for additional creative solutions,'' \emph{J. Am.
+Med. Inform. Assoc.}, vol. 18, no. 5, pp. 540--543, 2011, doi:
+\href{https://doi.org/10.1136/amiajnl-2011-000465}{10.1136/amiajnl-2011-000465}.
+
+\bibitem{uzuner2010annotation}
+O. Uzuner, I. Solti, F. Xia, and E. Cadag, ``Community annotation experiment
+for ground truth generation for the i2b2 medication challenge,'' \emph{J. Am.
+Med. Inform. Assoc.}, vol. 17, no. 5, pp. 519--523, 2010, doi:
+\href{https://doi.org/10.1136/jamia.2010.004200}{10.1136/jamia.2010.004200}.
+
+\bibitem{walonoski2018}
+J. Walonoski \emph{et al.}, ``Synthea: An approach, method, and software
+mechanism for generating synthetic patients and the synthetic electronic
+health care record,'' \emph{J. Am. Med. Inform. Assoc.}, vol. 25, no. 3,
+pp. 230--238, 2018, doi:
+\href{https://doi.org/10.1093/jamia/ocx079}{10.1093/jamia/ocx079}.
+
+\bibitem{gebru2021}
+T. Gebru \emph{et al.}, ``Datasheets for datasets,'' \emph{Commun. ACM},
+vol. 64, no. 12, pp. 86--92, 2021, doi:
+\href{https://doi.org/10.1145/3458723}{10.1145/3458723}.
+
+\bibitem{henry2020}
+S. Henry, K. Buchan, M. Filannino, A. Stubbs, and O. Uzuner, ``2018 n2c2
+shared task on adverse drug events and medication extraction in electronic
+health records,'' \emph{J. Am. Med. Inform. Assoc.}, vol. 27, no. 1,
+pp. 3--12, 2020, doi:
+\href{https://doi.org/10.1093/jamia/ocz166}{10.1093/jamia/ocz166}.
+
+\bibitem{agrawal2022}
+M. Agrawal, S. Hegselmann, H. Lang, Y. Kim, and D. Sontag, ``Large language
+models are few-shot clinical information extractors,'' in \emph{Proc. 2022
+Conf. Empirical Methods Natural Language Processing}, 2022, pp. 1998--2022,
+doi: \href{https://doi.org/10.18653/v1/2022.emnlp-main.130}{10.18653/v1/2022.emnlp-main.130}.
+
+\bibitem{nelson2011}
+S. J. Nelson, K. Zeng, J. Kilbourne, T. Powell, and R. Moore, ``Normalized
+names for clinical drugs: RxNorm at 6 years,'' \emph{J. Am. Med. Inform.
+Assoc.}, vol. 18, no. 4, pp. 441--448, 2011, doi:
+\href{https://doi.org/10.1136/amiajnl-2011-000116}{10.1136/amiajnl-2011-000116}.
+
+\bibitem{warner2019}
+J. L. Warner \emph{et al.}, ``HemOnc: A new standard vocabulary for
+chemotherapy regimen representation in the OMOP common data model,''
+\emph{J. Biomed. Inform.}, vol. 96, Art. no. 103239, 2019, doi:
+\href{https://doi.org/10.1016/j.jbi.2019.103239}{10.1016/j.jbi.2019.103239}.
+
+\bibitem{sioutos2007}
+N. Sioutos, S. de Coronado, M. W. Haber, F. W. Hartel, W.-L. Shaiu, and
+L. W. Wright, ``NCI Thesaurus: A semantic model integrating cancer-related
+clinical and molecular information,'' \emph{J. Biomed. Inform.}, vol. 40,
+no. 1, pp. 30--43, 2007, doi:
+\href{https://doi.org/10.1016/j.jbi.2006.02.013}{10.1016/j.jbi.2006.02.013}.
+
+\bibitem{knox2024}
+C. Knox \emph{et al.}, ``DrugBank 6.0: The DrugBank knowledgebase for 2024,''
+\emph{Nucleic Acids Res.}, vol. 52, no. D1, pp. D1265--D1275, 2024, doi:
+\href{https://doi.org/10.1093/nar/gkad976}{10.1093/nar/gkad976}.
+
+\bibitem{tasneem2012}
+A. Tasneem \emph{et al.}, ``The database for aggregate analysis of
+ClinicalTrials.gov (AACT) and subsequent regrouping by clinical specialty,''
+\emph{PLOS ONE}, vol. 7, no. 3, Art. no. e33677, 2012, doi:
+\href{https://doi.org/10.1371/journal.pone.0033677}{10.1371/journal.pone.0033677}.
+
+\bibitem{canmed2024}
+Division of Cancer Control and Population Sciences, National Cancer Institute,
+``Cancer Medications Enquiry Database (CanMED),'' Surveillance Research
+Program SEER website tool, NDC release ver. 1.24.0, 2024. [Online]. Available:
+\url{https://seer.cancer.gov/oncologytoolbox/canmed/}. Accessed: Oct. 1, 2024.
+
+\bibitem{seerrx2026}
+National Cancer Institute, SEER Program, ``SEER*Rx Interactive Antineoplastic
+Drugs Database.'' [Online]. Available:
+\url{https://seer.cancer.gov/seertools/seerrx/}. Accessed: Aug. 8, 2026.
+
+\bibitem{shivanna2026uotd}
+\ifanonymous
+Anonymous, ``Knowledge-base artifact,'' omitted for double-anonymous review,
+2026.
+\else
+A. Shivanna, ``Unified Oncology Treatment Database,'' publication build
+\code{publication-build-2026-08-09}, \emph{GitHub}, commit
+\code{e4ba3722b5505cfa587b30032b8896d86baf8092}, 2026. [Online]. Available:
+\url{https://github.com/shivanna-ornl/unified-oncology-treatment-database/tree/e4ba3722b5505cfa587b30032b8896d86baf8092}.
+Accessed: Aug. 11, 2026.
+\fi
+
+\bibitem{shivanna2026github}
+\ifanonymous
+Anonymous, ``Source-code artifact,'' omitted for double-anonymous review, 2026.
+\else
+A. Shivanna, ``OncoRx-Bench: Oncology drug extraction benchmark,''
+\emph{GitHub}, 2026. [Online]. Available:
+\url{https://github.com/shivanna-ornl/oncorx-bench}. Accessed: Aug. 8, 2026.
+\fi
+
+\bibitem{shivanna2026hf}
+\ifanonymous
+Anonymous, ``Dataset artifact,'' omitted for double-anonymous review, 2026.
+\else
+A. Shivanna, ``OncoRx-Bench: Oncology drug extraction benchmark,''
+\emph{Hugging Face}, 2026. [Data set]. Available:
+\url{https://huggingface.co/datasets/AbhishekShivanna/oncorx-bench}.
+Accessed: Aug. 8, 2026.
+\fi
+
+\bibitem{hsu2025}
+E. Hsu and K. Roberts, ``LLM-IE: A Python package for biomedical generative
+information extraction with large language models,'' \emph{JAMIA Open}, vol. 8,
+no. 2, Art. no. ooaf012, 2025, doi:
+\href{https://doi.org/10.1093/jamiaopen/ooaf012}{10.1093/jamiaopen/ooaf012}.
+
+\bibitem{brekke2021}
+P. H. Brekke, T. Rama, I. Pil\'an, {\O}. Nytr{\o}, and L. {\O}vrelid, ``Synthetic
+data for annotation and extraction of family history information from clinical
+text,'' \emph{J. Biomed. Semantics}, vol. 12, Art. no. 11, 2021, doi:
+\href{https://doi.org/10.1186/s13326-021-00244-2}{10.1186/s13326-021-00244-2}.
+
+\bibitem{li2021}
+J. Li, Y. Zhou, X. Jiang, K. Natarajan, S. V. Pakhomov, H. Liu, and H. Xu,
+``Are synthetic clinical notes useful for real natural language processing
+tasks: A case study on clinical entity recognition,'' \emph{J. Am. Med.
+Inform. Assoc.}, vol. 28, no. 10, pp. 2193--2201, 2021, doi:
+\href{https://doi.org/10.1093/jamia/ocab112}{10.1093/jamia/ocab112}.
+
+\bibitem{xu2024}
+R. Xu \emph{et al.}, ``Knowledge-infused prompting: Assessing and advancing
+clinical text data generation with large language models,'' in \emph{Findings
+of the Association for Computational Linguistics: ACL 2024}, 2024,
+pp. 15496--15523, doi:
+\href{https://doi.org/10.18653/v1/2024.findings-acl.916}{10.18653/v1/2024.findings-acl.916}.
+
+\bibitem{singhal2023}
+K. Singhal \emph{et al.}, ``Large language models encode clinical knowledge,''
+\emph{Nature}, vol. 620, pp. 172--180, 2023, doi:
+\href{https://doi.org/10.1038/s41586-023-06291-2}{10.1038/s41586-023-06291-2}.
+
+\bibitem{anthropic2026}
+Anthropic, ``Claude,'' 2026. [Online]. Available:
+\url{https://www.anthropic.com/claude}. Accessed: Aug. 11, 2026.
+
+\bibitem{openai2026codex}
+OpenAI, ``Codex,'' 2026. [Online]. Available:
+\url{https://openai.com/codex/}. Accessed: Aug. 11, 2026.
+
+\end{thebibliography}
+
+\end{document}

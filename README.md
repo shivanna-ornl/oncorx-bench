@@ -1,205 +1,176 @@
-# OncoRx-Bench: Oncology Drug Extraction Benchmark
+# OncoRx-Bench
 
-This repository contains the original OncoRx-Bench generation, schema,
-validation, and CSV export code. The published dataset is available at
+OncoRx-Bench is a deterministic framework and 2,000-row synthetic benchmark
+for oncology medication and regimen extraction. The repository contains the
+generator, a conservative adapter for the
+[Unified Oncology Treatment Database](https://github.com/shivanna-ornl/unified-oncology-treatment-database),
+strict release validation, a template-disjoint split, tests, and the paper
+source.
+
+The corresponding dataset repository is
 [AbhishekShivanna/oncorx-bench](https://huggingface.co/datasets/AbhishekShivanna/oncorx-bench).
+That dataset card links back here so the data and exact generating source remain
+cross-referenced.
 
-The records and annotations are synthetic and automatically generated. They
-may contain labeling or medical errors and are not intended for clinical use,
-clinical decision-making, or patient care.
+All records are synthetic and automatically generated. They contain no patient
+records, have not been independently clinically adjudicated, and must not be
+used for patient care or clinical decision-making.
 
-## Repository Layout
+## Release status
 
-- `generate_dataset.py`: dataset generator
-- `dataset_config.py`: category counts and source-data paths
-- `schema.py`: record and annotation schema
-- `templates.py`: synthetic clinical-text templates
-- `validate_dataset.py`: artifact validation
-- `export_csv.py`: JSONL-to-CSV export
-- `output/`: supplied JSONL, CSV, generation statistics, and validation report
+- 2,000 unique records in 5 categories and 20 subcategories
+- 347 versioned clinical-text templates
+- 3,525 drug objects: 2,974 literal-surface objects and 551
+  regimen-inference objects
+- 170 normalized drugs; 433 stored evidence surfaces (328 literal drug
+  surfaces and 105 regimen-evidence spans); 444 regimen objects
+- strict validator: 0 errors across all release gates
+- 1,600/400 train/test rows, stratified by subcategory
+- 0 source templates shared between train and test
+- CPython 3.9.6; no external runtime packages
 
-Full regeneration expects five knowledge-base files in `TreatmentV4June/` at
-the repository root. Those source files are not included in this repository.
+These are structural and reproducibility results, not evidence of clinical
+validity.
 
-## Dataset Description
+## Repository layout
 
-**OncoRx-Bench** is a comprehensive benchmark dataset for evaluating drug and
-regimen extraction systems on oncology clinical text. It contains **2,000
-annotated samples** spanning five major evaluation categories, designed to test
-systems across a spectrum of clinical complexity — from simple drug name
-extraction to regimen acronym resolution, adverse drug reaction detection, and
-noisy/misspelled clinical text.
-
-### Key Features
-
-- **2,000 samples** across 20 subcategories in 5 major evaluation axes
-- **Rich annotation schema**: surface form, normalized name, status, negation,
-  allergy, uncertainty, sig (dose/route/frequency/taper), regimen components
-- **Grounded in real pharmacology**: drugs sourced from a 27,000+ drug
-  knowledge base (HemOnc); regimens from 1,500+ regimen definitions
-- **Difficulty-stratified**: Easy → Medium → Hard → Very Hard
-- **Clinical note diversity**: progress notes, discharge summaries, chemo
-  orders, pharmacy orders, telephone encounters, and more
-
-### Intended Uses
-
-- Benchmarking NER/IE models for clinical drug extraction
-- Evaluating regimen acronym resolution systems (e.g. FOLFOX → Fluorouracil +
-  Leucovorin + Oxaliplatin)
-- Testing robustness to abbreviations, brand names, misspellings, negation
-- Comparing retrieval-augmented vs. direct extraction approaches
-
-## Dataset Structure
-
-### Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `sample_id` | string | Unique identifier (ONCORX-0001 .. ONCORX-2000) |
-| `clinical_text` | string | Input clinical text |
-| `category` | string | Major category (C1–C5) |
-| `subcategory` | string | Fine-grained subcategory (C1.1–C5.4) |
-| `difficulty` | string | Easy, Medium, Hard, Very Hard |
-| `drug_mentions` | list | Annotated drug mentions (see below) |
-| `regimen_mentions` | list | Annotated regimen mentions (see below) |
-| `num_drugs` | int | Number of unique drugs in clinical_text |
-| `note_type` | string | Clinical note type |
-
-### Drug Mention Schema
-
-```json
-{
-  "drug_surface": "Taxol",
-  "drug_normalized": "Paclitaxel",
-  "status": "current",
-  "negated": false,
-  "allergy": false,
-  "uncertain": false,
-  "reason": "breast cancer",
-  "sig": {
-    "dose_value": "175",
-    "dose_unit": "mg/m2",
-    "route": "IV",
-    "frequency": "q3w",
-    "duration": null,
-    "prn": false,
-    "taper": null
-  }
-}
+```text
+.
+├── data/knowledge/                 # Checked-in UOTD-derived generator views
+│   ├── drug_table.csv
+│   ├── regimen_table.csv
+│   ├── Conditions_And_Regimens.csv
+│   ├── regimen_projection_audit.csv
+│   └── provenance.json
+├── docs/                           # Reproducibility and quality boundaries
+├── output/                         # Canonical, split, profile, and manifests
+├── paper/                          # CAFCW/SC26 LaTeX and generated statistics
+├── scripts/
+│   ├── build_uotd_inputs.py        # Pinned UOTD adapter
+│   ├── profile_release.py          # JSON/LaTeX profile generation
+│   └── reproduce_release.py        # One-command release build/check
+├── tests/                          # Adapter, generation, split, validator tests
+├── dataset_config.py
+├── export_csv.py
+├── generate_dataset.py
+├── schema.py
+├── templates.py
+└── validate_dataset.py
 ```
 
-### Regimen Mention Schema
+There is no Hub upload or dataset-generation implementation in this source
+repository. The release JSONL files are ordinary artifacts produced by the
+local generator.
 
-```json
-{
-  "regimen_surface": "FOLFOX",
-  "regimen_normalized": "FOLFOX",
-  "components_normalized": ["Fluorouracil", "Leucovorin", "Oxaliplatin"],
-  "cycle_info": "q2w x 12 cycles",
-  "intent": "adjuvant"
-}
+## Exact reproduction
+
+Use CPython 3.9.6 from the repository root:
+
+```bash
+python3 -m pip install -r requirements.txt
+python3 scripts/reproduce_release.py --check
+python3 -m unittest discover -s tests -v
 ```
 
-## Category Taxonomy
+The requirements file is intentionally empty apart from a comment: generation,
+validation, export, profiling, and tests use only the Python standard library.
 
-| Category | Label | Samples | Description |
-|----------|-------|---------|-------------|
-| **C1** | Core Medication Extraction | 600 | Single/dual drug mentions, supportive care |
-| **C2** | Attributes & Sig Complexity | 450 | Full sig, titration/taper, PRN, duration |
-| **C3** | Regimen & Oncology Complexity | 450 | Multi-drug, acronyms, partial lists, cycles/intent |
-| **C4** | Context & Safety | 300 | Discontinued/hold, allergy/ADR, negation, history |
-| **C5** | Noise & Ambiguity | 200 | Abbreviations, brand names, misspellings, high-noise |
+The reproduction command verifies the checked-in knowledge hashes, regenerates
+the benchmark in a temporary directory, validates it, rebuilds the
+template-disjoint split and profile, and byte-compares every archived artifact.
+It exits nonzero on any mismatch.
 
-### Subcategory Detail
+To intentionally refresh all artifacts after a reviewed code change:
 
-| Code | Subcategory | Count | Difficulty |
-|------|------------|-------|------------|
-| C1.1 | Single drug, simple mention | 150 | Easy |
-| C1.2 | Single drug with dose/route | 200 | Easy |
-| C1.3 | Two drugs in sentence | 150 | Medium |
-| C1.4 | Supportive care medications | 100 | Medium |
-| C2.1 | Full dose + route + frequency | 150 | Medium |
-| C2.2 | Titration and taper | 100 | Hard |
-| C2.3 | PRN / conditional dosing | 100 | Medium |
-| C2.4 | Duration and stop instructions | 100 | Medium |
-| C3.1 | Multi-drug explicit | 150 | Hard |
-| C3.2 | Regimen acronym only | 150 | Hard |
-| C3.3 | Regimen partial drug list | 100 | Very Hard |
-| C3.4 | Cycles, lines, intent | 50 | Very Hard |
-| C4.1 | Discontinued / on hold | 100 | Medium |
-| C4.2 | Allergy / ADR | 80 | Medium |
-| C4.3 | Negated mentions | 70 | Hard |
-| C4.4 | Medication history / conflicts | 50 | Hard |
-| C5.1 | Abbreviations | 60 | Hard |
-| C5.2 | Brand names | 60 | Medium |
-| C5.3 | Misspellings / typos | 50 | Very Hard |
-| C5.4 | High-noise clinical text | 30 | Very Hard |
-
-## Usage
-
-```python
-from datasets import load_dataset
-
-ds = load_dataset("AbhishekShivanna/oncorx-bench")
-
-# Access a sample
-sample = ds["test"][0]
-print(sample["clinical_text"])
-print(sample["drug_mentions"])
-
-# Filter by category
-c3_samples = ds["test"].filter(lambda x: x["category"] == "C3_REGIMEN_ONCOLOGY")
-
-# Filter by difficulty
-hard_samples = ds["test"].filter(lambda x: x["difficulty"] in ["Hard", "Very Hard"])
+```bash
+python3 scripts/reproduce_release.py
+python3 scripts/reproduce_release.py --check
 ```
 
-## Evaluation Metrics
+See [docs/REPRODUCIBILITY.md](docs/REPRODUCIBILITY.md) for UOTD-to-benchmark
+reproduction and [output/release_manifest.json](output/release_manifest.json)
+for the complete source and artifact hashes.
 
-We recommend reporting:
+## UOTD knowledge materialization
 
-- **Drug-level Micro F1**: Exact match on `drug_normalized`
-- **Attribute Accuracy**: Status, negated, allergy correctness (C2/C4)
-- **Regimen Resolution Recall**: Fraction of regimen components recovered (C3)
-- **Robustness Δ**: Performance drop from Easy → Very Hard
+The adapter pins UOTD commit
+`e4ba3722b5505cfa587b30032b8896d86baf8092` and verifies release metadata and
+production-table SHA-256 values before transformation. A local checkout can be
+checked end to end with:
 
-## Dataset Generation
-
-The dataset was generated using a template-based pipeline grounded in the
-[HemOnc.org](https://hemonc.org) ontology:
-
-1. **Drug Knowledge Base**: 27,000+ drugs with brand names, abbreviations,
-   and synonyms
-2. **Regimen Knowledge Base**: 1,500+ oncology regimens with constituent drugs
-3. **Template Library**: 200+ clinical text templates across 20 subcategories
-4. **Grounded Generation**: Drug and regimen mentions are sampled from the
-   supplied knowledge-base tables
-
-## Limitations
-
-- Templates are synthetic — they approximate clinical text but do not capture
-  the full variability of real EHR data
-- Sig fields (dose/route/frequency) are drawn from standard oncology dosing
-  but may not cover all real-world variations
-- The supplied snapshot has not been independently clinically adjudicated and
-  should be treated as an automatically generated research artifact
-
-## Citation
-
-```bibtex
-@dataset{oncorx_bench_2024,
-  title={OncoRx-Bench: A Benchmark Dataset for Drug and Regimen Extraction from Oncology Clinical Text},
-  year={2024},
-  url={https://huggingface.co/datasets/AbhishekShivanna/oncorx-bench},
-}
+```bash
+python3 scripts/build_uotd_inputs.py --uotd-dir /path/to/uotd --check
+python3 scripts/reproduce_release.py --uotd-dir /path/to/uotd --check
 ```
 
-## Source and dataset
+The benchmark view contains 241 required canonical drug anchors, 492 eligible
+regimen rows (472 canonical names plus 20 release-unique aliases), and 804
+condition associations across 113 conditions. The full UOTD synonym inventory
+is not republished.
 
-- Source repository: https://github.com/shivanna-ornl/oncorx-bench
-- Dataset repository: https://huggingface.co/datasets/AbhishekShivanna/oncorx-bench
+UOTD's checks establish file, schema, and referential consistency rather than
+clinical correctness. OncoRx therefore applies a fail-closed lexical regimen
+projection and records all 2,151 retained or quarantined decisions in
+`data/knowledge/regimen_projection_audit.csv`. This reduces known
+over-aggregation risk but is not independent clinical validation.
 
-## License and redistribution
+## Record schema
 
-No license is declared in this repository. Confirm source-data and
-redistribution rights before redistributing the generated artifacts.
+Each JSONL row contains:
+
+- `sample_id`, `clinical_text`, `category`, `subcategory`, and `difficulty`
+- `note_type`, an author-specified scenario attribute rather than a prevalence
+  estimate or independently validated document classifier
+- `drug_mentions`, including exact `[start_char,end_char)` evidence offsets,
+  canonical normalization, status/context flags, optional `adverse_event`, and
+  optional structured `sig`
+- `regimen_mentions`, including exact evidence offsets, canonical components,
+  and only text-visible cycle/intent metadata
+- `num_drugs`, the number of unique normalized drugs in `drug_mentions`
+
+`evidence_type` distinguishes literal drug surfaces (`explicit_surface`) from
+components inferred through a named-regimen span (`regimen_inference`). This
+prevents inferred components from being presented as literal token spans.
+
+## Split policy
+
+The exporter uses the generator's exact template-assignment manifest. Entire
+template groups remain together, and a deterministic subset-sum selection
+creates an exact 80/20 split inside every subcategory. Export fails if a grouped
+split cannot meet the configured counts. Drug and regimen identities may still
+occur in both partitions; entity- and regimen-disjoint evaluations are future
+work.
+
+## Validation scope and limitations
+
+The strict validator checks nested types/enums, quotas and sequential IDs,
+canonical foreign keys, exact evidence spans, visible intent/cycle/adverse-event
+and sig values, unique normalized-drug counts, placeholders, and duplicates.
+The regression suite additionally verifies byte determinism, source tamper
+rejection, split exhaustiveness, and zero template overlap.
+
+Author-specified dose/route profiles replace the former arbitrary generic
+fallbacks, and regimen-linked conditions replace independent random pairing.
+Neither change turns the data into treatment guidance. Independent clinical
+review, evaluation on real clinical text, and stronger entity/regimen-held-out
+partitions remain necessary. See [docs/DATA_QUALITY.md](docs/DATA_QUALITY.md).
+
+Anthropic Claude assisted initial drafting of portions of the code, template
+library, and configuration. The exact model revision, prompts, and decoding
+settings were not retained. The retained artifacts were reviewed and revised,
+are fully versioned, and invoke no LLM while generating records.
+
+## Citation links
+
+- Source: https://github.com/shivanna-ornl/oncorx-bench
+- Dataset: https://huggingface.co/datasets/AbhishekShivanna/oncorx-bench
+- Knowledge base: https://github.com/shivanna-ornl/unified-oncology-treatment-database
+
+Use immutable commit/revision URLs in archival papers whenever available.
+
+## License and data terms
+
+No source-code license is currently declared in this repository. The
+knowledge-view files do not receive a new license by being placed here. Review
+[DATA_NOTICE.md](DATA_NOTICE.md), UOTD's notice, and upstream terms before
+redistribution or commercial use.

@@ -1,16 +1,71 @@
 {
-  "total_samples": 2000,
-  "schema_errors": 0,
-  "drug_grounding_errors": 0,
-  "regimen_grounding_errors": 0,
-  "template_placeholder_errors": 0,
-  "duplicate_texts": 0,
-  "total_errors": 0,
-  "passed": true,
+  "category_distribution": {
+    "C1_CORE_MED_EXTRACTION": {
+      "C1.1_single_drug_simple": 150,
+      "C1.2_single_drug_dose": 200,
+      "C1.3_two_drugs": 150,
+      "C1.4_supportive_care": 100
+    },
+    "C2_ATTRIBUTES_SIG": {
+      "C2.1_dose_route_freq": 150,
+      "C2.2_titration_taper": 100,
+      "C2.3_prn_conditional": 100,
+      "C2.4_duration_stop": 100
+    },
+    "C3_REGIMEN_ONCOLOGY": {
+      "C3.1_multi_drug_explicit": 150,
+      "C3.2_regimen_acronym_only": 150,
+      "C3.3_regimen_partial": 100,
+      "C3.4_cycles_lines_intent": 50
+    },
+    "C4_CONTEXT_SAFETY": {
+      "C4.1_discontinued_hold": 100,
+      "C4.2_allergy_adr": 80,
+      "C4.3_negated": 70,
+      "C4.4_med_history_conflict": 50
+    },
+    "C5_NOISE_AMBIGUITY": {
+      "C5.1_abbreviations": 60,
+      "C5.2_brand_names": 60,
+      "C5.3_misspellings": 50,
+      "C5.4_high_noise": 30
+    }
+  },
   "difficulty_distribution": {
     "Easy": 350,
-    "Medium": 840,
     "Hard": 580,
+    "Medium": 840,
     "Very Hard": 230
-  }
+  },
+  "drug_grounding_errors": 0,
+  "duplicate_texts": 0,
+  "error_counts": {
+    "distribution_errors": 0,
+    "drug_grounding_errors": 0,
+    "duplicate_errors": 0,
+    "input_errors": 0,
+    "json_errors": 0,
+    "knowledge_errors": 0,
+    "regimen_grounding_errors": 0,
+    "schema_errors": 0,
+    "sig_errors": 0,
+    "template_placeholder_errors": 0,
+    "text_evidence_errors": 0
+  },
+  "error_details_truncated": {},
+  "errors": {},
+  "expected_samples": 2000,
+  "knowledge_base": {
+    "canonical_drugs": 241,
+    "canonical_regimen_rows": 492,
+    "drug_table": "drug_table.csv",
+    "regimen_table": "regimen_table.csv"
+  },
+  "passed": true,
+  "physical_lines": 2000,
+  "regimen_grounding_errors": 0,
+  "schema_errors": 0,
+  "template_placeholder_errors": 0,
+  "total_errors": 0,
+  "total_samples": 2000
 }

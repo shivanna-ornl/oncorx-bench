@@ -85,11 +85,15 @@ class DrugMention:
     """A single drug mention extracted from clinical text."""
     drug_surface: str                       # exact string from text
     drug_normalized: str                    # canonical generic/ingredient name
+    start_char: Optional[int] = None         # inclusive character offset
+    end_char: Optional[int] = None           # exclusive character offset
+    evidence_type: str = "explicit_surface"  # explicit_surface or regimen_inference
     status: str = DrugStatus.CURRENT.value  # current, planned, historical, etc.
     negated: bool = False
     allergy: bool = False
     uncertain: bool = False                 # "may start", "consider"
     reason: Optional[str] = None            # indication (nausea, pain, DLBCL)
+    adverse_event: Optional[str] = None      # reaction/toxicity attributed in text
     sig: Optional[dict] = None              # SigFields.to_dict() output
 
     def to_dict(self) -> dict:
@@ -100,9 +104,16 @@ class DrugMention:
             "negated": self.negated,
             "allergy": self.allergy,
             "uncertain": self.uncertain,
+            "evidence_type": self.evidence_type,
         }
+        if self.start_char is not None:
+            d["start_char"] = self.start_char
+        if self.end_char is not None:
+            d["end_char"] = self.end_char
         if self.reason:
             d["reason"] = self.reason
+        if self.adverse_event:
+            d["adverse_event"] = self.adverse_event
         if self.sig:
             d["sig"] = self.sig
         return d
@@ -114,6 +125,8 @@ class DrugMention:
 class RegimenMention:
     """A regimen mention with component resolution."""
     regimen_surface: str                           # "carbo/taxol + Keytruda"
+    start_char: Optional[int] = None                # inclusive character offset
+    end_char: Optional[int] = None                  # exclusive character offset
     regimen_normalized: Optional[str] = None       # standard name e.g. "Carboplatin/Paclitaxel/Pembrolizumab"
     components_normalized: list = field(default_factory=list)  # ["Carboplatin", "Paclitaxel", "Pembrolizumab"]
     cycle_info: Optional[str] = None               # "q3w x4"
@@ -124,6 +137,10 @@ class RegimenMention:
             "regimen_surface": self.regimen_surface,
             "components_normalized": self.components_normalized,
         }
+        if self.start_char is not None:
+            d["start_char"] = self.start_char
+        if self.end_char is not None:
+            d["end_char"] = self.end_char
         if self.regimen_normalized:
             d["regimen_normalized"] = self.regimen_normalized
         if self.cycle_info:

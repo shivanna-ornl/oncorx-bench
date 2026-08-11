@@ -1,0 +1,85 @@
+{
+  "outputs": {
+    "Conditions_And_Regimens.csv": {
+      "bytes": 53866,
+      "rows": 804,
+      "sha256": "6b192bf58320578f143457b645fa35445f5b660fc261d7bc24363645a7797dde"
+    },
+    "drug_table.csv": {
+      "bytes": 4787,
+      "rows": 241,
+      "sha256": "0899d8da47de87f0db983c6915be42c46474a06e5c691089baa7c791ede5fe2e"
+    },
+    "regimen_projection_audit.csv": {
+      "bytes": 294462,
+      "rows": 2151,
+      "sha256": "725b2e99eb2904e612db940c495fea39dae6a125a4188d776e1fd0f29d62e423"
+    },
+    "regimen_table.csv": {
+      "bytes": 67258,
+      "rows": 492,
+      "sha256": "56362ba12e81f4f4c045d9f198f0729e2a9164108086389eee696c1c52990828"
+    }
+  },
+  "schema_version": 1,
+  "transformation": {
+    "adapter_version": 1,
+    "condition_view": "Conditions_And_Regimens restricted to benchmark-eligible projected regimens",
+    "curated_names_without_exact_uotd_canonical_match": [
+      "Nab-Paclitaxel",
+      "Pegylated Liposomal Doxorubicin",
+      "Polyethylene Glycol",
+      "Senna",
+      "Sulfamethoxazole/Trimethoprim",
+      "Trastuzumab Emtansine"
+    ],
+    "dataset_config_sha256": "e6e64186cbfd1184631160c55092975da376f3b0c00c0933b6ef817ee015c5ae",
+    "display_casing": "UOTD canonical spelling except exact curated benchmark names",
+    "drug_view": "benchmark-required UOTD canonical anchors; the full upstream synonym inventory is checksum-verified but not republished",
+    "eligible_acronym_aliases": 20,
+    "eligible_canonical_regimens": 472,
+    "excluded_condition_rows": 2557,
+    "excluded_regimens": 1679,
+    "excluded_uotd_synonym_rows": 31855,
+    "explicit_curated_surface_quarantine_rows": 195,
+    "list_encoding": "compact JSON arrays in CSV cells",
+    "ordering": "numeric UOTD identifiers; list values sorted case-insensitively",
+    "quarantined_explicit_incomplete_regimens": 70,
+    "regimen_view": "Anchor_Regimen joined through Anchor_Drugs_To_Regimens to Anchor_Drugs; direct UOTD components conservatively projected by literal occurrence in the canonical regimen name; rows with an explicit but unlinked curated drug surface are quarantined",
+    "script": "scripts/build_uotd_inputs.py",
+    "script_sha256": "e03d96e9be7054316e40e138fcf5c6f72304c3b9fdada91521cd92a53d3fbbdd"
+  },
+  "upstream": {
+    "build": "publication-build-2026-08-09",
+    "commit": "e4ba3722b5505cfa587b30032b8896d86baf8092",
+    "repository": "https://github.com/shivanna-ornl/unified-oncology-treatment-database",
+    "rxnorm_api_version": "3.1.354",
+    "rxnorm_dataset_version": "03-Aug-2026",
+    "source_files": {
+      "metadata/build_release.json": {
+        "sha256": "cdf6e3231420897e9f3ccee430dbd2cf0d47dd28b386fe3829f6269e11593b09"
+      },
+      "metadata/release_manifest.json": {
+        "sha256": "6c13645b0c112297e15c6776d7c5366744fee4b14b6d394b3ffde97ae9c33c75"
+      },
+      "metadata/rxnorm_api_manifest.json": {
+        "sha256": "cf366286dbf5f6e99df13a34dd681371df77d661d2271c0e786375c14d6693d3"
+      },
+      "outputs/production/Anchor_Drugs.csv": {
+        "sha256": "4a225e5c2bf0557b4b93206f832f00e963a6ea23035b2ffcc4912878ec11ccb4"
+      },
+      "outputs/production/Anchor_Drugs_And_Synonyms.csv": {
+        "sha256": "c42f89453780896d37a1b8bb8f90799194ac2710764d980e34493298aea8c820"
+      },
+      "outputs/production/Anchor_Drugs_To_Regimens.csv": {
+        "sha256": "c8ad83b432d84553cb5f14318cf11bff10be3c33ce81bfe46cfa5713673727cb"
+      },
+      "outputs/production/Anchor_Regimen.csv": {
+        "sha256": "9bb2ea12ca1cba2b2f668c69ce92ea306801a087d29ea6cb45da05ce58a52f01"
+      },
+      "outputs/production/Conditions_And_Regimens.csv": {
+        "sha256": "b179b99ab9a0cc320ba44af368e078c120512fb47cc9d1f3214f5140b8ebb09c"
+      }
+    }
+  }
+}

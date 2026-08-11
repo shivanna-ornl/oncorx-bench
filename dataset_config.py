@@ -9,14 +9,14 @@ from pathlib import Path
 # ── Base paths ─────────────────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = BASE_DIR
-DATA_DIR = PROJECT_DIR / "TreatmentV4June"
+DATA_DIR = PROJECT_DIR / "data" / "knowledge"
 
 # Knowledge-base files
 DRUG_TABLE_PATH = DATA_DIR / "drug_table.csv"
 REGIMEN_TABLE_PATH = DATA_DIR / "regimen_table.csv"
 CONDITIONS_PATH = DATA_DIR / "Conditions_And_Regimens.csv"
-SYNONYMS_PATH = DATA_DIR / "Anchor_Drugs_And_Synonyms.csv"
-COMPOSITE_DRUGS_PATH = DATA_DIR / "Composite_Drugs.csv"
+KNOWLEDGE_PROVENANCE_PATH = DATA_DIR / "provenance.json"
+REGIMEN_PROJECTION_AUDIT_PATH = DATA_DIR / "regimen_projection_audit.csv"
 
 # Output
 OUTPUT_DIR = BASE_DIR / "output"
@@ -174,6 +174,32 @@ NOTE_TYPES = [
     "telephone_encounter",
     "treatment_plan",
 ]
+
+# Note type is a scenario attribute, not an independently sampled label.  Each
+# subcategory is restricted to document contexts in which its template family
+# is plausible; selection within the allowed set remains seeded.
+NOTE_TYPES_BY_SUBCATEGORY = {
+    "C1.1_single_drug_simple": ["progress_note", "oncology_consult", "treatment_plan"],
+    "C1.2_single_drug_dose": ["chemo_order", "pharmacy_order", "treatment_plan"],
+    "C1.3_two_drugs": ["progress_note", "chemo_order", "treatment_plan"],
+    "C1.4_supportive_care": ["chemo_order", "pharmacy_order", "progress_note"],
+    "C2.1_dose_route_freq": ["chemo_order", "pharmacy_order"],
+    "C2.2_titration_taper": ["treatment_plan", "discharge_summary", "progress_note"],
+    "C2.3_prn_conditional": ["pharmacy_order", "discharge_summary", "progress_note"],
+    "C2.4_duration_stop": ["treatment_plan", "chemo_order", "progress_note"],
+    "C3.1_multi_drug_explicit": ["chemo_order", "treatment_plan", "oncology_consult"],
+    "C3.2_regimen_acronym_only": ["oncology_consult", "treatment_plan", "progress_note"],
+    "C3.3_regimen_partial": ["chemo_order", "nursing_note", "progress_note"],
+    "C3.4_cycles_lines_intent": ["oncology_consult", "treatment_plan", "progress_note"],
+    "C4.1_discontinued_hold": ["progress_note", "medication_reconciliation", "treatment_plan"],
+    "C4.2_allergy_adr": ["allergy_note", "progress_note", "oncology_consult"],
+    "C4.3_negated": ["oncology_consult", "progress_note", "treatment_plan"],
+    "C4.4_med_history_conflict": ["medication_reconciliation", "oncology_consult", "progress_note"],
+    "C5.1_abbreviations": ["chemo_order", "pharmacy_order", "nursing_note"],
+    "C5.2_brand_names": ["progress_note", "medication_reconciliation", "treatment_plan"],
+    "C5.3_misspellings": ["progress_note", "telephone_encounter", "pharmacy_order"],
+    "C5.4_high_noise": ["progress_note", "discharge_summary", "oncology_consult", "nursing_note"],
+}
 
 
 # ── Commonly-encountered supportive care drugs (for C1.4 generation) ──
@@ -496,11 +522,17 @@ IV_ONLY_DRUGS = {
     "Carfilzomib", "Arsenic Trioxide",
 }
 
-# ── Drugs with known cumulative dose limits (for C4.4) ───────────────
-CUMULATIVE_DOSE_DRUGS = [
-    "Doxorubicin", "Epirubicin", "Daunorubicin", "Idarubicin",
-    "Bleomycin", "Cisplatin", "Carboplatin", "Mitomycin",
-]
+# ── Anthracyclines with scenario-level cumulative-dose controls ──────
+# These values are synthetic template constraints, not patient-specific dose
+# recommendations.  They prevent the prior generic 550 mg/m2 ceiling from
+# being applied to unrelated platinum agents.
+CUMULATIVE_DOSE_LIMITS = {
+    "Doxorubicin": "450 mg/m2",
+    "Epirubicin": "900 mg/m2",
+    "Daunorubicin": "550 mg/m2",
+    "Idarubicin": "150 mg/m2",
+}
+CUMULATIVE_DOSE_DRUGS = list(CUMULATIVE_DOSE_LIMITS)
 
 # ── Drugs appropriate for premedication / prophylaxis context (C1.4) ──
 PREMEDICATION_APPROPRIATE = {
@@ -508,3 +540,13 @@ PREMEDICATION_APPROPRIATE = {
     "Metoclopramide", "Lorazepam", "Diphenhydramine",
     "Acetaminophen", "Ibuprofen",
 }
+
+# Explicit distractor medications embedded in the high-noise templates.  They
+# are included so C5.4 can be exhaustively annotated rather than silently
+# leaving fixed medication strings outside the target objects.
+HIGH_NOISE_DRUGS = {
+    "Aspirin", "Famotidine", "Lorazepam", "Cefepime", "Meropenem",
+    "Vancomycin", "Gentamicin", "Levofloxacin", "Ciprofloxacin",
+    "Atenolol", "Amlodipine", "Metformin", "Lisinopril",
+}
+HIGH_NOISE_ALIASES = {"ASA": "Aspirin"}
